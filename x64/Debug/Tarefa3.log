@@ -1,0 +1,5 @@
+﻿  Sphere.cpp
+C:\Users\julia\source\repos\Tarefa3\Tarefa3\Sphere.cpp(176,108): warning C4244: 'argumento': conversão de 'double' para 'int', possível perda de dados
+C:\Users\julia\source\repos\Tarefa3\Tarefa3\Sphere.cpp(176,80): warning C4244: 'argumento': conversão de 'double' para 'int', possível perda de dados
+C:\Users\julia\source\repos\Tarefa3\Tarefa3\Sphere.cpp(176,52): warning C4244: 'argumento': conversão de 'double' para 'int', possível perda de dados
+  Tarefa3.vcxproj -> C:\Users\julia\source\repos\Tarefa3\x64\Debug\Tarefa3.exe
