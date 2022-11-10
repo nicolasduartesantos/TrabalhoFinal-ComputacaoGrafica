@@ -8,9 +8,9 @@ private:
     Vector* p_pi = nullptr;
     Vector* normal = nullptr;
 
-    Vector* kd = nullptr;
-    Vector* ke = nullptr;
-    double shininess = 1.0;
+    //Vector* kd = nullptr;
+    //Vector* ke = nullptr;
+    //double shininess = 1.0;
 
 public:
 

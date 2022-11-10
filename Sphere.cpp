@@ -52,7 +52,6 @@ bool Sphere::intersect(Vector* p0, Vector* dir) {
         
         Vector pitemp = (*p0) + ( (*dir) * t);
         Vector* pi = new Vector(pitemp.getCoordinate(0), pitemp.getCoordinate(1), pitemp.getCoordinate(2));
-
         this->setIntersectionPoint(pi);
 
 
@@ -155,9 +154,7 @@ Color* Sphere::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, 
             
             rgb = rgb + i_diffuse + i_speculated;
 
-            //std::cout << i_speculated.getCoordinate(0) << ", " << i_speculated.getCoordinate(1) << ", " << i_speculated.getCoordinate(2) << "\n";
-
-            //std::cout << (l.scalarProd(n)) << "\n";
+            
         //}
     }
 

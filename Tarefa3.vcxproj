@@ -134,6 +134,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Cone.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="libSDL.cpp" />
@@ -145,6 +147,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Cone.h" />
+    <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="libSDL.h" />

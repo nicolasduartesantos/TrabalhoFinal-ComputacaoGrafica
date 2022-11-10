@@ -6,10 +6,10 @@ class Sphere : public Object {
 private:
 
     double rad;
-    Vector* kd = nullptr;
-    Vector* ke = nullptr;
+    //Vector* kd = nullptr;
+    //Vector* ke = nullptr;
     Vector* center = nullptr;
-    double shininess = 1.0;
+    //double shininess = 1.0;
 
 
 public:
