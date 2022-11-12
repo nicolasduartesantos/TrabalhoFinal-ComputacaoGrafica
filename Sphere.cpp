@@ -39,14 +39,23 @@ bool Sphere::intersect(Vector* p0, Vector* dir) {
         t1 = (-b + sqrt(delta)) / (2 * a);
         t2 = (-b - sqrt(delta)) / (2 * a);
 
-        double t = 0;
-        if (t1 <= t2) t = t1;
-        else          t = t2;
-
-        if (t < 0)
+        if (t1 < 0 && t2 < 0)
         {
             this->setHasIntersection(false);
             return false;
+        }
+        else {
+
+            if (t1 < 0) {
+                t = t2;
+            }
+            else if (t2 < 0) {
+                t = t1;
+            }
+            else {
+                if (t1 <= t2) t = t1;
+                else          t = t2;
+            }
         }
         
         
@@ -89,13 +98,24 @@ bool Sphere::intersect_for_shadow(Vector* p0, Vector* dir) {
         t2 = (-b - sqrt(delta)) / (2 * a);
 
         double t = 0;
-        if (t1 <= t2) t = t1;
-        else          t = t2;
 
-        if (t < 0)
+        if (t1 < 0 && t2 < 0)
         {
             this->setHasIntersectionShadow(false);
             return false;
+        }
+        else {
+
+            if (t1 < 0) {
+                t = t2;
+            }
+            else if (t2 < 0) {
+                t = t1;
+            }
+            else {
+                if (t1 <= t2) t = t1;
+                else          t = t2;
+            }
         }
 
         Vector pitemp = (*p0) + ((*dir) * t);
@@ -104,6 +124,7 @@ bool Sphere::intersect_for_shadow(Vector* p0, Vector* dir) {
         Vector distancePiP0Vector = (*p0) - (*pi);
         double distancePiP0 = distancePiP0Vector.getLength();
         this->setP0distanceShadow(distancePiP0);
+        this->setTShadow(t);
 
         return true;
     }
@@ -119,59 +140,15 @@ Color* Sphere::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, 
 
     Vector rgb(0, 0, 0);
 
-    //Vector* pi = this->getIntersectionPoint();
+    Vector* pi = this->getIntersectionPoint();
 
-    Vector pitemp = (*p0) + ((*dir) * t);
-    Vector* pi = new Vector(pitemp.getCoordinate(0), pitemp.getCoordinate(1), pitemp.getCoordinate(2));
-
-
-    Vector n(0, 0, 0); Vector v(0, 0, 0); Vector l(0, 0, 0); Vector r(0, 0, 0);
+    Vector* n = new Vector();
         
-    n = (*pi - (*this->center)) / (this->rad);
+    Vector ntemp = (*pi - (*this->center)) / (this->rad);
 
-    v = (*dir * (-1)) / (dir->getLength());
+    n = new Vector(ntemp.getCoordinate(0), ntemp.getCoordinate(1), ntemp.getCoordinate(2));
 
-
-    for (int i = 0; i < lights.size(); i++) {
-
-        Vector* pf = lights[i]->getCoordinate();
-
-        l = (*pf - *pi);
-        l = l / (l.getLength());
-
-
-        bool hasShadow = this->hasShadow(objects, pi, l, pf);
-
-        //if (!hasShadow) {
-
-            r = (n * (2 * (l.scalarProd(n)))) - l;
-
-            double f_diffuse = std::max(0.0, (l.scalarProd(n)));
-            double f_speculated = std::pow(std::max(0.0, (r.scalarProd(v))), this->shininess);
-
-            Vector i_diffuse = (*(lights[i]->getIntensity())) * (*this->kd) * f_diffuse;
-            Vector i_speculated = (*lights[i]->getIntensity()) * (*this->ke) * f_speculated;
-            
-            rgb = rgb + i_diffuse + i_speculated;
-
-            
-        //}
-    }
-
-
-
-    if (environmentLight != nullptr) {
-        Vector i_environment = (*environmentLight) * (*this->ka);
-        rgb = rgb + i_environment;
-    }
-
-    double cor_max = std::max(std::max(rgb.getCoordinate(0), rgb.getCoordinate(1)), rgb.getCoordinate(2));
-    if (cor_max > 1) {
-        rgb = rgb / cor_max;
-    }
-
-    Color* result = new Color(rgb.getCoordinate(0) * 255, rgb.getCoordinate(1) * 255, rgb.getCoordinate(2) * 255, 255);
-    return result;
+    return this->RGBtoPaint(lights, objects, p0, dir, environmentLight , n, this);
 }
 
 

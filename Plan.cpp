@@ -104,11 +104,7 @@ Color* Plan::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Ve
 
     Vector rgb(0, 0, 0);
 
-    //Vector* pi = this->getIntersectionPoint();
-
-	Vector pitemp = (*p0) + ((*dir) * t);
-	Vector* pi = new Vector(pitemp.getCoordinate(0), pitemp.getCoordinate(1), pitemp.getCoordinate(2));
-
+    Vector* pi = this->getIntersectionPoint();
 
 
     Vector v(0, 0, 0); Vector l(0, 0, 0); Vector r(0, 0, 0);

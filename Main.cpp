@@ -13,6 +13,7 @@ using namespace std;
 #include "Plan.h"
 #include "Sphere.h"
 #include "Scene.h"
+#include "Cylinder.h"
 
 
 
@@ -20,6 +21,8 @@ using namespace std;
 int main(int argc, char* argv[]) {
 
 	Sphere* sphere = new Sphere(40.0, new Vector(0.7, 0.2, 0.2), new Vector(0.7, 0.2, 0.2), new Vector(0.7, 0.2, 0.2), new Vector(0, 0, -100), 10.0);
+	
+	Cylinder* cylinder = new Cylinder((40.0 / 3), new Vector(0, 0, -100), new Vector(-1 / sqrt(3), 1 / sqrt(3), -1 / sqrt(3)), 120.0, new Vector(0.2, 0.3, 0.8), new Vector(0.2, 0.3, 0.8), new Vector(0.2, 0.3, 0.8), 10.0);
 
 	Plan* plan_floor = new Plan(new Vector(0., -40., 0.), new Vector(0., 1., 0.), new Vector(0.2, 0.7, 0.2), new Vector(0., 0., 0.), new Vector(0.2, 0.7, 0.2), 1.0);
 	
@@ -36,6 +39,7 @@ int main(int argc, char* argv[]) {
 	scene->addObject(plan_back);
 	scene->addObject(plan_floor);
 	scene->addObject(sphere);
+	scene->addObject(cylinder);
 
 	scene->preparePaint();
 

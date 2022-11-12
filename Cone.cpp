@@ -33,17 +33,19 @@ double Cone::getHeight() {
 
 
 bool Cone::intersect(Vector* p0, Vector* dir) {
+	
+	return true;
 
 }
 
 
 bool Cone::intersect_for_shadow(Vector* p0, Vector* dir) {
-
+	return true;
 }
 
 
 Color* Cone::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) {
-
+	return new Color(0, 0, 0);
 }
 
 

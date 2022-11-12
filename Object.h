@@ -5,8 +5,8 @@
 #include "Color.h"
 #include <vector>
 
-enum class ObjectType { SPHERE, PLAN, CYLINDER, };
-enum class ObjectSurface { ON_SPHERE, ON_PLAN, CYLINDER_SURFACE, CYLINDER_BASE, UNKNOWN };
+enum class ObjectType { SPHERE, PLAN, CYLINDER, CONE};
+enum class ObjectSurface { ON_SPHERE, ON_PLAN, CYLINDER_SURFACE, CYLINDER_BASE, CYLINDER_TOP, CONE_SURFACE, CONE_BASE, UNKNOWN };
 
 
 class Object {
@@ -22,7 +22,7 @@ protected:
 
     double t;
     bool hasIntersection = false;
-    Vector* intersectionPoint;
+    Vector* intersectionPoint = nullptr;
     double p0distance;
 
     double tShadow;
@@ -77,4 +77,7 @@ public:
     virtual Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) = 0;
 
     bool hasShadow(std::vector<Object*> objects, Vector* pi, Vector l, Vector* pf);
+
+    Color* RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight, Vector* normal, Object* obj);
+
 };
