@@ -26,6 +26,16 @@ double Vector::scalarProd(Vector b) {
 	return product;
 }
 
+Vector Vector::product(Vector b) {
+	Vector x(
+		this->coordinates[1] * b.coordinates[2] - this->coordinates[2] * b.coordinates[1],
+		this->coordinates[2] * b.coordinates[0] - this->coordinates[0] * b.coordinates[2],
+		this->coordinates[0] * b.coordinates[1] - this->coordinates[1] * b.coordinates[0]
+	);
+
+	return x;
+}
+
 
 void Vector::setCoordinate(int index, int x) {
 	this->coordinates[index] = x;
@@ -41,6 +51,11 @@ double Vector::getLength() {
 }
 
 
+
+
+bool Vector::operator == (const Vector& b) {
+	return (this->coordinates[0] == b.coordinates[0] && this->coordinates[1] == b.coordinates[1] && this->coordinates[2] == b.coordinates[2]);
+}
 
 
 Vector Vector::operator + (const Vector& b) {

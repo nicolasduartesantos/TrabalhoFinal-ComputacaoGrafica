@@ -5,7 +5,7 @@
 #include "Color.h"
 #include <vector>
 
-enum class ObjectType { SPHERE, PLAN, CYLINDER, CONE};
+enum class ObjectType { SPHERE, PLAN, CYLINDER, CONE, MESH};
 enum class ObjectSurface { ON_SPHERE, ON_PLAN, CYLINDER_SURFACE, CYLINDER_BASE, CYLINDER_TOP, CONE_SURFACE, CONE_BASE, UNKNOWN };
 
 

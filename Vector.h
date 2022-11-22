@@ -15,6 +15,9 @@ public:
 
     double scalarProd(Vector b);
 
+	Vector product(Vector b);
+
+	bool operator == (const Vector& b);
 	Vector operator + (const Vector& b);
 	Vector operator - (const Vector& b);
 	Vector operator * (const Vector& b);

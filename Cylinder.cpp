@@ -426,7 +426,7 @@ bool Cylinder::intersect_for_shadow(Vector* p0, Vector* dir) {
     double b = v.scalarProd(w);
     double c = v.scalarProd(v) - ((this->rad) * (this->rad));
 
-    delta = (b * b) - 4 * a * c;
+    delta = (b * b) - a * c;
 
     // DELTA = 0
     if (delta == 0)
@@ -441,8 +441,8 @@ bool Cylinder::intersect_for_shadow(Vector* p0, Vector* dir) {
     {
 
         this->setHasIntersectionShadow(true);
-        t1 = (-b + sqrt(delta)) / (2 * a);
-        t2 = (-b - sqrt(delta)) / (2 * a);
+        t1 = (-b + sqrt(delta)) / (a);
+        t2 = (-b - sqrt(delta)) / (a);
 
         Vector pitemp1 = (*p0) + ((*dir) * t1);
         Vector* pi1 = new Vector(pitemp1.getCoordinate(0), pitemp1.getCoordinate(1), pitemp1.getCoordinate(2));

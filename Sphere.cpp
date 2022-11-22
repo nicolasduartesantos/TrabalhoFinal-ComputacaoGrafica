@@ -152,7 +152,7 @@ Color* Sphere::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, 
 }
 
 
-Sphere::Sphere(double rad, Vector* kd, Vector* ke, Vector* ka, Vector* center, double shininess) {
+Sphere::Sphere(double rad, Vector* center, Vector* kd, Vector* ke, Vector* ka, double shininess) {
     this->rad = rad;
     this->kd = kd;
     this->ke = ke;
