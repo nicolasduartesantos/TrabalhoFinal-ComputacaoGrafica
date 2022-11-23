@@ -22,8 +22,6 @@ Vector* Sphere::getCenter() {
 
 bool Sphere::intersect(Vector* p0, Vector* dir) {
 
-    //(dr*dr)ti^2 + 2*(w*dr)ti + (w*w) - r^2 = 0
-
     Vector w = (*p0) - *(this->center);
 
     double delta, t1, t2;
@@ -41,19 +39,30 @@ bool Sphere::intersect(Vector* p0, Vector* dir) {
         t1 = (-b + sqrt(delta)) / (2 * a);
         t2 = (-b - sqrt(delta)) / (2 * a);
 
-        double t = 0;
-        if (t1 <= t2) t = t1;
-        else          t = t2;
-
-        if (t < 0)
+        if (t1 < 0 && t2 < 0)
         {
             this->setHasIntersection(false);
             return false;
         }
+        else {
+
+            if (t1 < 0) {
+                t = t2;
+            }
+            else if (t2 < 0) {
+                t = t1;
+            }
+            else {
+                if (t1 <= t2) t = t1;
+                else          t = t2;
+            }
+        }
+
 
         Vector pitemp = (*p0) + ((*dir) * t);
         Vector* pi = new Vector(pitemp.getCoordinate(0), pitemp.getCoordinate(1), pitemp.getCoordinate(2));
         this->setIntersectionPoint(pi);
+
 
         Vector distancePiP0Vector = (*p0) - (*pi);
         double distancePiP0 = distancePiP0Vector.getLength();
@@ -89,21 +98,33 @@ bool Sphere::intersect_for_shadow(Vector* p0, Vector* dir) {
         t2 = (-b - sqrt(delta)) / (2 * a);
 
         double t = 0;
-        if (t1 <= t2) t = t1;
-        else          t = t2;
 
-        if (t < 0)
+        if (t1 < 0 && t2 < 0)
         {
             this->setHasIntersectionShadow(false);
             return false;
+        }
+        else {
+
+            if (t1 < 0) {
+                t = t2;
+            }
+            else if (t2 < 0) {
+                t = t1;
+            }
+            else {
+                if (t1 <= t2) t = t1;
+                else          t = t2;
+            }
         }
 
         Vector pitemp = (*p0) + ((*dir) * t);
         Vector* pi = new Vector(pitemp.getCoordinate(0), pitemp.getCoordinate(1), pitemp.getCoordinate(2));
 
-        Vector distancePiP0Vector = (*p0)-(*pi);
+        Vector distancePiP0Vector = (*p0) - (*pi);
         double distancePiP0 = distancePiP0Vector.getLength();
         this->setP0distanceShadow(distancePiP0);
+        this->setTShadow(t);
 
         return true;
     }
@@ -115,62 +136,27 @@ bool Sphere::intersect_for_shadow(Vector* p0, Vector* dir) {
 }
 
 
-Color* Sphere::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight, Vector* ka) {
+Color* Sphere::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) {
 
     Vector rgb(0, 0, 0);
 
     Vector* pi = this->getIntersectionPoint();
 
-    /*Vector* pi = new Vector(0, 0, 0);
-    Vector pitemp = (*p0)+(*dir * this->getT());
-    pi = &pitemp;*/
+    Vector* n = new Vector();
 
-    Vector n(0, 0, 0); Vector v(0, 0, 0); Vector l(0, 0, 0); Vector r(0, 0, 0);
+    Vector ntemp = (*pi - (*this->center)) / (this->rad);
 
-    n = (*pi - (*this->center)) / (this->rad);
+    n = new Vector(ntemp.getCoordinate(0), ntemp.getCoordinate(1), ntemp.getCoordinate(2));
 
-    v = (*dir * (-1)) / (dir->getLength());
-
-
-    for (int i = 0; i < lights.size(); i++) {
-
-        Vector* pf = lights[i]->getCoordinate();
-        l = (*pf - *pi) / ((*pf - *pi).getLength());
-
-
-        bool hasShadow = this->hasShadow(objects, pi, l, pf);
-
-        if (!hasShadow) {
-
-            r = (n * (2 * (l.scalarProd(n)))) - l;
-
-            double f_diffuse = std::max(0.0, (l.scalarProd(n)));
-            double f_speculated = std::pow(std::max(0.0, (r.scalarProd(v))), this->getShininess());
-
-            Vector i_diffuse = (*(lights[i]->getIntensity())) * (*this->kd) * f_diffuse;
-            Vector i_speculated = (*lights[i]->getIntensity()) * (*this->ke) * f_speculated;
-
-            rgb = rgb + i_diffuse + i_speculated;
-
-        }
-    }
-
-
-
-    if (environmentLight != nullptr) {
-        Vector i_environment = (*environmentLight) * (*ka);
-        rgb = rgb + i_environment;
-    }
-
-    Color* result = new Color(rgb.getCoordinate(0) * 255, rgb.getCoordinate(1) * 255, rgb.getCoordinate(2) * 255, 255);
-    return result;
+    return this->RGBtoPaint(lights, objects, p0, dir, environmentLight, n, this);
 }
 
 
-Sphere::Sphere(double rad, Vector* kd, Vector* ke, Vector* center, double shininess) {
+Sphere::Sphere(double rad, Vector* center, Vector* kd, Vector* ke, Vector* ka, double shininess) {
     this->rad = rad;
     this->kd = kd;
     this->ke = ke;
+    this->ka = ka;
     this->center = center;
     this->shininess = shininess;
     this->setObjectType(ObjectType::SPHERE);

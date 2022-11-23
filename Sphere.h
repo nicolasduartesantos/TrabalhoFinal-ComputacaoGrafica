@@ -6,10 +6,11 @@ class Sphere : public Object {
 private:
 
     double rad;
-    Vector* kd = nullptr;
-    Vector* ke = nullptr;
+    //Vector* kd = nullptr;
+    //Vector* ke = nullptr;
     Vector* center = nullptr;
-    double shininess = 1.0;
+    //double shininess = 1.0;
+
 
 public:
 
@@ -23,7 +24,7 @@ public:
 
     bool intersect_for_shadow(Vector* p0, Vector* dir);
 
-    Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight, Vector* ka);
+    Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight);
 
-    Sphere(double rad, Vector* kd, Vector* ke, Vector* center, double shininess);
+    Sphere(double rad, Vector* kd, Vector* ke, Vector* ka, Vector* center, double shininess);
 };

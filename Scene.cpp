@@ -38,7 +38,7 @@ void Scene::setNLin(int nLin) {
     this->nLin = nLin;
 }
 
-double Scene::getNLin() {
+int Scene::getNLin() {
     return this->nLin;
 }
 
@@ -47,7 +47,7 @@ void Scene::setNCol(int nCol) {
     this->nCol = nCol;
 }
 
-double Scene::getNCol() {
+int Scene::getNCol() {
     return this->nCol;
 }
 
@@ -76,14 +76,6 @@ void Scene::setEnvironmentLight(Vector* environmentLight) {
 
 Vector* Scene::getEnvironmentLight() {
     return this->environmentLight;
-}
-
-
-void Scene::setKA(Vector* ka) {
-    this->ka = ka;
-}
-Vector* Scene::getKA() {
-    return this->ka;
 }
 
 
@@ -139,22 +131,25 @@ void Scene::paintCanvas(SDL_Renderer* renderer) {
 
 
             for (int i = 0; i < this->getObjects().size(); i++) {
-                //std::cout << "antes de intersect\n";
+
                 (this->getObjects()[i])->intersect(p0, dir);
-                //std::cout << this->getObjects()[i]->getIntersectionPoint() << " " << (int)(this->getObjects()[i]->getObjectType()) << '\n';
+
+                if (this->getObjects()[i]->getObjectType() == ObjectType::MESH) {
+                    bool c = this->getObjects()[i]->getHasIntersection() << '\n';
+                }
 
                 if ((this->getObjects()[i])->getHasIntersection() &&
                     (!closest->getHasIntersection() || ((this->getObjects()[i])->getP0distance() < closest->getP0distance()))) {
-
+                    //if (c == true) std::cout << (int)closest->getObjectType() << '\n';
                     closest = this->getObjects()[i];
 
-                    int iClosest = i;
+                    iClosest = i;
                 }
 
             }
 
             if (closest->getHasIntersection()) {
-                Color* color = (this->getObjects()[iClosest])->getRGB(this->getLights(), this->getObjects(), p0, dir, this->environmentLight, this->getKA());
+                Color* color = (this->getObjects()[iClosest])->getRGB(this->getLights(), this->getObjects(), p0, dir, this->environmentLight);
                 drawColor(renderer, color->r, color->g, color->b, 255);
                 drawPoint(renderer, c, l);
             }
@@ -180,14 +175,13 @@ void Scene::preparePaint() {
 }
 
 
-Scene::Scene(Vector* eye, double hWindow, double wWindow, int nLin, int nCol, double dWindow, Vector* ka, Color* bgColor) {
+Scene::Scene(Vector* eye, double hWindow, double wWindow, int nLin, int nCol, double dWindow, Color* bgColor) {
     this->setEye(eye);
     this->setHWindow(hWindow);
     this->setWWindow(wWindow);
     this->setNLin(nLin);
     this->setNCol(nCol);
     this->setDWindow(dWindow);
-    this->setKA(ka);
 
     if (bgColor == nullptr) {
         this->setBGColor(new Color(0, 0, 0));

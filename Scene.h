@@ -24,7 +24,6 @@ private:
     std::vector<Light*> lights;
 
     Vector* environmentLight = nullptr;
-    Vector* ka = nullptr;
 
     Color* bgColor = nullptr;
 
@@ -42,10 +41,10 @@ public:
     double getWWindow();
 
     void setNLin(int nLin);
-    double getNLin();
+    int getNLin();
 
     void setNCol(int nCol);
-    double getNCol();
+    int getNCol();
 
     void setDWindow(double dWindow);
     double getDWindow();
@@ -56,9 +55,6 @@ public:
     void setEnvironmentLight(Vector* environmentLight);
     Vector* getEnvironmentLight();
 
-    void setKA(Vector* ka);
-    Vector* getKA();
-
     void addLight(Light* light);
     std::vector<Light*> getLights();
 
@@ -67,5 +63,5 @@ public:
 
     void preparePaint();
 
-    Scene(Vector* eye, double hWindow, double wWindow, int nLin, int nCol, double dWindow, Vector* ka, Color* bgColor = nullptr);
+    Scene(Vector* eye, double hWindow, double wWindow, int nLin, int nCol, double dWindow, Color* bgColor = nullptr);
 };

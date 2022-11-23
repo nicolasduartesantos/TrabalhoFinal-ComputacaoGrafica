@@ -8,9 +8,9 @@ private:
     Vector* p_pi = nullptr;
     Vector* normal = nullptr;
 
-    Vector* kd = nullptr;
-    Vector* ke = nullptr;
-    double shininess = 1.0;
+    //Vector* kd = nullptr;
+    //Vector* ke = nullptr;
+    //double shininess = 1.0;
 
 public:
 
@@ -24,7 +24,7 @@ public:
 
     bool intersect_for_shadow(Vector* p0, Vector* dir);
 
-    Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight, Vector* ka);
+    Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight);
 
-    Plan(Vector* p_pi, Vector* normal, Vector* kd, Vector* ke, double shininess);
+    Plan(Vector* p_pi, Vector* normal, Vector* kd, Vector* ke, Vector* ka, double shininess);
 };

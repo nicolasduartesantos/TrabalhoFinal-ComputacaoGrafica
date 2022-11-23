@@ -5,8 +5,8 @@
 #include "Color.h"
 #include <vector>
 
-enum class ObjectType { SPHERE, PLAN, CYLINDER, };
-enum class ObjectSurface { ON_SPHERE, ON_PLAN, CYLINDER_SURFACE, CYLINDER_BASE, UNKNOWN };
+enum class ObjectType { SPHERE, PLAN, CYLINDER, CONE, MESH };
+enum class ObjectSurface { ON_SPHERE, ON_PLAN, CYLINDER_SURFACE, CYLINDER_BASE, CYLINDER_TOP, CONE_SURFACE, CONE_BASE, UNKNOWN };
 
 
 class Object {
@@ -17,6 +17,7 @@ protected:
 
     Vector* kd = nullptr;
     Vector* ke = nullptr;
+    Vector* ka = nullptr;
     double shininess;
 
     double t;
@@ -35,6 +36,9 @@ public:
 
     void setKE(Vector* ke);
     Vector* getKE();
+
+    void setKA(Vector* ka);
+    Vector* getKA();
 
     void setShininess(double shininess);
     double getShininess();
@@ -70,7 +74,10 @@ public:
 
     virtual bool intersect_for_shadow(Vector* p0, Vector* dir) = 0;
 
-    virtual Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight, Vector* ka) = 0;
+    virtual Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) = 0;
 
     bool hasShadow(std::vector<Object*> objects, Vector* pi, Vector l, Vector* pf);
+
+    Color* RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight, Vector* normal, Object* obj);
+
 };
