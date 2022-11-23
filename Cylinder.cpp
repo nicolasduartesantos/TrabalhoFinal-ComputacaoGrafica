@@ -661,4 +661,5 @@ Cylinder::Cylinder(double rad, Vector* center_base, Vector* direction, double he
 	this->ke = ke;
 	this->ka = ka;
 	this->shininess = shininess;
+    this->setObjectType(ObjectType::CYLINDER);
 }

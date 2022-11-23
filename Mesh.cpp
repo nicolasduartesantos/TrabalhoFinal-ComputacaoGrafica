@@ -2,6 +2,7 @@
 #include "Face.h"
 #include "Edge.h"
 #include "Vector.h"
+#include <iostream>
 
 void Mesh::addFace(Face* face) {
 	this->faces.push_back(face);
@@ -43,6 +44,7 @@ bool Mesh::intersect(Vector* p0, Vector* dir) {
 	this->setObjectSurface(ObjectSurface::ON_PLAN);
 	this->setHasIntersection(false);
 	Vector* meshNormal = new Vector();
+	Vector pitemp = Vector(0., 0., 0.);
 
 	for (Face* face : this->getFaces()) {
 
@@ -54,21 +56,21 @@ bool Mesh::intersect(Vector* p0, Vector* dir) {
 		int idVertex21 = this->edges[idEdge2]->vertexIds[0];
 		int idVertex22 = this->edges[idEdge2]->vertexIds[1];
 
-		int n1 = idVertex11 * idVertex12;
-		int n = n1 / idVertex21;
+		int n1 = ((double)idVertex11 + 1) * ((double)idVertex12 + 1);
+		int n = n1 / ((double)idVertex21 + 1);
 
-		int v1, v2, v3;
+		double v1, v2, v3;
 
-		if (n == idVertex11 or n == idVertex12) {
-			v1 = idVertex21;
-			v2 = idVertex22;
-			v3 = n;
+		if (n == ((double)idVertex11 + 1) or n == ((double)idVertex12 + 1)) {
+			v1 = (double)idVertex21;
+			v2 = (double)idVertex22;
+			v3 = n - 1;
 		}
 
 		else {
-			v1 = idVertex22;
-			v2 = idVertex21;
-			v3 = n1 / v1;
+			v1 = (double)idVertex22;
+			v2 = (double)idVertex21;
+			v3 = (n1 / (v1 + 1)) - 1;
 		}
 
 
@@ -88,41 +90,42 @@ bool Mesh::intersect(Vector* p0, Vector* dir) {
 
 		double t;
 
-		t = -((w.scalarProd(normalUnitary)) / drn);
+		t = (-(w.scalarProd(normalUnitary)) / drn);
 
 		if (drn != 0 && t > 0) {
 
-			Vector pitemp = (*p0) + ((*dir) * t);
+			Vector pitest = (*p0) + ((*dir) * t);
 
-			Vector distancePiP0Vector = (*p0) - (pitemp);
+			Vector distancePiP0Vector = (pitest) - (*p0);
 			double distancePiP0 = distancePiP0Vector.getLength();
 
-			Vector v = pitemp - p1;
+			Vector v = pitest - p1;
 
 			double c1 = (v.product(r2)).scalarProd(normalUnitary) / (r1.product(r2)).scalarProd(normalUnitary);
 			double c2 = (r1.product(v)).scalarProd(normalUnitary) / (r1.product(r2)).scalarProd(normalUnitary);
 			double c3 = 1 - c1 - c2;
 
-			if (c1 >= 0 && c2 <= 0 && c3 >= 0 && (this->getHasIntersection() == false || this->getP0distance() > distancePiP0)) {
+			if (c1 >= 0 && c2 >= 0 && c3 >= 0 && (this->getHasIntersection() == false || this->getP0distance() > distancePiP0)) {
 
 				this->setHasIntersection(true);
 				this->setP0distance(distancePiP0);
-				Vector* pi = new Vector(pitemp.getCoordinate(0), pitemp.getCoordinate(1), pitemp.getCoordinate(2));
-				this->setIntersectionPoint(pi);
-				this->setT(t);
+				pitemp = pitest;
 				*meshNormal = normalUnitary;
-				this->setNormal(meshNormal);
-
 			}
 		}
 	}
-	return true;
+
+	Vector* pi = new Vector(pitemp.getCoordinate(0), pitemp.getCoordinate(1), pitemp.getCoordinate(2));
+	this->setIntersectionPoint(pi);
+	this->setT(t);
+	this->setNormal(meshNormal);
+	return this->getHasIntersection();
 }
 
 
 bool Mesh::intersect_for_shadow(Vector* p0, Vector* dir) {
 
-	return false;
+	return true;
 
 }
 
@@ -139,4 +142,5 @@ Mesh::Mesh(Vector* kd, Vector* ke, Vector* ka, double shininess) {
 	this->ke = ke;
 	this->ka = ka;
 	this->shininess = shininess;
+	this->setObjectType(ObjectType::MESH);
 }

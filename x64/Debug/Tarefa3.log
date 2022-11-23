@@ -1,2 +1,4 @@
 ﻿  Mesh.cpp
+C:\Users\julia\source\repos\Tarefa3\Tarefa3\Mesh.cpp(59,10): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
+C:\Users\julia\source\repos\Tarefa3\Tarefa3\Mesh.cpp(60,9): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
   Tarefa3.vcxproj -> C:\Users\julia\source\repos\Tarefa3\x64\Debug\Tarefa3.exe

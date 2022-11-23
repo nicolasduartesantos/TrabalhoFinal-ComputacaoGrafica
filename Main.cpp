@@ -77,7 +77,7 @@ int main(int argc, char* argv[]) {
 	scene->addObject(plan5);
 	scene->addObject(cylinder);
 	scene->addObject(cone);
-	scene->addObject(cube);
+	//scene->addObject(cube);
 	scene->addObject(sphere);
 
 	scene->preparePaint();

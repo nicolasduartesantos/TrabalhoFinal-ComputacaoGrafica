@@ -584,6 +584,7 @@ Cone::Cone(double rad, Vector* center_base, Vector* direction, double height, Ve
 	Vector v_temp = *center_base + *direction * height;
 	this->vertex = new Vector(v_temp.getCoordinate(0), v_temp.getCoordinate(1), v_temp.getCoordinate(2));
 	this->cos = height / sqrt(rad * rad + height * height);
+	this->setObjectType(ObjectType::CONE);
 }
 
 
@@ -599,4 +600,5 @@ Cone::Cone(double rad, Vector* center_base, Vector* direction, double height, Ve
 	this->ka = ka;
 	this->shininess = shininess;
 	this->cos = height / sqrt(rad * rad + height * height);
+	this->setObjectType(ObjectType::CONE);
 }
