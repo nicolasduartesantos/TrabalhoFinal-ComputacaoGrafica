@@ -2,6 +2,7 @@
 
 #include "Plan.h"
 #include "Image.h"
+#include "Vector.h"
 
 class TexturePlan : public Plan {
 private:

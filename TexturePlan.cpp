@@ -1,4 +1,4 @@
-/*#include "TexturePlan.h"
+#include "TexturePlan.h"
 
 void setTexture(Image* texture) {
 
@@ -14,4 +14,4 @@ Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* 
 
 TexturePlan(Image* texture, Vector* p_pi, Vector* normal, double shininess) {
 
-}*/
+}

@@ -17,6 +17,8 @@ using namespace std;
 #include "Cone.h"
 #include "Mesh.h"
 #include "Cube.h"
+#include "TexturePlan.h"
+#include "Image.h"
 
 int main(int argc, char* argv[]) {
 
@@ -48,7 +50,9 @@ int main(int argc, char* argv[]) {
 	scene->addObject(cone);
 	*/
 
-	//Plan* plan1 = new Plan(new Vector(0., -150., 0.), new Vector(0., 1., 0.), new Vector(0.2, 0.7, 0.2), new Vector(0., 0., 0.), new Vector(0.2, 0.7, 0.2), 5.0);
+	Image* img = new Image("C:/Users/Nicolas/source/repos/Tarefa3/texturamadeira.png");
+
+	Plan* plan1 = new TexturePlan(img, new Vector(0., -150., 0.), new Vector(0., 1., 0.), 5.0);
 	Plan* plan2 = new Plan(new Vector(200., -150., 0.), new Vector(-1., 0., 0.), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), 5.0);
 	Plan* plan3 = new Plan(new Vector(200., -150., -400.), new Vector(0., 0., 1.), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), 5.0);
 	Plan* plan4 = new Plan(new Vector(-200., -150., 0.), new Vector(1., 0., 0.), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), 5.0);
@@ -58,7 +62,7 @@ int main(int argc, char* argv[]) {
 
 	Cone* cone = new Cone(90.0, new Vector(0., -60., -200.), new Vector(0., 1., 0.), 150.0, new Vector(0., 1., 0.498), new Vector(0., 1., 0.498), new Vector(0., 1., 0.498), 5.0);
 
-	Mesh* cube = Cube::create(new Vector(0., -150., -190.), 40., new Vector(1., 0.078, 0.576), new Vector(1., 0.078, 0.576), new Vector(1., 0.078, 0.576), 5.0);
+	Mesh* cube = Cube::create(new Vector(0., -150., -165.), 40., new Vector(1., 0.078, 0.576), new Vector(1., 0.078, 0.576), new Vector(1., 0.078, 0.576), 5.0);
 
 	Sphere* sphere = new Sphere(5.0, new Vector(0., 95., -200.), new Vector(0.854, 0.647, 0.125), new Vector(0.854, 0.647, 0.125), new Vector(0.854, 0.647, 0.125), 5.0);
 
@@ -70,7 +74,7 @@ int main(int argc, char* argv[]) {
 
 	scene->addLight(light);
 
-	//scene->addObject(plan1);
+	scene->addObject(plan1);
 	scene->addObject(plan2);
 	scene->addObject(plan3);
 	scene->addObject(plan4);

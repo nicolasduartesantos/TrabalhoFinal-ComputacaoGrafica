@@ -1,8 +1,8 @@
 #pragma once
-/*
+
 #include <string>
 #include "Color.h"
-#include <SDL_surface.h>
+#include <SDL_image.h>
 
 class Image {
 private:
@@ -17,4 +17,4 @@ public:
 	int getH();
 
 	Image(std::string imgPath);
-};*/
+};
