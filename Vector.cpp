@@ -121,3 +121,33 @@ Vector Vector::operator / (const double& b) {
 
 	return x;
 }
+
+
+Vector Vector::rotX(double a) {
+	Vector x(
+		this->coordinates[0],
+		(this->coordinates[1] * cos(a) - this->coordinates[2] * sin(a)),
+		(this->coordinates[1] * sin(a) + this->coordinates[2] * cos(a)));
+
+	return x;
+}
+
+
+Vector Vector::rotY(double a) {
+	Vector x(
+		(this->coordinates[0] * cos(a) + this->coordinates[2] * sin(a)),
+		this->coordinates[1],
+		(this->coordinates[2] * cos(a) - this->coordinates[0] * sin(a)));
+
+	return x;
+}
+
+
+Vector Vector::rotZ(double a) {
+	Vector x(
+		(this->coordinates[0] * cos(a) - this->coordinates[1] * sin(a)),
+		(this->coordinates[1] * cos(a) + this->coordinates[0] * sin(a)),
+		this->coordinates[2]);
+
+	return x;
+}

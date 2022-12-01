@@ -25,6 +25,10 @@ public:
 	Vector operator * (const double& b);
 	Vector operator / (const double& b);
 
+	Vector rotX(double a);
+	Vector rotY(double a);
+	Vector rotZ(double a);
+
 	Vector();
 
     Vector(double x, double y, double z);
