@@ -35,5 +35,19 @@ public:
 
 	Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight);
 
+	void meshScaling(double sx, double sy, double sz);
+	void meshTranslation(double tx, double ty, double tz);
+	void meshRotationX(double a);
+	void meshRotationY(double a);
+	void meshRotationZ(double a);
+	void meshShearingYX(double a);
+	void meshShearingXY(double a);
+	void meshShearingYZ(double a);
+	void meshShearingZY(double a);
+	void meshShearingXZ(double a);
+	void meshShearingZX(double a);
+
+	void doWorldToCamera(Camera* camera);
+	
 	Mesh(Vector* kd, Vector* ke, Vector* ka, double shininess);
 };

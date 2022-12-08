@@ -1,15 +1,15 @@
-#include "TexturePlan.h"
+#include "Texture.h"
 #include <iostream>
 
-void TexturePlan::setTexture(Image* texture) {
+void Texture::setTexture(Image* texture) {
 	this->texture = texture;
 }
-Image* TexturePlan::getTexture() {
+Image* Texture::getTexture() {
 	return this->texture;
 }
 
 
-Color* TexturePlan::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) {
+Color* Texture::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) {
 
 	Vector* normal = this->getNormal();
 	Vector* pi = this->getIntersectionPoint();
@@ -58,7 +58,7 @@ Color* TexturePlan::getRGB(std::vector<Light*> lights, std::vector<Object*> obje
 }
 
 
-TexturePlan::TexturePlan(Image* texture, Vector* p_pi, Vector* normal, double shininess) {
+Texture::Texture(Image* texture, Vector* p_pi, Vector* normal, double shininess) {
 	this->texture = texture;
 	this->setP_PI(p_pi);
 	this->setNormal(normal);

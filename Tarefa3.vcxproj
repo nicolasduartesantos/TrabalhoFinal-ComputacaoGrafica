@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Cone.cpp" />
     <ClCompile Include="Cube.cpp" />
@@ -148,10 +149,11 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="TexturePlan.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Cone.h" />
     <ClInclude Include="Cube.h" />
@@ -166,7 +168,7 @@
     <ClInclude Include="Plan.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Sphere.h" />
-    <ClInclude Include="TexturePlan.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

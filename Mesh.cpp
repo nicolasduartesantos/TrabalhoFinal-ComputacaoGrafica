@@ -203,6 +203,92 @@ Color* Mesh::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Ve
 }
 
 
+void Mesh::meshScaling(double sx, double sy, double sz) {
+	for (Vector* v : this->vertices) {
+		*v = v->scaling(sx, sy, sz);
+	}
+}
+
+
+void Mesh::meshTranslation(double tx, double ty, double tz) {
+	for (Vector* v : this->vertices) {
+		*v = v->translation(tx, ty, tz);
+	}
+}
+
+
+void Mesh::meshRotationX(double a) {
+	for (Vector* v : this->vertices) {
+		*v = v->rotX(a);
+	}
+}
+
+
+void Mesh::meshRotationY(double a) {
+	for (Vector* v : this->vertices) {
+		*v = v->rotY(a);
+	}
+}
+
+
+void Mesh::meshRotationZ(double a) {
+	for (Vector* v : this->vertices) {
+		*v = v->rotZ(a);
+	}
+}
+
+
+void Mesh::meshShearingYX(double a) {
+	for (Vector* v : this->vertices) {
+		*v = v->shearingYX(a);
+	}
+}
+
+
+void Mesh::meshShearingXY(double a) {
+	for (Vector* v : this->vertices) {
+		*v = v->shearingXY(a);
+	}
+}
+
+
+void Mesh::meshShearingYZ(double a) {
+	for (Vector* v : this->vertices) {
+		*v = v->shearingYZ(a);
+	}
+}
+
+
+void Mesh::meshShearingZY(double a) {
+	for (Vector* v : this->vertices) {
+		*v = v->shearingZY(a);
+	}
+}
+
+
+void Mesh::meshShearingXZ(double a) {
+	for (Vector* v : this->vertices) {
+		*v = v->shearingXZ(a);
+	}
+}
+
+
+void Mesh::meshShearingZX(double a) {
+	for (Vector* v : this->vertices) {
+		*v = v->shearingZX(a);
+	}
+}
+
+
+void Mesh::doWorldToCamera(Camera* camera) {
+
+	for (Vector* v : this->vertices) {
+		*v = Vector(camera->worldToCamera(*v));
+	}
+
+}
+
+
 Mesh::Mesh(Vector* kd, Vector* ke, Vector* ka, double shininess) {
 	this->kd = kd;
 	this->ke = ke;

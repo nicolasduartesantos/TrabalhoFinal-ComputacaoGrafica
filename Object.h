@@ -3,6 +3,7 @@
 #include "Vector.h"
 #include "Light.h"
 #include "Color.h"
+#include "Camera.h"
 #include <vector>
 
 enum class ObjectType { SPHERE, PLAN, CYLINDER, CONE, MESH};
@@ -76,8 +77,9 @@ public:
 
     virtual Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) = 0;
 
-    bool hasShadow(std::vector<Object*> objects, Vector* pi, Vector l, Vector* pf);
+    bool hasShadow(std::vector<Object*> objects, Vector* pi, Vector l, Light* light);
 
     Color* RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight, Vector* normal, Object* obj);
 
+    virtual void doWorldToCamera(Camera* camera) = 0;
 };

@@ -152,6 +152,15 @@ Color* Sphere::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, 
 }
 
 
+void Sphere::doWorldToCamera(Camera* camera) {
+
+    Vector* c = new Vector(camera->worldToCamera(*this->getCenter()));
+    delete this->getCenter();
+    this->setCenter(c);
+
+}
+
+
 Sphere::Sphere(double rad, Vector* center, Vector* kd, Vector* ke, Vector* ka, double shininess) {
     this->rad = rad;
     this->kd = kd;

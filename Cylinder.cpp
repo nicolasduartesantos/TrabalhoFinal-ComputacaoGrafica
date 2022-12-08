@@ -652,6 +652,19 @@ Color* Cylinder::getRGB(std::vector<Light*> lights, std::vector<Object*> objects
 }
 
 
+void Cylinder::doWorldToCamera(Camera* camera) {
+
+    Vector* cb = new Vector(camera->worldToCamera(*this->getCenter_base()));
+    delete this->getCenter_base();
+    this->setCenter_base(cb);
+
+    Vector* d = new Vector(camera->worldToCamera(*this->getDirection()));
+    delete this->getDirection();
+    this->setDirection(d);
+
+}
+
+
 Cylinder::Cylinder(double rad, Vector* center_base, Vector* direction, double height, Vector* kd, Vector* ke, Vector* ka, double shininess) {
 	this->rad = rad;
 	this->center_base = center_base;

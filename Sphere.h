@@ -6,11 +6,7 @@ class Sphere : public Object {
 private:
 
     double rad;
-    //Vector* kd = nullptr;
-    //Vector* ke = nullptr;
     Vector* center = nullptr;
-    //double shininess = 1.0;
-
 
 public:
 
@@ -26,5 +22,7 @@ public:
 
     Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight);
 
+    void doWorldToCamera(Camera* camera);
+    
     Sphere(double rad, Vector* kd, Vector* ke, Vector* ka, Vector* center, double shininess);
 };

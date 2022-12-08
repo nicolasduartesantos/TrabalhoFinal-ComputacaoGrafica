@@ -9,7 +9,6 @@
 
 class Scene {
 private:
-    Vector* eye = nullptr;
 
     double hWindow = 60.0;
     double wWindow = 60.0;
@@ -26,6 +25,8 @@ private:
     Vector* environmentLight = nullptr;
 
     Color* bgColor = nullptr;
+
+    Camera* cameraTo = nullptr;
 
     void paintCanvas(SDL_Renderer* renderer);
 
@@ -63,5 +64,7 @@ public:
 
     void preparePaint();
 
-    Scene(Vector* eye, double hWindow, double wWindow, int nLin, int nCol, double dWindow, Color* bgColor = nullptr);
+    void camera(Vector* eye, Vector* at, Vector* up);
+    
+    Scene(double hWindow, double wWindow, int nLin, int nCol, double dWindow, Color* bgColor = nullptr);
 };

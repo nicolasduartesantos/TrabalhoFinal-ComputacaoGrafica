@@ -4,7 +4,7 @@
 #include "Image.h"
 
 
-class TexturePlan : public Plan {
+class Texture : public Plan {
 private:
 
 	Image* texture = nullptr;
@@ -16,5 +16,5 @@ public:
 
 	Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight);
 
-	TexturePlan(Image* texture, Vector* p_pi, Vector* normal, double shininess);
+	Texture(Image* texture, Vector* p_pi, Vector* normal, double shininess);
 };

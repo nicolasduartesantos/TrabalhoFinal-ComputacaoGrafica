@@ -107,6 +107,19 @@ Color* Plan::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Ve
 }
 
 
+void Plan::doWorldToCamera(Camera* camera) {
+
+	Vector* n = new Vector(camera->worldToCamera(*this->getNormal()));
+	delete this->getNormal();
+	this->setNormal(n);
+
+	Vector* ppi = new Vector(camera->worldToCamera(*this->getP_PI()));
+	delete this->getP_PI();
+	this->setP_PI(ppi);
+
+}
+
+
 Plan::Plan(Vector* p_pi, Vector* normal, Vector* kd, Vector* ke, Vector* ka, double shininess){
     this->p_pi = p_pi;
     this->normal = normal;

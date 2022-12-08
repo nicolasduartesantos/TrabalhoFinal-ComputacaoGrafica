@@ -8,11 +8,11 @@
 #include <iostream>
 
 void Scene::setEye(Vector* eye) {
-    this->eye = eye;
+    this->cameraTo->setEye(eye);
 }
 
 Vector* Scene::getEye() {
-    return this->eye;
+    return this->cameraTo->getEye();
 }
 
 
@@ -171,8 +171,18 @@ void Scene::preparePaint() {
 }
 
 
-Scene::Scene(Vector* eye, double hWindow, double wWindow, int nLin, int nCol, double dWindow, Color* bgColor) {
-    this->setEye(eye);
+void Scene::camera(Vector* eye, Vector* at, Vector* up) {
+    delete this->cameraTo;
+    this->cameraTo = new Camera(eye, at, up);
+
+    for (Object* o : this->objects) o->doWorldToCamera(this->cameraTo);
+
+    for (Light* l : this->lights) l->doWorldToCamera(this->cameraTo);
+
+}
+
+
+Scene::Scene(double hWindow, double wWindow, int nLin, int nCol, double dWindow, Color* bgColor) {
     this->setHWindow(hWindow);
     this->setWWindow(wWindow);
     this->setNLin(nLin);
@@ -185,4 +195,6 @@ Scene::Scene(Vector* eye, double hWindow, double wWindow, int nLin, int nCol, do
     else {
         this->setBGColor(bgColor);
     }
+
+    this->cameraTo = new Camera(new Vector(0, 0, 0), new Vector(0, 0, -1), new Vector(0, 1, 0));
 }
