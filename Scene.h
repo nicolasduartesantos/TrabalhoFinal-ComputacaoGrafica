@@ -3,12 +3,16 @@
 #include "Object.h"
 #include "Light.h"
 #include "Vector.h"
+#include "Camera.h"
+#include "Image.h"
 #include <vector>
 #include <SDL.h>
 
 
 class Scene {
 private:
+
+    Camera* cameraTo = nullptr;
 
     double hWindow = 60.0;
     double wWindow = 60.0;
@@ -26,7 +30,7 @@ private:
 
     Color* bgColor = nullptr;
 
-    Camera* cameraTo = nullptr;
+    Image* bgImage = nullptr;
 
     void paintCanvas(SDL_Renderer* renderer);
 
@@ -50,11 +54,14 @@ public:
     void setDWindow(double dWindow);
     double getDWindow();
 
+    void setEnvironmentLight(Vector* environmentLight);
+    Vector* getEnvironmentLight();
+
     void setBGColor(Color* bgColor);
     Color* getBGColor();
 
-    void setEnvironmentLight(Vector* environmentLight);
-    Vector* getEnvironmentLight();
+    void setBGImage(Image* bgImage);
+    Image* getBGImage();
 
     void addLight(Light* light);
     std::vector<Light*> getLights();
@@ -67,4 +74,6 @@ public:
     void camera(Vector* eye, Vector* at, Vector* up);
     
     Scene(double hWindow, double wWindow, int nLin, int nCol, double dWindow, Color* bgColor = nullptr);
+
+    ~Scene();
 };

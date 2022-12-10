@@ -68,3 +68,9 @@ int Image::getH() {
 Image::Image(std::string imgPath) {
 	this->imageRec(imgPath);
 }
+
+
+Image::~Image() {
+	SDL_UnlockSurface(this->image);
+	SDL_FreeSurface(this->image);
+}

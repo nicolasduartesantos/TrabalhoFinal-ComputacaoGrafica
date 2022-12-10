@@ -1,6 +1,5 @@
 #include "Cylinder.h"
-#include "Object.h"
-#include "Vector.h"
+#include "Camera.h"
 #include <iostream>
 #include <cmath>
 
@@ -9,6 +8,14 @@ void Cylinder::setRad(double rad) {
 }
 double Cylinder::getRad() {
 	return this->rad;
+}
+
+
+void Cylinder::setHeight(double height) {
+    this->height = height;
+}
+double Cylinder::getHeight() {
+    return this->height;
 }
 
 
@@ -98,7 +105,6 @@ bool Cylinder::intersect(Vector* p0, Vector* dir) {
             this->setObjectSurface(ObjectSurface::CYLINDER_TOP);
 
         }
-        std::cout << "return true 1\n";
         return true;
     }
 
@@ -658,9 +664,10 @@ void Cylinder::doWorldToCamera(Camera* camera) {
     delete this->getCenter_base();
     this->setCenter_base(cb);
 
-    Vector* d = new Vector(camera->worldToCamera(*this->getDirection()));
+    Vector d = camera->worldToCamera(*this->getDirection()) - camera->worldToCamera(Vector(0, 0, 0));
+    Vector* dNormalized = new Vector(d / d.getLength());
     delete this->getDirection();
-    this->setDirection(d);
+    this->setDirection(dNormalized);
 
 }
 
@@ -675,4 +682,10 @@ Cylinder::Cylinder(double rad, Vector* center_base, Vector* direction, double he
 	this->ka = ka;
 	this->shininess = shininess;
     this->setObjectType(ObjectType::CYLINDER);
+}
+
+
+Cylinder::~Cylinder() {
+    delete this->getCenter_base();
+    delete this->getDirection();
 }

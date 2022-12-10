@@ -1,5 +1,6 @@
 #include "Object.h"
 #include "Vector.h"
+#include "Camera.h"
 #include <iostream>
 #include "Plan.h"
 #include <cmath>
@@ -109,9 +110,10 @@ Color* Plan::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Ve
 
 void Plan::doWorldToCamera(Camera* camera) {
 
-	Vector* n = new Vector(camera->worldToCamera(*this->getNormal()));
+	Vector n = camera->worldToCamera(*this->getNormal()) - camera->worldToCamera(Vector(0, 0, 0));
+	Vector* nUnitary = new Vector(n / n.getLength());
 	delete this->getNormal();
-	this->setNormal(n);
+	this->setNormal(nUnitary);
 
 	Vector* ppi = new Vector(camera->worldToCamera(*this->getP_PI()));
 	delete this->getP_PI();
@@ -132,3 +134,9 @@ Plan::Plan(Vector* p_pi, Vector* normal, Vector* kd, Vector* ke, Vector* ka, dou
 
 
 Plan::Plan() { }
+
+
+Plan::~Plan() { 
+	delete this->getP_PI();
+	delete this->getNormal();
+}

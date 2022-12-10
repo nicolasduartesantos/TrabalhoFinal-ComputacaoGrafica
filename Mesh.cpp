@@ -2,6 +2,7 @@
 #include "Face.h"
 #include "Edge.h"
 #include "Vector.h"
+#include "Camera.h"
 #include <iostream>
 
 void Mesh::addFace(Face* face) {
@@ -295,4 +296,19 @@ Mesh::Mesh(Vector* kd, Vector* ke, Vector* ka, double shininess) {
 	this->ka = ka;
 	this->shininess = shininess;
 	this->setObjectType(ObjectType::MESH);
+}
+
+
+Mesh::~Mesh() {
+	for (Face* f : this->getFaces()) {
+		delete f;
+	}
+
+	for (Edge* e : this->getEdges()) {
+		delete e;
+	}
+
+	for (Vector* v : this->getVertices()) {
+		delete v;
+	}
 }

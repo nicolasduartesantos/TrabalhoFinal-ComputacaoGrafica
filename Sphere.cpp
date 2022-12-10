@@ -1,5 +1,6 @@
 #include "Object.h"
 #include "Sphere.h"
+#include "Camera.h"
 #include <iostream>
 #include <cmath>
 
@@ -169,4 +170,9 @@ Sphere::Sphere(double rad, Vector* center, Vector* kd, Vector* ke, Vector* ka, d
     this->center = center;
     this->shininess = shininess;
     this->setObjectType(ObjectType::SPHERE);
+}
+
+
+Sphere::~Sphere() {
+    delete this->getCenter();
 }

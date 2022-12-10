@@ -169,3 +169,11 @@ Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objec
     return result;
 
 }
+
+
+Object::~Object() {
+    delete this->getKD();
+    delete this->getKE();
+    delete this->getKA();
+    delete this->getIntersectionPoint();
+}

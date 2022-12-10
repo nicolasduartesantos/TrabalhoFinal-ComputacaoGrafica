@@ -20,6 +20,8 @@ public:
     Light(Vector* intensity);
 
     Light();
+
+    virtual ~Light();
 };
 
 
@@ -47,6 +49,8 @@ public:
 
     Spot(Vector* intensity, Vector* coordinate, Vector* direction, double angle);
 
+    ~Spot();
+
 };
 
 
@@ -67,6 +71,8 @@ public:
 
     Point(Vector* intensity, Vector* coordinate);
 
+    ~Point();
+
 };
 
 
@@ -85,5 +91,7 @@ public:
     void doWorldToCamera(Camera* camera);
 
     Directional(Vector* intensity, Vector* direction);
+
+    ~Directional();
 
 };

@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Vector.h"
 
 void Camera::setEye(Vector* eye) {
 	this->eye = eye;
@@ -56,4 +57,11 @@ Camera::Camera(Vector* eye, Vector* at, Vector* up) {
 	this->eye = eye;
 	this->at = at;
 	this->up = up;
+}
+
+
+Camera::~Camera() {
+	delete this->getEye();
+	delete this->getAt();
+	delete this->getUp();
 }

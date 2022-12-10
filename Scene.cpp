@@ -3,6 +3,7 @@
 #include "Light.h"
 #include "Vector.h"
 #include "libSDL.h"
+#include "Image.h"
 #include <vector>
 #include <SDL.h>
 #include <iostream>
@@ -61,6 +62,15 @@ double Scene::getDWindow() {
 }
 
 
+void Scene::setEnvironmentLight(Vector* environmentLight) {
+    this->environmentLight = environmentLight;
+}
+
+Vector* Scene::getEnvironmentLight() {
+    return this->environmentLight;
+}
+
+
 void Scene::setBGColor(Color* bgColor) {
     this->bgColor = bgColor;
 }
@@ -70,12 +80,12 @@ Color* Scene::getBGColor() {
 }
 
 
-void Scene::setEnvironmentLight(Vector* environmentLight) {
-    this->environmentLight = environmentLight;
+void Scene::setBGImage(Image* bgImage) {
+    this->bgImage = bgImage;
 }
 
-Vector* Scene::getEnvironmentLight() {
-    return this->environmentLight;
+Image* Scene::getBGImage() {
+    return this->bgImage;
 }
 
 
@@ -109,7 +119,8 @@ void Scene::paintCanvas(SDL_Renderer* renderer) {
     double dx = wWindow / nCol;
     double dy = hWindow / nLin;
 
-
+    Image* bgImage = this->bgImage;
+    
     for (int l = 0; l < nLin; l++) {
 
         double y = (hWindow / 2.) - (dy / 2.) - (l * dy);
@@ -118,18 +129,17 @@ void Scene::paintCanvas(SDL_Renderer* renderer) {
 
             double x = (-wWindow / 2.) + (dx / 2.) + (c * dx);
 
-            Vector* p0 = new Vector(*this->getEye());
+            // getEye ?
+            Vector* p0 = new Vector(0, 0, 0);
             Vector* p = new Vector(x, y, -dWindow);
 
             Vector dirtemp = ((*p - *p0) / ((*p - *p0).getLength()));
             Vector* dir = &dirtemp;
-      
 
             int iClosest = 0;
             Object* closest = this->getObjects()[0];
             closest->setHasIntersection(false);
             
-
             for (int i = 0; i < this->getObjects().size(); i++) {
                 
                 (this->getObjects()[i])->intersect(p0, dir);
@@ -149,6 +159,21 @@ void Scene::paintCanvas(SDL_Renderer* renderer) {
                 drawColor(renderer, color->r, color->g, color->b, 255);
                 drawPoint(renderer, c, l);
             }
+
+            /*
+            else if (bgImage != nullptr) {
+
+                double x = (double(c) * double(bgImage->getW())) / this->getWWindow();
+                double y = (double(l) * double(bgImage->getH())) / this->getHWindow();
+
+                Color pixel = bgImage->getColor(x, y);
+
+                drawColor(renderer, pixel.r, pixel.g, pixel.b, 255);
+                std::cout << "passei draw color\n";
+                drawPoint(renderer, c, l);
+                std::cout << "passei draw point\n";
+            }
+            */
         }
     }
 }
@@ -197,4 +222,16 @@ Scene::Scene(double hWindow, double wWindow, int nLin, int nCol, double dWindow,
     }
 
     this->cameraTo = new Camera(new Vector(0, 0, 0), new Vector(0, 0, -1), new Vector(0, 1, 0));
+}
+
+
+Scene::~Scene() {
+    delete this->getEnvironmentLight();
+    delete this->getBGColor();
+    delete this->getBGImage();
+    delete this->cameraTo;
+
+    for (auto o = this->objects.begin(); o != this->objects.end(); o++) { delete (*o); }
+
+    for (auto l = this->lights.begin(); l != this->lights.end(); l++) { delete (*l); }
 }

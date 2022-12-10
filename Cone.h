@@ -11,8 +11,6 @@ private:
 	double height;
 	Vector* vertex = nullptr;
 	double cos;
-	//cos = h/ sqrt(rad * rad + h * h)
-	//vertex = center_base + direction * height
 
 public:
 
@@ -38,4 +36,6 @@ public:
 	
 	Cone(double rad, Vector* center_base, Vector* direction, double height, Vector* kd, Vector* ke, Vector* ka, double shininess);
 	Cone(double rad, Vector* center_base, Vector* direction, double height, Vector* vertex, Vector* kd, Vector* ke, Vector* ka, double shininess);
+
+	~Cone();
 };

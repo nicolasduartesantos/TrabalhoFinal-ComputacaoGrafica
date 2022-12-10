@@ -1,4 +1,5 @@
 #include "Texture.h"
+#include "Vector.h"
 #include <iostream>
 
 void Texture::setTexture(Image* texture) {
@@ -48,7 +49,11 @@ Color* Texture::getRGB(std::vector<Light*> lights, std::vector<Object*> objects,
 
     Color pixel = this->texture->getColor(posPixelX, posPixelY);
 
-    Vector* pixelColor = new Vector(((double)pixel.r) / 255.0, ((double)pixel.g) / 255.0, ((double)pixel.b) / 255.0);
+    double r = (pixel.r / 255.0);
+    double g = (pixel.g / 255.0);
+    double b = (pixel.b / 255.0);
+
+    Vector* pixelColor = new Vector(r, g, b);
 
     this->kd = pixelColor;
     this->ke = pixelColor;
@@ -63,4 +68,9 @@ Texture::Texture(Image* texture, Vector* p_pi, Vector* normal, double shininess)
 	this->setP_PI(p_pi);
 	this->setNormal(normal);
 	this->setShininess(shininess);
+}
+
+
+Texture::~Texture() {
+    delete this->getTexture();
 }

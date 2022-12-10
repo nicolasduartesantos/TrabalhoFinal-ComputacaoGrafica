@@ -50,4 +50,6 @@ public:
 	void doWorldToCamera(Camera* camera);
 	
 	Mesh(Vector* kd, Vector* ke, Vector* ka, double shininess);
+
+	~Mesh();
 };

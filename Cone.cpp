@@ -1,4 +1,5 @@
 #include "Cone.h"
+#include "Camera.h"
 #include <iostream>
 
 void Cone::setRad(double rad) {
@@ -577,14 +578,15 @@ void Cone::doWorldToCamera(Camera* camera) {
 	delete this->getCenter_base();
 	this->setCenter_base(cb);
 
-	Vector* d = new Vector(camera->worldToCamera(*this->getDirection()));
+	Vector d = camera->worldToCamera(*this->getDirection()) - camera->worldToCamera(Vector(0, 0, 0));
+	Vector* dNormalized = new Vector(d / d.getLength());
 	delete this->getDirection();
-	this->setDirection(d);
+	this->setDirection(dNormalized);
 
-	Vector* v = new Vector(camera->worldToCamera(*this->vertex));
+	Vector v_temp = *cb + (*dNormalized * this->height);
+	Vector* v = new Vector(v_temp.getCoordinate(0), v_temp.getCoordinate(1), v_temp.getCoordinate(2));
 	delete this->vertex;
 	this->vertex = v;
-
 }
 
 
@@ -618,4 +620,10 @@ Cone::Cone(double rad, Vector* center_base, Vector* direction, double height, Ve
 	this->shininess = shininess;
 	this->cos = height / sqrt(rad * rad + height * height);
 	this->setObjectType(ObjectType::CONE);
+}
+
+
+Cone::~Cone() {
+	delete this->getCenter_base();
+	delete this->getDirection();
 }

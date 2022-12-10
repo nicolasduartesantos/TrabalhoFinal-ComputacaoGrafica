@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Vector.h"
 
 class Camera {
@@ -22,5 +23,7 @@ public:
 	Vector worldToCamera(Vector world);
 
 	Camera(Vector* eye, Vector* at, Vector* up);
+
+	~Camera();
 
 };

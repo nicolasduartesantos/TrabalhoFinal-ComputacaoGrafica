@@ -25,4 +25,6 @@ public:
     Plan(Vector* p_pi, Vector* normal, Vector* kd, Vector* ke, Vector* ka, double shininess);
 
     Plan();
+
+    ~Plan();
 };

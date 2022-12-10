@@ -1,5 +1,6 @@
 #include "Vector.h"
 #include "Light.h"
+#include "Camera.h"
 
 
 void Light::setIntensity(Vector* intensity) {
@@ -17,6 +18,11 @@ Light::Light(Vector* intensity) {
 
 Light::Light() {
 
+}
+
+
+Light::~Light() {
+    delete this->getIntensity();
 }
 
 
@@ -54,7 +60,7 @@ Vector Spot::calculateL(Vector pi) {
 
     return l;
 }
-// INTENSIDADE DO SPOT
+// INTENSIDADE DO SPOT ?
 
 
 double Spot::distance(Vector p) {
@@ -65,9 +71,10 @@ double Spot::distance(Vector p) {
 
 void Spot::doWorldToCamera(Camera* camera) {
 
-    Vector* d = new Vector(camera->worldToCamera(*this->getDirection()));
+    Vector d = camera->worldToCamera(*this->getDirection()) - camera->worldToCamera(Vector(0, 0, 0));
+    Vector* dNormalized = new Vector(d / d.getLength());
     delete this->getDirection();
-    this->setDirection(d);
+    this->setDirection(dNormalized);
 
     Vector* c = new Vector(camera->worldToCamera(*this->getCoordinate()));
     delete this->getCoordinate();
@@ -81,6 +88,12 @@ Spot::Spot(Vector* intensity, Vector* coordinate, Vector* direction, double angl
     this->coordinate = coordinate;
     this->direction = direction;
     this->angle = angle;
+}
+
+
+Spot::~Spot() {
+    delete this->getCoordinate();
+    delete this->getDirection();
 }
 
 
@@ -126,6 +139,11 @@ Point::Point(Vector* intensity, Vector* coordinate) {
 }
 
 
+Point::~Point() {
+    delete this->getCoordinate();
+}
+
+
 
 
 ///////////////////////////////// DIRECTIONAL /////////////////////////////////
@@ -154,9 +172,10 @@ double Directional::distance(Vector p) {
 
 void Directional::doWorldToCamera(Camera* camera) {
 
-    Vector* d = new Vector(camera->worldToCamera(*this->getDirection()));
+    Vector d = camera->worldToCamera(*this->getDirection()) - camera->worldToCamera(Vector(0, 0, 0));
+    Vector* dNormalized = new Vector( d / d.getLength());
     delete this->getDirection();
-    this->setDirection(d);
+    this->setDirection(dNormalized);
 
 }
 
@@ -164,4 +183,9 @@ void Directional::doWorldToCamera(Camera* camera) {
 Directional::Directional(Vector* intensity, Vector* direction) {
     this->setIntensity(intensity);
     this->direction = direction;
+}
+
+
+Directional::~Directional() {
+    delete this->getDirection();
 }
