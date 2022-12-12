@@ -22,6 +22,15 @@ public:
 
     Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight);
 
+    void rotX(double a);
+    void rotY(double a);
+    void rotZ(double a);
+    void translation(double tx, double ty, double tz);
+    void scaling(double sx, double sy, double sz);
+    void reflectionXY();
+    void reflectionXZ();
+    void reflectionYZ();
+
     void doWorldToCamera(Camera* camera);
 
     bool inside(Vector* p);

@@ -1,5 +1,6 @@
 #include "libSDL.h"
 #include <SDL.h>
+#include <iostream>
 
 void drawPoint(SDL_Renderer* renderer, int coluna, int linha) {
 	SDL_RenderDrawPoint(renderer, coluna, linha);
@@ -35,6 +36,10 @@ void destroy(SDL_Window* window) {
 		SDL_UpdateWindowSurface(window);
 	}
 
+	ImGui_ImplSDLRenderer_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 }
@@ -42,7 +47,13 @@ void destroy(SDL_Window* window) {
 
 void init(SDL_Renderer** renderer, SDL_Window** window, int nCol, int nLin) {
 	SDL_Init(SDL_INIT_VIDEO);
-	*window = SDL_CreateWindow("SDL2 Pixel Drawing", 
+	*window = SDL_CreateWindow("SDL2 Pixel Drawing",
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, nCol, nLin, 0);
 	*renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplSDL2_InitForSDLRenderer(*window, *renderer);
+	ImGui_ImplSDLRenderer_Init(*renderer);
 }

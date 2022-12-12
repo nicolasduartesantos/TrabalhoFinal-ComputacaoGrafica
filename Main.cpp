@@ -20,78 +20,78 @@ int main(int argc, char* argv[]) {
 	Cluster* cluster = new Cluster(0.5, new Vector(0.5, 0., 0.5), new Vector(0.0, 1.0, 0.0), 1.0);
 
 	Mesh* coluna1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
-	coluna1->meshScaling(50, 500, 30);
+	coluna1->scaling(50, 500, 30);
 
 	Mesh* coluna2 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
-	coluna2->meshScaling(50, 500, 30);
-	coluna2->meshTranslation(650, 0, 0);
+	coluna2->scaling(50, 500, 30);
+	coluna2->translation(650, 0, 0);
 
 	Mesh* coluna3 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
-	coluna3->meshScaling(50, 500, 30);
-	coluna3->meshTranslation(0, 0, -1030);
+	coluna3->scaling(50, 500, 30);
+	coluna3->translation(0, 0, -1030);
 
 	Mesh* coluna4 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
-	coluna4->meshScaling(50, 500, 30);
-	coluna4->meshTranslation(650, 0, -1030);
+	coluna4->scaling(50, 500, 30);
+	coluna4->translation(650, 0, -1030);
 
 
 	Mesh* semiteto1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
-	semiteto1->meshScaling(300, 50, 30);
-	semiteto1->meshShearingXY(atan(0.75));
-	semiteto1->meshTranslation(50, 450, 0);
+	semiteto1->scaling(300, 50, 30);
+	semiteto1->shearingXY(atan(0.75));
+	semiteto1->translation(50, 450, 0);
 
 	Mesh* semiteto2 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
-	semiteto2->meshScaling(300, 50, 30);
-	semiteto2->meshShearingXY(atan(-0.75));
-	semiteto2->meshTranslation(350, 675, 0);
+	semiteto2->scaling(300, 50, 30);
+	semiteto2->shearingXY(atan(-0.75));
+	semiteto2->translation(350, 675, 0);
 
 	Mesh* semiteto3 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
-	semiteto3->meshScaling(300, 50, 30);
-	semiteto3->meshShearingXY(atan(0.75));
-	semiteto3->meshTranslation(50, 450, -1030);
+	semiteto3->scaling(300, 50, 30);
+	semiteto3->shearingXY(atan(0.75));
+	semiteto3->translation(50, 450, -1030);
 
 	Mesh* semiteto4 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
-	semiteto4->meshScaling(300, 50, 30);
-	semiteto4->meshShearingXY(atan(-0.75));
-	semiteto4->meshTranslation(350, 675, -1030);
+	semiteto4->scaling(300, 50, 30);
+	semiteto4->shearingXY(atan(-0.75));
+	semiteto4->translation(350, 675, -1030);
 
 
 	Mesh* teto1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
-	teto1->meshScaling(450, 30, 1000);
-	teto1->meshRotationZ(atan(0.75));
-	teto1->meshTranslation(0, 450, -1030);
+	teto1->scaling(450, 30, 1000);
+	teto1->rotZ(atan(0.75));
+	teto1->translation(0, 450, -1030);
 
 	Mesh* teto2 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
-	teto2->meshScaling(450, 30, 1000);
-	teto2->meshRotationZ(atan(-0.75));
-	teto2->meshTranslation(320, 720, -1030);
+	teto2->scaling(450, 30, 1000);
+	teto2->rotZ(atan(-0.75));
+	teto2->translation(320, 720, -1030);
 
 
 	Mesh* parede1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
-	parede1->meshScaling(20, 500, 1000);
-	parede1->meshTranslation(30, 0, -1000);
+	parede1->scaling(20, 500, 1000);
+	parede1->translation(30, 0, -1000);
 
 	Mesh* parede2 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
-	parede2->meshScaling(20, 500, 1000);
-	parede2->meshTranslation(660, 0, -1000);
+	parede2->scaling(20, 500, 1000);
+	parede2->translation(660, 0, -1000);
 
 	Mesh* parede3 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
-	parede3->meshScaling(600, 500, 30);
-	parede3->meshTranslation(50, 0, -1060);
+	parede3->scaling(600, 500, 30);
+	parede3->translation(50, 0, -1060);
 
 
 	Mesh* peMesa1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0, 0.898, 0.898), new Vector(0, 0.898, 0.898), new Vector(0, 0.898, 0.898), 5.0, cluster);
-	peMesa1->meshScaling(150, 95, -5);
-	peMesa1->meshTranslation(275, 0, -200);
+	peMesa1->scaling(150, 95, -5);
+	peMesa1->translation(275, 0, -200);
 
 	Mesh* peMesa2 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0, 0.898, 0.898), new Vector(0, 0.898, 0.898), new Vector(0, 0.898, 0.898), 5.0, cluster);
-	peMesa2->meshScaling(150, 95, -5);
-	peMesa2->meshTranslation(275, 0, -450);
+	peMesa2->scaling(150, 95, -5);
+	peMesa2->translation(275, 0, -450);
 
 
 	Mesh* mesa = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0, 0.898, 0.898), new Vector(0, 0.898, 0.898), new Vector(0, 0.898, 0.898), 5.0, cluster);
-	mesa->meshScaling(150, 5, -250);
-	mesa->meshTranslation(275, 95, -200);
+	mesa->scaling(150, 5, -250);
+	mesa->translation(275, 95, -200);
 
 
 	Cylinder* baseArvore = new Cylinder(30., new Vector(350., 100., -325.), new Vector(0., 1., 0.), 9.0, new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), 5.0);

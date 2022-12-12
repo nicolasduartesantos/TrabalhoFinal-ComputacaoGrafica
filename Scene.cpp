@@ -4,6 +4,7 @@
 #include "Vector.h"
 #include "libSDL.h"
 #include "Image.h"
+#include "Interaction.h"
 #include <vector>
 #include <SDL.h>
 #include <iostream>
@@ -202,22 +203,24 @@ void Scene::preparePaint() {
 
     SDL_Renderer* renderer = nullptr;
     SDL_Window* window = nullptr;
-
     init(&renderer, &window, this->getNCol(), this->getNLin());
 
-    background(renderer, this->bgColor->r, this->bgColor->g, this->bgColor->b, 255);
+    ImGui_ImplSDLRenderer_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+    this->interaction->display_imgui();
+    ImGui::Render();
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    this->window = window;
+    background(renderer, this->bgColor->r, this->bgColor->g, this->bgColor->b, 255);
     this->renderer = renderer;
+    this->window = window;
 
     this->paintCanvas(renderer);
-
+    ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
     present(renderer);
-
-   //this->interaction->scene = this;
-   //this->interaction->listenEvents();
-
-    destroy(window);
+    //destroy(window);
+    this->interaction->scene = this;
 }
 
 
@@ -245,6 +248,8 @@ Scene::Scene(double hWindow, double wWindow, int nLin, int nCol, double dWindow,
     else {
         this->setBGColor(bgColor);
     }
+
+    this->interaction = new Interaction();
 
     this->cameraTo = new Camera(new Vector(0, 0, 0), new Vector(0, 0, -1), new Vector(0, 1, 0));
 }

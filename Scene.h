@@ -5,16 +5,16 @@
 #include "Vector.h"
 #include "Camera.h"
 #include "Image.h"
-//#include "Interaction.h"
+#include "Interaction.h"
 #include <vector>
 #include <SDL.h>
+
+class Interaction;
 
 enum class ProjectionType { ORTHOGRAPHIC, PERSPECTIVE };
 
 class Scene {
 private:
-
-    //Interaction* interaction = nullptr;
 
     ProjectionType projection = ProjectionType::PERSPECTIVE;
 
@@ -39,6 +39,8 @@ private:
     void paintCanvas(SDL_Renderer* renderer);
 
 public:
+
+    Interaction* interaction = nullptr;
 
     Camera* cameraTo = nullptr;
 
@@ -80,6 +82,8 @@ public:
 
     void addObject(Object* object);
     std::vector<Object*> getObjects();
+
+    void mainLoop();
 
     void preparePaint();
 

@@ -205,7 +205,7 @@ Color* Mesh::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Ve
 }
 
 
-void Mesh::meshScaling(double sx, double sy, double sz) {
+void Mesh::scaling(double sx, double sy, double sz) {
 	for (Vector* v : this->vertices) {
 		*v = v->scaling(sx, sy, sz);
 	}
@@ -227,7 +227,7 @@ void Mesh::meshScaling(double sx, double sy, double sz) {
 }
 
 
-void Mesh::meshTranslation(double tx, double ty, double tz) {
+void Mesh::translation(double tx, double ty, double tz) {
 	for (Vector* v : this->vertices) {
 		*v = v->translation(tx, ty, tz);
 	}
@@ -237,7 +237,7 @@ void Mesh::meshTranslation(double tx, double ty, double tz) {
 }
 
 
-void Mesh::meshRotationX(double a) {
+void Mesh::rotX(double a) {
 	for (Vector* v : this->vertices) {
 		*v = v->rotX(a);
 	}
@@ -256,7 +256,7 @@ void Mesh::meshRotationX(double a) {
 }
 
 
-void Mesh::meshRotationY(double a) {
+void Mesh::rotY(double a) {
 	for (Vector* v : this->vertices) {
 		*v = v->rotY(a);
 	}
@@ -275,7 +275,7 @@ void Mesh::meshRotationY(double a) {
 }
 
 
-void Mesh::meshRotationZ(double a) {
+void Mesh::rotZ(double a) {
 	for (Vector* v : this->vertices) {
 		*v = v->rotZ(a);
 	}
@@ -294,49 +294,49 @@ void Mesh::meshRotationZ(double a) {
 }
 
 
-void Mesh::meshShearingYX(double a) {
+void Mesh::shearingYX(double a) {
 	for (Vector* v : this->vertices) {
 		*v = v->shearingYX(a);
 	}
 }
 
 
-void Mesh::meshShearingXY(double a) {
+void Mesh::shearingXY(double a) {
 	for (Vector* v : this->vertices) {
 		*v = v->shearingXY(a);
 	}
 }
 
 
-void Mesh::meshShearingYZ(double a) {
+void Mesh::shearingYZ(double a) {
 	for (Vector* v : this->vertices) {
 		*v = v->shearingYZ(a);
 	}
 }
 
 
-void Mesh::meshShearingZY(double a) {
+void Mesh::shearingZY(double a) {
 	for (Vector* v : this->vertices) {
 		*v = v->shearingZY(a);
 	}
 }
 
 
-void Mesh::meshShearingXZ(double a) {
+void Mesh::shearingXZ(double a) {
 	for (Vector* v : this->vertices) {
 		*v = v->shearingXZ(a);
 	}
 }
 
 
-void Mesh::meshShearingZX(double a) {
+void Mesh::shearingZX(double a) {
 	for (Vector* v : this->vertices) {
 		*v = v->shearingZX(a);
 	}
 }
 
 
-void Mesh::meshRefletionXY() {
+void Mesh::reflectionXY() {
 
 	for (Vector* v : this->vertices) {
 		*v = v->reflectionXY();
@@ -356,7 +356,7 @@ void Mesh::meshRefletionXY() {
 }
 
 
-void Mesh::meshRefletionXZ() {
+void Mesh::reflectionXZ() {
 
 	for (Vector* v : this->vertices) {
 		*v = v->reflectionXZ();
@@ -376,7 +376,7 @@ void Mesh::meshRefletionXZ() {
 }
 
 
-void Mesh::meshRefletionYZ() {
+void Mesh::reflectionYZ() {
 
 	for (Vector* v : this->vertices) {
 		*v = v->reflectionYZ();

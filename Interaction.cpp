@@ -1,14 +1,20 @@
-
-/*#include "Interaction.h"
+#include "Interaction.h"
 #include "Scene.h"
 #include "Object.h"
 #include "Light.h"
 #include "Vector.h"
 #include "libSDL.h"
 #include "Image.h"
+#include "Sphere.h"
+#include "Plan.h"
+#include "Texture.h"
+#include "Cylinder.h"
+#include "Cone.h"
+#include "Mesh.h"
 //#include <vector>
 #include <SDL.h>
 #include <iostream>
+
 
 void Interaction::picking() {
 
@@ -76,22 +82,168 @@ void Interaction::picking() {
                 ObjectType closestObjectType = closest->getObjectType();
 
                 switch (closestObjectType) {
-
+                    
                     case ObjectType::SPHERE:
+
+                        Sphere* objectSphere;
+                        objectSphere = (Sphere*) closest;
+
+                        objectSphere->setKD();
+                        objectSphere->setKE();
+                        objectSphere->setKA();
+                        objectSphere->setShininess();
+                        objectSphere->translation();
+                        objectSphere->rotX();
+                        objectSphere->rotY();
+                        objectSphere->rotZ();
+                        objectSphere->reflectionXY();
+                        objectSphere->reflectionXZ();
+                        objectSphere->reflectionYZ();
+                        objectSphere->doWorldToCamera(this->scene->cameraTo);
+
 
                     case ObjectType::PLAN:
 
+                        Plan* objectPlan;
+                        objectPlan = (Plan*)closest;
+
+                        objectPlan->setKD();
+                        objectPlan->setKE();
+                        objectPlan->setKA();
+                        objectPlan->setShininess();
+                        objectPlan->translation();
+                        objectPlan->rotX();
+                        objectPlan->rotY();
+                        objectPlan->rotZ();
+                        objectPlan->reflectionXY();
+                        objectPlan->reflectionXZ();
+                        objectPlan->reflectionYZ();
+                        objectPlan->doWorldToCamera(this->scene->cameraTo);
+                    
+
                     case ObjectType::TEXTURE: // ?
+
+                        Texture* objectTexture;
+                        objectTexture = (Texture*)closest;
+
+                        objectTexture->setKD();
+                        objectTexture->setKE();
+                        objectTexture->setKA();
+                        objectTexture->setShininess();
+                        objectTexture->translation();
+                        objectTexture->rotX();
+                        objectTexture->rotY();
+                        objectTexture->rotZ();
+                        objectTexture->reflectionXY();
+                        objectTexture->reflectionXZ();
+                        objectTexture->reflectionYZ();
+                        objectTexture->doWorldToCamera(this->scene->cameraTo);
+
+                        // ativar ou desativar textura ?
+
 
                     case ObjectType::CYLINDER:
 
+                        Cylinder* objectCylinder;
+                        objectCylinder = (Cylinder*)closest;
+
+                        objectCylinder->setKD();
+                        objectCylinder->setKE();
+                        objectCylinder->setKA();
+                        objectCylinder->setShininess();
+                        objectCylinder->translation();
+                        objectCylinder->rotX();
+                        objectCylinder->rotY();
+                        objectCylinder->rotZ();
+                        objectCylinder->reflectionXY();
+                        objectCylinder->reflectionXZ();
+                        objectCylinder->reflectionYZ();
+                        objectCylinder->doWorldToCamera(this->scene->cameraTo);
+
+
                     case ObjectType::CONE:
 
+                        Cone* objectCone;
+                        objectCone = (Cone*)closest;
+
+                        objectCone->setKD();
+                        objectCone->setKE();
+                        objectCone->setKA();
+                        objectCone->setShininess();
+                        objectCone->translation();
+                        objectCone->rotX();
+                        objectCone->rotY();
+                        objectCone->rotZ();
+                        objectCone->reflectionXY();
+                        objectCone->reflectionXZ();
+                        objectCone->reflectionYZ();
+                        objectCone->doWorldToCamera(this->scene->cameraTo);
+
+
                     case ObjectType::MESH:
+
+                        Mesh* objectMesh;
+                        objectMesh = (Mesh*)closest;
+
+                        objectMesh->setKD();
+                        objectMesh->setKE();
+                        objectMesh->setKA();
+                        objectMesh->setShininess();
+                        objectMesh->translation();
+                        objectMesh->rotX();
+                        objectMesh->rotY();
+                        objectMesh->rotZ();
+                        objectMesh->reflectionXY();
+                        objectMesh->reflectionXZ();
+                        objectMesh->reflectionYZ();
+                        objectMesh->scaling();
+                        objectMesh->doWorldToCamera(this->scene->cameraTo);
+
+
+                    case ObjectType::MESH:
+
+                        Mesh* objectMesh;
+                        objectMesh = (Mesh*)closest;
+
+                        objectMesh->setKD();
+                        objectMesh->setKE();
+                        objectMesh->setKA();
+                        objectMesh->setShininess();
+                        objectMesh->translation();
+                        objectMesh->rotX();
+                        objectMesh->rotY();
+                        objectMesh->rotZ();
+                        objectMesh->reflectionXY();
+                        objectMesh->reflectionXZ();
+                        objectMesh->reflectionYZ();
+                        objectMesh->scaling();
+                        objectMesh->doWorldToCamera(this->scene->cameraTo);
+
+
+                    case ObjectType::MESH_TEXTURIZED:
+
+                        MeshTexturized* objectMeshTexturized;
+                        objectMeshTexturized = (MeshTexturized*)closest;
+
+                        objectMeshTexturized->setKD();
+                        objectMeshTexturized->setKE();
+                        objectMeshTexturized->setKA();
+                        objectMeshTexturized->setShininess();
+                        objectMeshTexturized->translation();
+                        objectMeshTexturized->rotX();
+                        objectMeshTexturized->rotY();
+                        objectMeshTexturized->rotZ();
+                        objectMeshTexturized->reflectionXY();
+                        objectMeshTexturized->reflectionXZ();
+                        objectMeshTexturized->reflectionYZ();
+                        objectMeshTexturized->scaling();
+                        objectMeshTexturized->doWorldToCamera(this->scene->cameraTo);
+
+
                 }
             }
         }
-				//exit = true;
+				exit = true;
 	}
 
 }
@@ -103,4 +255,3 @@ void Interaction::changeProjection() {
 
 
 }
-*/

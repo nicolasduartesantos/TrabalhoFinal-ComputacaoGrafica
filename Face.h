@@ -10,3 +10,15 @@ public:
 	Face(int e1, int e2, int e3);
 
 };
+
+
+
+class FaceTexturized : public Face {
+public:
+
+	bool active = true;
+
+	void setActive(bool active);
+	bool getActive();
+
+};

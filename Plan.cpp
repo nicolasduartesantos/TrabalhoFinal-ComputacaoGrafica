@@ -108,6 +108,43 @@ Color* Plan::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Ve
 }
 
 
+void Plan::rotX(double a) {
+	*this->p_pi = (*this->p_pi).rotX(a);
+	*this->normal = (*this->normal).rotX(a);
+}
+
+void Plan::rotY(double a) {
+	*this->p_pi = (*this->p_pi).rotY(a);
+	*this->normal = (*this->normal).rotY(a);
+}
+
+void Plan::rotZ(double a) {
+	*this->p_pi = (*this->p_pi).rotZ(a);
+	*this->normal = (*this->normal).rotZ(a);
+}
+
+void Plan::translation(double tx, double ty, double tz) {
+	*this->p_pi = (*this->p_pi).translation(tx, ty, tz);
+}
+
+void Plan::scaling(double sx, double sy, double sz) { }
+
+void Plan::reflectionXY() {
+	*this->p_pi = (*this->p_pi).reflectionXY();
+	*this->normal = (*this->normal).reflectionXY();
+}
+
+void Plan::reflectionXZ() {
+	*this->p_pi = (*this->p_pi).reflectionXZ();
+	*this->normal = (*this->normal).reflectionXZ();
+}
+
+void Plan::reflectionYZ() {
+	*this->p_pi = (*this->p_pi).reflectionYZ();
+	*this->normal = (*this->normal).reflectionYZ();
+}
+
+
 void Plan::doWorldToCamera(Camera* camera) {
 
 	Vector n = camera->worldToCamera(*this->getNormal()) - camera->worldToCamera(Vector(0, 0, 0));
