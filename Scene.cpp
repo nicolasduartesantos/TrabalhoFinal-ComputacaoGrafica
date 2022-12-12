@@ -62,6 +62,15 @@ double Scene::getDWindow() {
 }
 
 
+void Scene::setProjection(ProjectionType projection) {
+    this->projection = projection;
+}
+
+ProjectionType Scene::getProjection() {
+    return this->projection;
+}
+
+
 void Scene::setEnvironmentLight(Vector* environmentLight) {
     this->environmentLight = environmentLight;
 }
@@ -129,12 +138,22 @@ void Scene::paintCanvas(SDL_Renderer* renderer) {
 
             double x = (-wWindow / 2.) + (dx / 2.) + (c * dx);
 
-            // getEye ?
-            Vector* p0 = new Vector(0, 0, 0);
-            Vector* p = new Vector(x, y, -dWindow);
+            Vector* p0 = new Vector();
+            Vector* p = new Vector();
+
+            bool perspectiveProjection = this->getProjection() == ProjectionType::PERSPECTIVE;
+            if (perspectiveProjection) {
+                p0 = new Vector(0, 0, 0);
+                p = new Vector(x, y, -dWindow);
+            }
+            else {
+                p0 = new Vector(x, y, 0);
+                p = new Vector(0, 0, -1);
+            }
 
             Vector dirtemp = ((*p - *p0) / ((*p - *p0).getLength()));
             Vector* dir = &dirtemp;
+
 
             int iClosest = 0;
             Object* closest = this->getObjects()[0];
@@ -169,9 +188,9 @@ void Scene::paintCanvas(SDL_Renderer* renderer) {
                 Color pixel = bgImage->getColor(x, y);
 
                 drawColor(renderer, pixel.r, pixel.g, pixel.b, 255);
-                std::cout << "passei draw color\n";
+                //std::cout << "passei draw color\n";
                 drawPoint(renderer, c, l);
-                std::cout << "passei draw point\n";
+                //std::cout << "passei draw point\n";
             }
             */
         }
@@ -185,12 +204,18 @@ void Scene::preparePaint() {
     SDL_Window* window = nullptr;
 
     init(&renderer, &window, this->getNCol(), this->getNLin());
-   
+
     background(renderer, this->bgColor->r, this->bgColor->g, this->bgColor->b, 255);
+
+    this->window = window;
+    this->renderer = renderer;
 
     this->paintCanvas(renderer);
 
     present(renderer);
+
+   //this->interaction->scene = this;
+   //this->interaction->listenEvents();
 
     destroy(window);
 }

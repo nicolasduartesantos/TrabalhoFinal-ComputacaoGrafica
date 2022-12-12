@@ -162,6 +162,18 @@ void Sphere::doWorldToCamera(Camera* camera) {
 }
 
 
+bool Sphere::inside(Vector* p) {
+    double d = (*p - *this->center).getLength();
+
+    if (d < this->getRad()) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+
 Sphere::Sphere(double rad, Vector* center, Vector* kd, Vector* ke, Vector* ka, double shininess) {
     this->rad = rad;
     this->kd = kd;

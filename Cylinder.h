@@ -31,7 +31,11 @@ public:
 	Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight);
 
 	void doWorldToCamera(Camera* camera);
+
+	bool inside(Vector* p);
 	
+	Cylinder();
+
 	Cylinder(double rad, Vector* center_base, Vector* direction, double height, Vector* kd, Vector* ke, Vector* ka, double shininess);
 
 	~Cylinder();

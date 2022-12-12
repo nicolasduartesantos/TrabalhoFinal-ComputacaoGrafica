@@ -4,6 +4,7 @@
 #include "Vector.h"
 #include "Camera.h"
 #include <iostream>
+#include <cmath>
 
 void Mesh::addFace(Face* face) {
 	this->faces.push_back(face);
@@ -208,6 +209,21 @@ void Mesh::meshScaling(double sx, double sy, double sz) {
 	for (Vector* v : this->vertices) {
 		*v = v->scaling(sx, sy, sz);
 	}
+
+	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
+	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
+	*cluster_center_top = cluster_center_top->scaling(sx, sy, sz);
+
+	Vector* cluster_center_base = this->cluster->getCenter_base();
+	*cluster_center_base = cluster_center_base->scaling(sx, sy, sz);
+
+	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+	this->cluster->setDirection(direction);
+		
+	this->cluster->setRad(std::max(std::max(sx, sy), sz) * this->cluster->getRad());
+	this->cluster->setHeight((*cluster_center_top - *this->cluster->getCenter_base()).getLength());
 }
 
 
@@ -215,6 +231,9 @@ void Mesh::meshTranslation(double tx, double ty, double tz) {
 	for (Vector* v : this->vertices) {
 		*v = v->translation(tx, ty, tz);
 	}
+
+	Vector* cluster_center_base = this->cluster->getCenter_base();
+	*cluster_center_base = cluster_center_base->translation(tx, ty, tz);
 }
 
 
@@ -222,6 +241,18 @@ void Mesh::meshRotationX(double a) {
 	for (Vector* v : this->vertices) {
 		*v = v->rotX(a);
 	}
+
+	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
+	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
+	*cluster_center_top = cluster_center_top->rotX(a);
+
+	Vector* cluster_center_base = this->cluster->getCenter_base();
+	*cluster_center_base = cluster_center_base->rotX(a);
+
+	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+	this->cluster->setDirection(direction);
 }
 
 
@@ -229,6 +260,18 @@ void Mesh::meshRotationY(double a) {
 	for (Vector* v : this->vertices) {
 		*v = v->rotY(a);
 	}
+
+	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
+	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
+	*cluster_center_top = cluster_center_top->rotY(a);
+
+	Vector* cluster_center_base = this->cluster->getCenter_base();
+	*cluster_center_base = cluster_center_base->rotY(a);
+
+	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+	this->cluster->setDirection(direction);
 }
 
 
@@ -236,6 +279,18 @@ void Mesh::meshRotationZ(double a) {
 	for (Vector* v : this->vertices) {
 		*v = v->rotZ(a);
 	}
+
+	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
+	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
+	*cluster_center_top = cluster_center_top->rotZ(a);
+
+	Vector* cluster_center_base = this->cluster->getCenter_base();
+	*cluster_center_base = cluster_center_base->rotZ(a);
+
+	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+	this->cluster->setDirection(direction);
 }
 
 
@@ -281,20 +336,90 @@ void Mesh::meshShearingZX(double a) {
 }
 
 
+void Mesh::meshRefletionXY() {
+
+	for (Vector* v : this->vertices) {
+		*v = v->reflectionXY();
+	}
+
+	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
+	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
+	*cluster_center_top = cluster_center_top->reflectionXY();
+
+	Vector* cluster_center_base = this->cluster->getCenter_base();
+	*cluster_center_base = cluster_center_base->reflectionXY();
+
+	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+	this->cluster->setDirection(direction);
+}
+
+
+void Mesh::meshRefletionXZ() {
+
+	for (Vector* v : this->vertices) {
+		*v = v->reflectionXZ();
+	}
+
+	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
+	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
+	*cluster_center_top = cluster_center_top->reflectionXZ();
+
+	Vector* cluster_center_base = this->cluster->getCenter_base();
+	*cluster_center_base = cluster_center_base->reflectionXZ();
+
+	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+	this->cluster->setDirection(direction);
+}
+
+
+void Mesh::meshRefletionYZ() {
+
+	for (Vector* v : this->vertices) {
+		*v = v->reflectionYZ();
+	}
+
+	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
+	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
+	*cluster_center_top = cluster_center_top->reflectionYZ();
+
+	Vector* cluster_center_base = this->cluster->getCenter_base();
+	*cluster_center_base = cluster_center_base->reflectionYZ();
+
+	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+	this->cluster->setDirection(direction);
+}
+
+
 void Mesh::doWorldToCamera(Camera* camera) {
 
 	for (Vector* v : this->vertices) {
 		*v = Vector(camera->worldToCamera(*v));
 	}
 
+	this->cluster->doWorldToCamera(camera);
+
 }
 
 
-Mesh::Mesh(Vector* kd, Vector* ke, Vector* ka, double shininess) {
+bool Mesh::inside(Vector* p) {
+
+	return this->cluster->inside(p);
+
+}
+
+
+Mesh::Mesh(Vector* kd, Vector* ke, Vector* ka, double shininess, Cluster* cluster) {
 	this->kd = kd;
 	this->ke = ke;
 	this->ka = ka;
 	this->shininess = shininess;
+	this->cluster = cluster;
 	this->setObjectType(ObjectType::MESH);
 }
 
@@ -311,4 +436,6 @@ Mesh::~Mesh() {
 	for (Vector* v : this->getVertices()) {
 		delete v;
 	}
+
+	delete this->cluster;
 }

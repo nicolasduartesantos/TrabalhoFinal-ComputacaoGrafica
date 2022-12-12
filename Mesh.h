@@ -4,6 +4,7 @@
 #include "Face.h"
 #include "Edge.h"
 #include "Vector.h"
+#include "Cluster.h"
 
 class Mesh : public Object {
 private:
@@ -14,6 +15,7 @@ private:
 	std::vector<Edge*> edges;
 	std::vector<Vector*> vertices;
 	Vector* normal = nullptr;
+	Cluster* cluster = nullptr;
 
 public:
 
@@ -46,10 +48,17 @@ public:
 	void meshShearingZY(double a);
 	void meshShearingXZ(double a);
 	void meshShearingZX(double a);
+	void meshRefletionXY();
+	void meshRefletionXZ();
+	void meshRefletionYZ();
 
 	void doWorldToCamera(Camera* camera);
+
+	//void reverseFacesVertexesOrder();
+
+	bool inside(Vector* p);
 	
-	Mesh(Vector* kd, Vector* ke, Vector* ka, double shininess);
+	Mesh(Vector* kd, Vector* ke, Vector* ka, double shininess, Cluster* cluster);
 
 	~Mesh();
 };

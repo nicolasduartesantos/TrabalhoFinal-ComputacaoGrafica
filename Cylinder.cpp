@@ -672,6 +672,23 @@ void Cylinder::doWorldToCamera(Camera* camera) {
 }
 
 
+bool Cylinder::inside(Vector* p) {
+
+    double ver = (*p - *this->getCenter_base()).scalarProd(*this->getDirection());
+    Vector projection = *this->getDirection() * ver;
+
+    if ((projection - *p).getLength() < this->getRad() && ver >= 0 && ver <= this->getHeight()) {
+        return true;
+    }
+    else {
+        false;
+    }
+}
+
+
+Cylinder::Cylinder() {}
+
+
 Cylinder::Cylinder(double rad, Vector* center_base, Vector* direction, double height, Vector* kd, Vector* ke, Vector* ka, double shininess) {
 	this->rad = rad;
 	this->center_base = center_base;

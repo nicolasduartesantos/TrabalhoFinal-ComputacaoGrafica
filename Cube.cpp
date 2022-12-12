@@ -1,8 +1,9 @@
 #include "Cube.h"
+#include "Cluster.h"
 
-Mesh* Cube::create(Vector* center_base, double edgeSize, Vector* kd, Vector* ke, Vector* ka, double shininess) {
+Mesh* Cube::create(Vector* center_base, double edgeSize, Vector* kd, Vector* ke, Vector* ka, double shininess, Cluster* cluster) {
 
-	Mesh* mesh = new Mesh(kd, ke, ka, shininess);
+	Mesh* mesh = new Mesh(kd, ke, ka, shininess, cluster);
 
     //vertices
 	Vector* vertex1 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) - (edgeSize / 2));

@@ -5,14 +5,18 @@
 #include "Vector.h"
 #include "Camera.h"
 #include "Image.h"
+//#include "Interaction.h"
 #include <vector>
 #include <SDL.h>
 
+enum class ProjectionType { ORTHOGRAPHIC, PERSPECTIVE };
 
 class Scene {
 private:
 
-    Camera* cameraTo = nullptr;
+    //Interaction* interaction = nullptr;
+
+    ProjectionType projection = ProjectionType::PERSPECTIVE;
 
     double hWindow = 60.0;
     double wWindow = 60.0;
@@ -36,6 +40,11 @@ private:
 
 public:
 
+    Camera* cameraTo = nullptr;
+
+    SDL_Renderer* renderer = nullptr;
+    SDL_Window* window = nullptr;
+
     void setEye(Vector* eye);
     Vector* getEye();
 
@@ -53,6 +62,9 @@ public:
 
     void setDWindow(double dWindow);
     double getDWindow();
+
+    void setProjection(ProjectionType projection);
+    ProjectionType getProjection();
 
     void setEnvironmentLight(Vector* environmentLight);
     Vector* getEnvironmentLight();

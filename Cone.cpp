@@ -590,6 +590,22 @@ void Cone::doWorldToCamera(Camera* camera) {
 }
 
 
+bool Cone::inside(Vector* p) {
+
+	double ver = (*this->vertex - *p).scalarProd(*this->direction);
+	Vector projection = *this->getDirection() * ver;
+
+	// VERIFICAR
+	if ( (projection - *p).getLength() < this->getRad() && ver >= 0 && ver <= this->getHeight()) {
+		return true;
+	}
+	else {
+		false;
+	}
+
+}
+
+
 Cone::Cone(double rad, Vector* center_base, Vector* direction, double height, Vector* kd, Vector* ke, Vector* ka, double shininess) {
 	this->rad = rad;
 	this->center_base = center_base;
