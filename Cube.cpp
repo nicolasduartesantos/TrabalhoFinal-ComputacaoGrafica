@@ -1,12 +1,11 @@
 #include "Cube.h"
-#include "Cluster.h"
 
 Mesh* Cube::create(Vector* center_base, double edgeSize, Vector* kd, Vector* ke, Vector* ka, double shininess, Cluster* cluster) {
 
-	Mesh* mesh = new Mesh(kd, ke, ka, shininess, cluster);
+    Mesh* mesh = new Mesh(kd, ke, ka, shininess, cluster);
 
     //vertices
-	Vector* vertex1 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) - (edgeSize / 2));
+    Vector* vertex1 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) - (edgeSize / 2));
     Vector* vertex2 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) + (edgeSize / 2));
     Vector* vertex3 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) + (edgeSize / 2));
     Vector* vertex4 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) - (edgeSize / 2));
@@ -23,6 +22,16 @@ Mesh* Cube::create(Vector* center_base, double edgeSize, Vector* kd, Vector* ke,
     mesh->addVertex(vertex6);
     mesh->addVertex(vertex7);
     mesh->addVertex(vertex8);
+
+    mesh->initial_vertices.push_back(new Vector(vertex1->getCoordinate(0), vertex1->getCoordinate(1), vertex1->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex2->getCoordinate(0), vertex2->getCoordinate(1), vertex2->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex3->getCoordinate(0), vertex3->getCoordinate(1), vertex3->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex4->getCoordinate(0), vertex4->getCoordinate(1), vertex4->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex5->getCoordinate(0), vertex5->getCoordinate(1), vertex5->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex6->getCoordinate(0), vertex6->getCoordinate(1), vertex6->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex7->getCoordinate(0), vertex7->getCoordinate(1), vertex7->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex8->getCoordinate(0), vertex8->getCoordinate(1), vertex8->getCoordinate(2)));
+
 
     //edges
     mesh->addEdge(new Edge(0, 1));

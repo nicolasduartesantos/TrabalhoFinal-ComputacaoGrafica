@@ -23,6 +23,8 @@ private:
 
 public:
 
+	std::vector<Vector*> initial_vertices;
+
 	void setTexture(Image* texture);
 	Image* getTexture();
 

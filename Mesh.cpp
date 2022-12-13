@@ -42,6 +42,14 @@ Vector* Mesh::getNormal() {
 
 
 bool Mesh::intersect(Vector* p0, Vector* dir) {
+	this->setP0distance(std::numeric_limits<double>::infinity());
+
+	/*if (this->cluster != nullptr) {
+		if (!this->cluster->intersect(p0, dir)) {
+			this->setHasIntersection(false);
+			return false;
+		}
+	}*/
 
 	this->setObjectSurface(ObjectSurface::ON_PLAN);
 	this->setHasIntersection(false);
@@ -117,12 +125,19 @@ bool Mesh::intersect(Vector* p0, Vector* dir) {
 			}
 		}
 	}
+
 	return this->getHasIntersection();
 }
 
 
 bool Mesh::intersect_for_shadow(Vector* p0, Vector* dir) {
-
+	this->setP0distanceShadow(std::numeric_limits<double>::infinity());
+	/*if (this->cluster != nullptr) {
+		if (!this->cluster->intersect_for_shadow(p0, dir)) {
+			this->setHasIntersectionShadow(false);
+			return false;
+		}
+	}*/
 	this->setHasIntersectionShadow(false);
 	Vector* meshNormal = new Vector();
 
@@ -204,9 +219,9 @@ Color* Mesh::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Ve
 
 }
 
-
+//SE DER RUIM MUDAR PARA INICIAIS
 void Mesh::scaling(double sx, double sy, double sz) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->scaling(sx, sy, sz);
 	}
 
@@ -221,14 +236,14 @@ void Mesh::scaling(double sx, double sy, double sz) {
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
-		
+
 	this->cluster->setRad(std::max(std::max(sx, sy), sz) * this->cluster->getRad());
 	this->cluster->setHeight((*cluster_center_top - *this->cluster->getCenter_base()).getLength());
 }
 
 
 void Mesh::translation(double tx, double ty, double tz) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->translation(tx, ty, tz);
 	}
 
@@ -238,7 +253,7 @@ void Mesh::translation(double tx, double ty, double tz) {
 
 
 void Mesh::rotX(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->rotX(a);
 	}
 
@@ -257,7 +272,7 @@ void Mesh::rotX(double a) {
 
 
 void Mesh::rotY(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->rotY(a);
 	}
 
@@ -276,7 +291,7 @@ void Mesh::rotY(double a) {
 
 
 void Mesh::rotZ(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->rotZ(a);
 	}
 
@@ -295,50 +310,62 @@ void Mesh::rotZ(double a) {
 
 
 void Mesh::shearingYX(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingYX(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void Mesh::shearingXY(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingXY(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void Mesh::shearingYZ(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingYZ(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void Mesh::shearingZY(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingZY(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void Mesh::shearingXZ(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingXZ(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void Mesh::shearingZX(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingZX(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void Mesh::reflectionXY() {
 
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionXY();
 	}
 
@@ -358,7 +385,7 @@ void Mesh::reflectionXY() {
 
 void Mesh::reflectionXZ() {
 
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionXZ();
 	}
 
@@ -378,7 +405,7 @@ void Mesh::reflectionXZ() {
 
 void Mesh::reflectionYZ() {
 
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionYZ();
 	}
 
@@ -398,8 +425,9 @@ void Mesh::reflectionYZ() {
 
 void Mesh::doWorldToCamera(Camera* camera) {
 
-	for (Vector* v : this->vertices) {
-		*v = Vector(camera->worldToCamera(*v));
+	for (int i = 0; i < this->vertices.size(); i++) {
+		*this->vertices[i] = Vector(camera->worldToCamera(*this->initial_vertices[i]));
+		//std::cout << this->initial_vertices[i]->getCoordinate(0) << " " << this->initial_vertices[i]->getCoordinate(1) << " " << this->initial_vertices[i]->getCoordinate(2) << '\n';
 	}
 
 	this->cluster->doWorldToCamera(camera);
@@ -435,6 +463,10 @@ Mesh::~Mesh() {
 
 	for (Vector* v : this->getVertices()) {
 		delete v;
+	}
+
+	for (Vector* iv : this->initial_vertices) {
+		delete iv;
 	}
 
 	delete this->cluster;

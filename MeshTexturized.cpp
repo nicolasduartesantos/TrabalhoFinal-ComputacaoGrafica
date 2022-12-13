@@ -215,8 +215,9 @@ Color* MeshTexturized::getRGB(std::vector<Light*> lights, std::vector<Object*> o
 }
 
 
+//SE DER RUIM MUDAR PARA INICIAIS
 void MeshTexturized::scaling(double sx, double sy, double sz) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->scaling(sx, sy, sz);
 	}
 
@@ -238,7 +239,7 @@ void MeshTexturized::scaling(double sx, double sy, double sz) {
 
 
 void MeshTexturized::translation(double tx, double ty, double tz) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->translation(tx, ty, tz);
 	}
 
@@ -248,7 +249,7 @@ void MeshTexturized::translation(double tx, double ty, double tz) {
 
 
 void MeshTexturized::rotX(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->rotX(a);
 	}
 
@@ -267,7 +268,7 @@ void MeshTexturized::rotX(double a) {
 
 
 void MeshTexturized::rotY(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->rotY(a);
 	}
 
@@ -286,7 +287,7 @@ void MeshTexturized::rotY(double a) {
 
 
 void MeshTexturized::rotZ(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->rotZ(a);
 	}
 
@@ -305,50 +306,62 @@ void MeshTexturized::rotZ(double a) {
 
 
 void MeshTexturized::shearingYX(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingYX(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void MeshTexturized::shearingXY(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingXY(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void MeshTexturized::shearingYZ(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingYZ(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void MeshTexturized::shearingZY(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingZY(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void MeshTexturized::shearingXZ(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingXZ(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void MeshTexturized::shearingZX(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingZX(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void MeshTexturized::reflectionXY() {
 
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionXY();
 	}
 
@@ -368,7 +381,7 @@ void MeshTexturized::reflectionXY() {
 
 void MeshTexturized::reflectionXZ() {
 
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionXZ();
 	}
 
@@ -388,7 +401,7 @@ void MeshTexturized::reflectionXZ() {
 
 void MeshTexturized::reflectionYZ() {
 
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionYZ();
 	}
 
@@ -408,8 +421,8 @@ void MeshTexturized::reflectionYZ() {
 
 void MeshTexturized::doWorldToCamera(Camera* camera) {
 
-	for (Vector* v : this->vertices) {
-		*v = Vector(camera->worldToCamera(*v));
+	for (int i = 0; i < this->vertices.size(); i++) {
+		*this->vertices[i] = Vector(camera->worldToCamera(*this->initial_vertices[i]));
 	}
 
 	this->cluster->doWorldToCamera(camera);
@@ -445,6 +458,10 @@ MeshTexturized::~MeshTexturized() {
 
 	for (Vector* v : this->getVertices()) {
 		delete v;
+	}
+
+	for (Vector* iv : this->initial_vertices) {
+		delete iv;
 	}
 
 	delete this->cluster;

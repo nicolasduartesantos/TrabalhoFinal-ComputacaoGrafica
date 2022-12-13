@@ -247,6 +247,8 @@ void Scene::mainLoop() {
     // Main loop
     bool done = false;
     bool change = true;
+    bool perspective = true;
+    bool orthographic = false;
     while (!done)
     {
         SDL_Event event;
@@ -320,10 +322,6 @@ void Scene::mainLoop() {
             }
         }
 
-        //if (ImGui::CollapsingHeader("Material")) {
-            //mdmaterial
-        //}
-
         if (ImGui::CollapsingHeader("Lights")) {
             //mdmaterial
         }
@@ -334,8 +332,21 @@ void Scene::mainLoop() {
 
         }
 
-        if (ImGui::CollapsingHeader("Perspective")) {
-            //mdmaterial
+        if (ImGui::CollapsingHeader("Projection")) {
+            
+            if (ImGui::Button("Perspective")) {
+                this->setProjection(ProjectionType::PERSPECTIVE);
+                change = true;
+            }
+
+            ImGui::SameLine();
+
+            if (ImGui::Button("Orthographic")) {
+                this->setProjection(ProjectionType::ORTHOGRAPHIC);
+                change = true;
+            }
+
+
         }
         
         ImGui::End();

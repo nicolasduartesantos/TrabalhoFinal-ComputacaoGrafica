@@ -14,10 +14,13 @@ private:
 	std::vector<Face*> faces;
 	std::vector<Edge*> edges;
 	std::vector<Vector*> vertices;
+
 	Vector* normal = nullptr;
 	Cluster* cluster = nullptr;
 
 public:
+
+	std::vector<Vector*> initial_vertices;
 
 	void addFace(Face* face);
 	std::vector<Face*> getFaces();

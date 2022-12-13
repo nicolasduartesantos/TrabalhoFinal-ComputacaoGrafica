@@ -93,7 +93,7 @@ int main(int argc, char* argv[]) {
 	mesa->scaling(150, 5, -250);
 	mesa->translation(275, 95, -200);
 
-
+	
 	Cylinder* baseArvore = new Cylinder(30., new Vector(350., 100., -325.), new Vector(0., 1., 0.), 9.0, new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), 5.0);
 	Cylinder* troncoArvore = new Cylinder(6., new Vector(350., 109., -325.), new Vector(0., 1., 0.), 40.0, new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), 5.0);
 	Cone* arvore = new Cone(60., new Vector(350., 145., -325.), new Vector(0., 1., 0.), 150.0, new Vector(0.0, 0.9, 0.2), new Vector(0.0, 0.9, 0.2), new Vector(0.0, 0.9, 0.2), 5.0);
@@ -122,11 +122,11 @@ int main(int argc, char* argv[]) {
 	scene->addObject(parede1);
 	scene->addObject(parede2);
 	scene->addObject(parede3);
-	
-	scene->addObject(peMesa1);
-	scene->addObject(peMesa2);
-	scene->addObject(mesa);
 	*/
+	//scene->addObject(peMesa1);
+	//scene->addObject(peMesa2);
+	scene->addObject(mesa);
+	
 	//scene->addObject(baseArvore);
 	//scene->addObject(troncoArvore);
 	scene->addObject(arvore);
