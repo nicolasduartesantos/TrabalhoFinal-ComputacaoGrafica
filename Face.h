@@ -6,8 +6,19 @@
 class Face {
 public:
 
-	std::vector<int> edgeIds = std::vector<int>(3); // tamanho 3
-
+	std::vector<int> edgeIds = std::vector<int>(3);
 	Face(int e1, int e2, int e3);
+
+};
+
+
+
+class FaceTexturized : public Face {
+public:
+
+	bool active = true;
+
+	void setActive(bool active);
+	bool getActive();
 
 };

@@ -1,5 +1,6 @@
 #include "Object.h"
 #include "Sphere.h"
+#include "Camera.h"
 #include <iostream>
 #include <cmath>
 
@@ -152,6 +153,61 @@ Color* Sphere::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, 
 }
 
 
+void Sphere::rotX(double a) {
+    *this->center = (*this->center).rotX(a);
+}
+
+void Sphere::rotY(double a) {
+    *this->center = (*this->center).rotY(a);
+}
+
+void Sphere::rotZ(double a) {
+    *this->center = (*this->center).rotZ(a);
+}
+
+void Sphere::translation(double tx, double ty, double tz) {
+    *this->center = (*this->center).translation(tx, ty, tz);
+}
+
+void Sphere::scaling(double sx, double sy, double sz) {
+    *this->center = (*this->center).scaling(sx, sy, sz);
+    this->setRad(std::max(std::max(sx, sy), sz) * this->getRad());
+}
+
+void Sphere::reflectionXY() {
+    *this->center = (*this->center).reflectionXY();
+}
+
+void Sphere::reflectionXZ() {
+    *this->center = (*this->center).reflectionXZ();
+}
+
+void Sphere::reflectionYZ() {
+    *this->center = (*this->center).reflectionYZ();
+}
+
+
+void Sphere::doWorldToCamera(Camera* camera) {
+
+    Vector* c = new Vector(camera->worldToCamera(*this->getCenter()));
+    delete this->getCenter();
+    this->setCenter(c);
+
+}
+
+
+bool Sphere::inside(Vector* p) {
+    double d = (*p - *this->center).getLength();
+
+    if (d < this->getRad()) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+
 Sphere::Sphere(double rad, Vector* center, Vector* kd, Vector* ke, Vector* ka, double shininess) {
     this->rad = rad;
     this->kd = kd;
@@ -160,4 +216,9 @@ Sphere::Sphere(double rad, Vector* center, Vector* kd, Vector* ke, Vector* ka, d
     this->center = center;
     this->shininess = shininess;
     this->setObjectType(ObjectType::SPHERE);
+}
+
+
+Sphere::~Sphere() {
+    delete this->getCenter();
 }

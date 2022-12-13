@@ -2,89 +2,146 @@
 using namespace std;
 
 #include <SDL.h>
-#include <cmath>
-#include <math.h>
-#include<algorithm>
-#include "libSDL.h"
-#include "Vector.h"
-#include "Color.h"
-#include "Light.h"
-#include "Object.h"
-#include "Plan.h"
-#include "Sphere.h"
-#include "Scene.h"
-#include "Cylinder.h"
-#include "Cone.h"
-#include "Mesh.h"
-#include "Cube.h"
-#include "TexturePlan.h"
-#include "Image.h"
+#include <SDL_image.h>
+#include "Includes.h"
+
+
 
 int main(int argc, char* argv[]) {
 
-	/*
-	Sphere* sphere = new Sphere(40.0, new Vector(0.7, 0.2, 0.2), new Vector(0.7, 0.2, 0.2), new Vector(0.7, 0.2, 0.2), new Vector(0, 0, -100), 10.0);
-
-	Cylinder* cylinder = new Cylinder((40.0 / 3), new Vector(0, 0, -100), new Vector(-1 / sqrt(3), 1 / sqrt(3), -1 / sqrt(3)), 120.0, new Vector(0.2, 0.3, 0.8), new Vector(0.2, 0.3, 0.8), new Vector(0.2, 0.3, 0.8), 10.0);
-
-	Vector center_top = Vector(0, 0, -100) + Vector(-1 / sqrt(3), 1 / sqrt(3), -1 / sqrt(3)) * 120.0;
-	Vector* centerTop = new Vector(center_top.getCoordinate(0), center_top.getCoordinate(1), center_top.getCoordinate(2));
-
-	Cone* cone = new Cone(20.0, centerTop, new Vector(-1 / sqrt(3), 1 / sqrt(3), -1 / sqrt(3)), 20.0, new Vector(0.8, 0.3, 0.2), new Vector(0.8, 0.3, 0.2), new Vector(0.8, 0.3, 0.2), 10.0);
-	Plan* plan_floor = new Plan(new Vector(0., -40., 0.), new Vector(0., 1., 0.), new Vector(0.2, 0.7, 0.2), new Vector(0., 0., 0.), new Vector(0.2, 0.7, 0.2), 1.0);
-
-	Plan* plan_back = new Plan(new Vector(0., 0., -200.), new Vector(0., 0., 1.), new Vector(0.3, 0.3, 0.7), new Vector(0., 0., 0.), new Vector(0.3, 0.3, 0.7), 1.0);
-
-	Light* light = new Light(new Vector(0.7, 0.7, 0.7), new Vector(0., 60., -30.));
-
-	Scene* scene = new Scene(new Vector(0., 0., 0.), 60, 60, 500, 500, 30, new Color(100, 100, 100, 255));
-
-	scene->setEnvironmentLight(new Vector(0.3, 0.3, 0.3));
-	scene->addLight(light);
-
-
-	scene->addObject(plan_back);
-	scene->addObject(plan_floor);
-	scene->addObject(sphere);
-	scene->addObject(cylinder);
-	scene->addObject(cone);
-	*/
-
 	Image* img = new Image("C:/Users/Nicolas/source/repos/Tarefa3/texturamadeira.png");
 
-	Plan* plan1 = new TexturePlan(img, new Vector(0., -150., 0.), new Vector(0., 1., 0.), 5.0);
-	Plan* plan2 = new Plan(new Vector(200., -150., 0.), new Vector(-1., 0., 0.), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), 5.0);
-	Plan* plan3 = new Plan(new Vector(200., -150., -400.), new Vector(0., 0., 1.), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), 5.0);
-	Plan* plan4 = new Plan(new Vector(-200., -150., 0.), new Vector(1., 0., 0.), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), 5.0);
-	Plan* plan5 = new Plan(new Vector(0., 150., 0.), new Vector(0., -1., 0.), new Vector(0.933, 0.933, 0.933), new Vector(0.933, 0.933, 0.933), new Vector(0.933, 0.933, 0.933), 5.0);
+	Image* ceu = new Image("C:/Users/Nicolas/source/repos/Tarefa3/ceu.jpg");
 
-	Cylinder* cylinder = new Cylinder(5., new Vector(0., -150., -200.), new Vector(0., 1., 0.), 90.0, new Vector(0.824, 0.706, 0.549), new Vector(0.824, 0.706, 0.549), new Vector(0.824, 0.706, 0.549), 5.0);
+	Plan* plan1 = new Texture(img, new Vector(0., 0., 0.), new Vector(0., 1., 0.), 5.0);
 
-	Cone* cone = new Cone(90.0, new Vector(0., -60., -200.), new Vector(0., 1., 0.), 150.0, new Vector(0., 1., 0.498), new Vector(0., 1., 0.498), new Vector(0., 1., 0.498), 5.0);
+	Light* light = new Point(new Vector(0.7, 0.7, 0.7), new Vector(350., 350., -250.));
 
-	Mesh* cube = Cube::create(new Vector(0., -150., -165.), 40., new Vector(1., 0.078, 0.576), new Vector(1., 0.078, 0.576), new Vector(1., 0.078, 0.576), 5.0);
+	Cluster* cluster = new Cluster(0.5, new Vector(0.5, 0., 0.5), new Vector(0.0, 1.0, 0.0), 1.0);
 
-	Sphere* sphere = new Sphere(5.0, new Vector(0., 95., -200.), new Vector(0.854, 0.647, 0.125), new Vector(0.854, 0.647, 0.125), new Vector(0.854, 0.647, 0.125), 5.0);
+	Mesh* coluna1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
+	coluna1->scaling(50, 500, 30);
 
-	Light* light = new Light(new Vector(0.7, 0.7, 0.7), new Vector(-100., 140., -20.));
+	Mesh* coluna2 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
+	coluna2->scaling(50, 500, 30);
+	coluna2->translation(650, 0, 0);
 
-	Scene* scene = new Scene(new Vector(0., 0., 0.), 60, 60, 500, 500, 30, new Color(100, 100, 100, 255));
+	Mesh* coluna3 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
+	coluna3->scaling(50, 500, 30);
+	coluna3->translation(0, 0, -1030);
+
+	Mesh* coluna4 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
+	coluna4->scaling(50, 500, 30);
+	coluna4->translation(650, 0, -1030);
+
+
+	Mesh* semiteto1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
+	semiteto1->scaling(300, 50, 30);
+	semiteto1->shearingXY(atan(0.75));
+	semiteto1->translation(50, 450, 0);
+
+	Mesh* semiteto2 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
+	semiteto2->scaling(300, 50, 30);
+	semiteto2->shearingXY(atan(-0.75));
+	semiteto2->translation(350, 675, 0);
+
+	Mesh* semiteto3 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
+	semiteto3->scaling(300, 50, 30);
+	semiteto3->shearingXY(atan(0.75));
+	semiteto3->translation(50, 450, -1030);
+
+	Mesh* semiteto4 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
+	semiteto4->scaling(300, 50, 30);
+	semiteto4->shearingXY(atan(-0.75));
+	semiteto4->translation(350, 675, -1030);
+
+
+	Mesh* teto1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
+	teto1->scaling(450, 30, 1000);
+	teto1->rotZ(atan(0.75));
+	teto1->translation(0, 450, -1030);
+
+	Mesh* teto2 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
+	teto2->scaling(450, 30, 1000);
+	teto2->rotZ(atan(-0.75));
+	teto2->translation(320, 720, -1030);
+
+
+	Mesh* parede1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
+	parede1->scaling(20, 500, 1000);
+	parede1->translation(30, 0, -1000);
+
+	Mesh* parede2 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
+	parede2->scaling(20, 500, 1000);
+	parede2->translation(660, 0, -1000);
+
+	Mesh* parede3 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
+	parede3->scaling(600, 500, 30);
+	parede3->translation(50, 0, -1060);
+
+
+	Mesh* peMesa1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0, 0.898, 0.898), new Vector(0, 0.898, 0.898), new Vector(0, 0.898, 0.898), 5.0, cluster);
+	peMesa1->scaling(150, 95, -5);
+	peMesa1->translation(275, 0, -200);
+
+	Mesh* peMesa2 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0, 0.898, 0.898), new Vector(0, 0.898, 0.898), new Vector(0, 0.898, 0.898), 5.0, cluster);
+	peMesa2->scaling(150, 95, -5);
+	peMesa2->translation(275, 0, -450);
+
+
+	Mesh* mesa = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0, 0.898, 0.898), new Vector(0, 0.898, 0.898), new Vector(0, 0.898, 0.898), 5.0, cluster);
+	mesa->scaling(150, 5, -250);
+	mesa->translation(275, 95, -200);
+
+
+	Cylinder* baseArvore = new Cylinder(30., new Vector(350., 100., -325.), new Vector(0., 1., 0.), 9.0, new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), 5.0);
+	Cylinder* troncoArvore = new Cylinder(6., new Vector(350., 109., -325.), new Vector(0., 1., 0.), 40.0, new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), 5.0);
+	Cone* arvore = new Cone(60., new Vector(350., 145., -325.), new Vector(0., 1., 0.), 150.0, new Vector(0.0, 0.9, 0.2), new Vector(0.0, 0.9, 0.2), new Vector(0.0, 0.9, 0.2), 5.0);
+	Sphere* bolaArvore = new Sphere(4.5, new Vector(350., 299., -325.), new Vector(1., 1., 0.), new Vector(1., 1., 0.), new Vector(1., 1., 0.), 5.0);
+
+	Scene* scene = new Scene(60, 60, 500, 500, 20, new Color(100, 100, 100, 255));
 
 	scene->setEnvironmentLight(new Vector(0.3, 0.3, 0.3));
 
 	scene->addLight(light);
-
 	scene->addObject(plan1);
-	scene->addObject(plan2);
-	scene->addObject(plan3);
-	scene->addObject(plan4);
-	scene->addObject(plan5);
-	scene->addObject(cylinder);
-	scene->addObject(sphere);
-	scene->addObject(cone);
-	scene->addObject(cube);
+	
+	scene->addObject(coluna1);
+	scene->addObject(coluna2);
+	scene->addObject(coluna3);
+	scene->addObject(coluna4);
 
-	scene->preparePaint();
+	scene->addObject(semiteto1);
+	scene->addObject(semiteto2);
+	scene->addObject(semiteto3);
+	scene->addObject(semiteto4);
+
+	scene->addObject(teto1);
+	scene->addObject(teto2);
+
+	scene->addObject(parede1);
+	scene->addObject(parede2);
+	scene->addObject(parede3);
+
+	scene->addObject(peMesa1);
+	scene->addObject(peMesa2);
+	scene->addObject(mesa);
+	
+	scene->addObject(baseArvore);
+	scene->addObject(troncoArvore);
+	scene->addObject(arvore);
+	scene->addObject(bolaArvore);
+
+	//scene->setBGImage(ceu);
+
+	scene->camera(new Vector(400., 300., 400.), new Vector(400., 250., 0.), new Vector(400., 300., 0.));
+
+	scene->interaction = new Interaction();
+
+	scene->mainLoop(); scene->interaction = new Interaction();
+
+	scene->mainLoop();
 
 	return 0;
+
 }

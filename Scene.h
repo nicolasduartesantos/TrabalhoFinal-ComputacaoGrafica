@@ -3,13 +3,20 @@
 #include "Object.h"
 #include "Light.h"
 #include "Vector.h"
+#include "Camera.h"
+#include "Image.h"
 #include <vector>
 #include <SDL.h>
+#include "Interaction.h"
 
+enum class ProjectionType { ORTHOGRAPHIC, PERSPECTIVE };
+
+class Interaction;
 
 class Scene {
 private:
-    Vector* eye = nullptr;
+
+    ProjectionType projection = ProjectionType::PERSPECTIVE;
 
     double hWindow = 60.0;
     double wWindow = 60.0;
@@ -27,9 +34,17 @@ private:
 
     Color* bgColor = nullptr;
 
+    Image* bgImage = nullptr;
+
     void paintCanvas(SDL_Renderer* renderer);
 
 public:
+    Interaction* interaction = nullptr;
+
+    Camera* cameraTo = nullptr;
+
+    SDL_Renderer* renderer = nullptr;
+    SDL_Window* window = nullptr;
 
     void setEye(Vector* eye);
     Vector* getEye();
@@ -49,11 +64,17 @@ public:
     void setDWindow(double dWindow);
     double getDWindow();
 
-    void setBGColor(Color* bgColor);
-    Color* getBGColor();
+    void setProjection(ProjectionType projection);
+    ProjectionType getProjection();
 
     void setEnvironmentLight(Vector* environmentLight);
     Vector* getEnvironmentLight();
+
+    void setBGColor(Color* bgColor);
+    Color* getBGColor();
+
+    void setBGImage(Image* bgImage);
+    Image* getBGImage();
 
     void addLight(Light* light);
     std::vector<Light*> getLights();
@@ -63,5 +84,11 @@ public:
 
     void preparePaint();
 
-    Scene(Vector* eye, double hWindow, double wWindow, int nLin, int nCol, double dWindow, Color* bgColor = nullptr);
+    void mainLoop();
+
+    void camera(Vector* eye, Vector* at, Vector* up);
+
+    Scene(double hWindow, double wWindow, int nLin, int nCol, double dWindow, Color* bgColor = nullptr);
+
+    ~Scene();
 };

@@ -1,5 +1,6 @@
 #include "Object.h"
 #include "Vector.h"
+#include "Camera.h"
 #include <iostream>
 #include "Plan.h"
 #include <cmath>
@@ -102,55 +103,59 @@ bool Plan::intersect_for_shadow(Vector* p0, Vector* dir) {
 
 Color* Plan::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) {
 
-	Vector rgb(0, 0, 0);
+	return RGBtoPaint(lights, objects, p0, dir, environmentLight, this->normal, this);
 
-	Vector* pi = this->getIntersectionPoint();
-
-
-	Vector v(0, 0, 0); Vector l(0, 0, 0); Vector r(0, 0, 0);
-
-	v = (*dir * (-1)) / (dir->getLength());
+}
 
 
-	for (int i = 0; i < lights.size(); i++) {
+void Plan::rotX(double a) {
+	*this->p_pi = (*this->p_pi).rotX(a);
+	*this->normal = (*this->normal).rotX(a);
+}
 
-		Vector* pf = (lights[i])->getCoordinate();
+void Plan::rotY(double a) {
+	*this->p_pi = (*this->p_pi).rotY(a);
+	*this->normal = (*this->normal).rotY(a);
+}
 
-		l = (*pf - *pi);
+void Plan::rotZ(double a) {
+	*this->p_pi = (*this->p_pi).rotZ(a);
+	*this->normal = (*this->normal).rotZ(a);
+}
 
-		l = l / (l.getLength());
+void Plan::translation(double tx, double ty, double tz) {
+	*this->p_pi = (*this->p_pi).translation(tx, ty, tz);
+}
+
+void Plan::scaling(double sx, double sy, double sz) { }
+
+void Plan::reflectionXY() {
+	*this->p_pi = (*this->p_pi).reflectionXY();
+	*this->normal = (*this->normal).reflectionXY();
+}
+
+void Plan::reflectionXZ() {
+	*this->p_pi = (*this->p_pi).reflectionXZ();
+	*this->normal = (*this->normal).reflectionXZ();
+}
+
+void Plan::reflectionYZ() {
+	*this->p_pi = (*this->p_pi).reflectionYZ();
+	*this->normal = (*this->normal).reflectionYZ();
+}
 
 
-		bool hasShadow = this->hasShadow(objects, pi, l, pf);
+void Plan::doWorldToCamera(Camera* camera) {
 
+	Vector n = camera->worldToCamera(*this->getNormal()) - camera->worldToCamera(Vector(0, 0, 0));
+	Vector* nUnitary = new Vector(n / n.getLength());
+	delete this->getNormal();
+	this->setNormal(nUnitary);
 
-		if (!hasShadow) {
+	Vector* ppi = new Vector(camera->worldToCamera(*this->getP_PI()));
+	delete this->getP_PI();
+	this->setP_PI(ppi);
 
-			r = (*this->normal * (2 * (l.scalarProd(*this->normal)))) - l;
-
-			double f_diffuse = std::max(0.0, (l.scalarProd(*this->normal)));
-			double f_speculated = std::pow(std::max(0.0, (r.scalarProd(v))), this->shininess);
-
-			Vector i_diffuse = (*lights[i]->getIntensity()) * (*this->kd) * f_diffuse;
-			Vector i_speculated = (*lights[i]->getIntensity()) * (*this->ke) * f_speculated;
-
-			rgb = rgb + i_diffuse + i_speculated;
-
-		}
-	}
-
-	if (environmentLight != nullptr) {
-		Vector i_environment = (*environmentLight) * (*this->ka);
-		rgb = rgb + i_environment;
-	}
-
-	double cor_max = std::max(std::max(rgb.getCoordinate(0), rgb.getCoordinate(1)), rgb.getCoordinate(2));
-	if (cor_max > 1) {
-		rgb = rgb / cor_max;
-	}
-
-	Color* result = new Color(rgb.getCoordinate(0) * 255, rgb.getCoordinate(1) * 255, rgb.getCoordinate(2) * 255, 255);
-	return result;
 }
 
 
@@ -162,4 +167,13 @@ Plan::Plan(Vector* p_pi, Vector* normal, Vector* kd, Vector* ke, Vector* ka, dou
 	this->ka = ka;
 	this->shininess = shininess;
 	this->setObjectType(ObjectType::PLAN);
+}
+
+
+Plan::Plan() { }
+
+
+Plan::~Plan() {
+	delete this->getP_PI();
+	delete this->getNormal();
 }

@@ -105,7 +105,7 @@ double Object::getP0distanceShadow() {
 }
 
 
-bool Object::hasShadow(std::vector<Object*> objects, Vector* pi, Vector l, Vector* pf) {
+bool Object::hasShadow(std::vector<Object*> objects, Vector* pi, Vector l, Light* light) {
 
     for (int j = 0; j < objects.size(); j++) {
 
@@ -113,7 +113,7 @@ bool Object::hasShadow(std::vector<Object*> objects, Vector* pi, Vector l, Vecto
 
         double erro = 0.00001;
 
-        if (objects[j]->getHasIntersectionShadow() && objects[j]->tShadow > erro && objects[j]->tShadow < (*pf - *pi).getLength()) {
+        if (objects[j]->getHasIntersectionShadow() && objects[j]->tShadow > erro && objects[j]->tShadow < light->distance(*pi)) {
             return true;
         }
 
@@ -136,26 +136,23 @@ Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objec
 
     for (int i = 0; i < lights.size(); i++) {
 
-        Vector* pf = lights[i]->getCoordinate();
+        l = lights[i]->calculateL(*pi);
 
-        l = (*pf - *pi);
-        l = l / (l.getLength());
+        bool hasShadow = obj->hasShadow(objects, pi, l, lights[i]);
 
+        if (!hasShadow) {
 
-        bool hasShadow = obj->hasShadow(objects, pi, l, pf);
+            r = (*normal * (2 * (l.scalarProd(*normal)))) - l;
 
-        //if (!hasShadow) {
+            double f_diffuse = std::max(0.0, (l.scalarProd(*normal)));
+            double f_speculated = std::pow(std::max(0.0, (r.scalarProd(v))), shininess);
 
-        r = (*normal * (2 * (l.scalarProd(*normal)))) - l;
+            Vector i_diffuse = (*(lights[i]->getIntensity())) * (*obj->kd) * f_diffuse;
+            Vector i_speculated = (*lights[i]->getIntensity()) * (*obj->ke) * f_speculated;
 
-        double f_diffuse = std::max(0.0, (l.scalarProd(*normal)));
-        double f_speculated = std::pow(std::max(0.0, (r.scalarProd(v))), shininess);
+            rgb = rgb + i_diffuse + i_speculated;
 
-        Vector i_diffuse = (*(lights[i]->getIntensity())) * (*obj->kd) * f_diffuse;
-        Vector i_speculated = (*lights[i]->getIntensity()) * (*obj->ke) * f_speculated;
-
-        rgb = rgb + i_diffuse + i_speculated;
-        //}
+        }
     }
 
     if (environmentLight != nullptr) {
@@ -171,4 +168,12 @@ Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objec
     Color* result = new Color(rgb.getCoordinate(0) * 255, rgb.getCoordinate(1) * 255, rgb.getCoordinate(2) * 255, 255);
     return result;
 
+}
+
+
+Object::~Object() {
+    delete this->getKD();
+    delete this->getKE();
+    delete this->getKA();
+    delete this->getIntersectionPoint();
 }

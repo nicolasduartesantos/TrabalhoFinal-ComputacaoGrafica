@@ -11,8 +11,6 @@ private:
 	double height;
 	Vector* vertex = nullptr;
 	double cos;
-	//cos = h/ sqrt(rad * rad + h * h)
-	//vertex = center_base + direction * height
 
 public:
 
@@ -34,6 +32,21 @@ public:
 
 	Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight);
 
+	void rotX(double a);
+	void rotY(double a);
+	void rotZ(double a);
+	void translation(double tx, double ty, double tz);
+	void scaling(double sx, double sy, double sz);
+	void reflectionXY();
+	void reflectionXZ();
+	void reflectionYZ();
+
+	void doWorldToCamera(Camera* camera);
+
+	bool inside(Vector* p);
+
 	Cone(double rad, Vector* center_base, Vector* direction, double height, Vector* kd, Vector* ke, Vector* ka, double shininess);
 	Cone(double rad, Vector* center_base, Vector* direction, double height, Vector* vertex, Vector* kd, Vector* ke, Vector* ka, double shininess);
+
+	~Cone();
 };

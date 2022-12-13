@@ -17,4 +17,6 @@ public:
 	int getH();
 
 	Image(std::string imgPath);
+
+	~Image();
 };

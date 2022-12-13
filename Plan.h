@@ -3,16 +3,10 @@
 #include "Object.h"
 
 class Plan : public Object {
-private:
-
-    Vector* p_pi = nullptr;
-    Vector* normal = nullptr;
-
-    //Vector* kd = nullptr;
-    //Vector* ke = nullptr;
-    //double shininess = 1.0;
 
 public:
+    Vector* p_pi = nullptr;
+    Vector* normal = nullptr;
 
     void setP_PI(Vector* p_pi);
     Vector* getP_PI();
@@ -26,5 +20,20 @@ public:
 
     Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight);
 
+    void rotX(double a);
+    void rotY(double a);
+    void rotZ(double a);
+    void translation(double tx, double ty, double tz);
+    void scaling(double sx, double sy, double sz);
+    void reflectionXY();
+    void reflectionXZ();
+    void reflectionYZ();
+
+    void doWorldToCamera(Camera* camera);
+
     Plan(Vector* p_pi, Vector* normal, Vector* kd, Vector* ke, Vector* ka, double shininess);
+
+    Plan();
+
+    ~Plan();
 };

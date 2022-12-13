@@ -121,3 +121,180 @@ Vector Vector::operator / (const double& b) {
 
 	return x;
 }
+
+
+// ROTAÇÃO
+Vector Vector::rotX(double a) {
+
+	double matrix[4][4] = { {1, 0, 0, 0}, {0, cos(a), -sin(a), 0}, {0, sin(a), cos(a), 0}, {0, 0, 0, 1} };
+
+	double x = (matrix[0][0] * this->coordinates[0]) + (matrix[0][1] * this->coordinates[1]) + (matrix[0][2] * this->coordinates[2]) + (matrix[0][3] * 1);
+	double y = (matrix[1][0] * this->coordinates[0]) + (matrix[1][1] * this->coordinates[1]) + (matrix[1][2] * this->coordinates[2]) + (matrix[1][3] * 1);
+	double z = (matrix[2][0] * this->coordinates[0]) + (matrix[2][1] * this->coordinates[1]) + (matrix[2][2] * this->coordinates[2]) + (matrix[2][3] * 1);
+
+	Vector ret = Vector(x, y, z);
+
+	return ret;
+}
+
+
+Vector Vector::rotY(double a) {
+	double matrix[4][4] = { {cos(a), 0, sin(a), 0}, {0, 1, 0, 0}, {-sin(a), 0, cos(a), 0}, {0, 0, 0, 1} };
+
+	double x = (matrix[0][0] * this->coordinates[0]) + (matrix[0][1] * this->coordinates[1]) + (matrix[0][2] * this->coordinates[2]) + (matrix[0][3] * 1);
+	double y = (matrix[1][0] * this->coordinates[0]) + (matrix[1][1] * this->coordinates[1]) + (matrix[1][2] * this->coordinates[2]) + (matrix[1][3] * 1);
+	double z = (matrix[2][0] * this->coordinates[0]) + (matrix[2][1] * this->coordinates[1]) + (matrix[2][2] * this->coordinates[2]) + (matrix[2][3] * 1);
+
+	Vector ret = Vector(x, y, z);
+
+	return ret;
+}
+
+
+Vector Vector::rotZ(double a) {
+	double matrix[4][4] = { {cos(a), -sin(a), 0, 0}, {sin(a), cos(a), 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1} };
+
+	double x = (matrix[0][0] * this->coordinates[0]) + (matrix[0][1] * this->coordinates[1]) + (matrix[0][2] * this->coordinates[2]) + (matrix[0][3] * 1);
+	double y = (matrix[1][0] * this->coordinates[0]) + (matrix[1][1] * this->coordinates[1]) + (matrix[1][2] * this->coordinates[2]) + (matrix[1][3] * 1);
+	double z = (matrix[2][0] * this->coordinates[0]) + (matrix[2][1] * this->coordinates[1]) + (matrix[2][2] * this->coordinates[2]) + (matrix[2][3] * 1);
+
+	Vector ret = Vector(x, y, z);
+
+	return ret;
+}
+
+
+// TRANSLAÇÃO
+Vector Vector::translation(double tx, double ty, double tz) {
+
+	double matrix[4][4] = { {1, 0, 0, tx}, {0, 1, 0, ty}, {0, 0, 1, tz}, {0, 0, 0, 1} };
+
+	double x = (matrix[0][0] * this->coordinates[0]) + (matrix[0][1] * this->coordinates[1]) + (matrix[0][2] * this->coordinates[2]) + (matrix[0][3] * 1);
+	double y = (matrix[1][0] * this->coordinates[0]) + (matrix[1][1] * this->coordinates[1]) + (matrix[1][2] * this->coordinates[2]) + (matrix[1][3] * 1);
+	double z = (matrix[2][0] * this->coordinates[0]) + (matrix[2][1] * this->coordinates[1]) + (matrix[2][2] * this->coordinates[2]) + (matrix[2][3] * 1);
+
+	Vector ret = Vector(x, y, z);
+
+	return ret;
+}
+
+
+// ESCALA
+Vector Vector::scaling(double sx, double sy, double sz) {
+
+	double matrix[4][4] = { {sx, 0, 0, 0}, {0, sy, 0, 0}, {0, 0, sz, 0}, {0, 0, 0, 1} };
+
+	double x = (matrix[0][0] * this->coordinates[0]) + (matrix[0][1] * this->coordinates[1]) + (matrix[0][2] * this->coordinates[2]) + (matrix[0][3] * 1);
+	double y = (matrix[1][0] * this->coordinates[0]) + (matrix[1][1] * this->coordinates[1]) + (matrix[1][2] * this->coordinates[2]) + (matrix[1][3] * 1);
+	double z = (matrix[2][0] * this->coordinates[0]) + (matrix[2][1] * this->coordinates[1]) + (matrix[2][2] * this->coordinates[2]) + (matrix[2][3] * 1);
+
+	Vector ret = Vector(x, y, z);
+
+	return ret;
+}
+
+
+// CISALHAMENTO
+Vector Vector::shearingYX(double a) {
+	double matrix[4][4] = { {1, tan(a), 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1} };
+
+	double x = (matrix[0][0] * this->coordinates[0]) + (matrix[0][1] * this->coordinates[1]) + (matrix[0][2] * this->coordinates[2]) + (matrix[0][3] * 1);
+	double y = (matrix[1][0] * this->coordinates[0]) + (matrix[1][1] * this->coordinates[1]) + (matrix[1][2] * this->coordinates[2]) + (matrix[1][3] * 1);
+	double z = (matrix[2][0] * this->coordinates[0]) + (matrix[2][1] * this->coordinates[1]) + (matrix[2][2] * this->coordinates[2]) + (matrix[2][3] * 1);
+
+	Vector ret = Vector(x, y, z);
+
+	return ret;
+}
+
+Vector Vector::shearingXY(double a) {
+	double matrix[4][4] = { {1, 0, 0, 0}, {tan(a), 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1} };
+
+	double x = (matrix[0][0] * this->coordinates[0]) + (matrix[0][1] * this->coordinates[1]) + (matrix[0][2] * this->coordinates[2]) + (matrix[0][3] * 1);
+	double y = (matrix[1][0] * this->coordinates[0]) + (matrix[1][1] * this->coordinates[1]) + (matrix[1][2] * this->coordinates[2]) + (matrix[1][3] * 1);
+	double z = (matrix[2][0] * this->coordinates[0]) + (matrix[2][1] * this->coordinates[1]) + (matrix[2][2] * this->coordinates[2]) + (matrix[2][3] * 1);
+
+	Vector ret = Vector(x, y, z);
+
+	return ret;
+}
+
+Vector Vector::shearingYZ(double a) {
+	double matrix[4][4] = { {1, 0, 0, 0}, {0, 1, 0, 0}, {0, tan(a), 1, 0}, {0, 0, 0, 1} };
+
+	double x = (matrix[0][0] * this->coordinates[0]) + (matrix[0][1] * this->coordinates[1]) + (matrix[0][2] * this->coordinates[2]) + (matrix[0][3] * 1);
+	double y = (matrix[1][0] * this->coordinates[0]) + (matrix[1][1] * this->coordinates[1]) + (matrix[1][2] * this->coordinates[2]) + (matrix[1][3] * 1);
+	double z = (matrix[2][0] * this->coordinates[0]) + (matrix[2][1] * this->coordinates[1]) + (matrix[2][2] * this->coordinates[2]) + (matrix[2][3] * 1);
+
+	Vector ret = Vector(x, y, z);
+
+	return ret;
+}
+
+Vector Vector::shearingZY(double a) {
+	double matrix[4][4] = { {1, 0, 0, 0}, {0, 1, tan(a), 0}, {0, 0, 1, 0}, {0, 0, 0, 1} };
+
+	double x = (matrix[0][0] * this->coordinates[0]) + (matrix[0][1] * this->coordinates[1]) + (matrix[0][2] * this->coordinates[2]) + (matrix[0][3] * 1);
+	double y = (matrix[1][0] * this->coordinates[0]) + (matrix[1][1] * this->coordinates[1]) + (matrix[1][2] * this->coordinates[2]) + (matrix[1][3] * 1);
+	double z = (matrix[2][0] * this->coordinates[0]) + (matrix[2][1] * this->coordinates[1]) + (matrix[2][2] * this->coordinates[2]) + (matrix[2][3] * 1);
+
+	Vector ret = Vector(x, y, z);
+
+	return ret;
+}
+
+Vector Vector::shearingXZ(double a) {
+	double matrix[4][4] = { {1, 0, 0, 0}, {0, 1, 0, 0}, {tan(a), 0, 1, 0}, {0, 0, 0, 1} };
+
+	double x = (matrix[0][0] * this->coordinates[0]) + (matrix[0][1] * this->coordinates[1]) + (matrix[0][2] * this->coordinates[2]) + (matrix[0][3] * 1);
+	double y = (matrix[1][0] * this->coordinates[0]) + (matrix[1][1] * this->coordinates[1]) + (matrix[1][2] * this->coordinates[2]) + (matrix[1][3] * 1);
+	double z = (matrix[2][0] * this->coordinates[0]) + (matrix[2][1] * this->coordinates[1]) + (matrix[2][2] * this->coordinates[2]) + (matrix[2][3] * 1);
+
+	Vector ret = Vector(x, y, z);
+
+	return ret;
+}
+
+Vector Vector::shearingZX(double a) {
+	double matrix[4][4] = { {1, 0, tan(a), 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1} };
+
+	double x = (matrix[0][0] * this->coordinates[0]) + (matrix[0][1] * this->coordinates[1]) + (matrix[0][2] * this->coordinates[2]) + (matrix[0][3] * 1);
+	double y = (matrix[1][0] * this->coordinates[0]) + (matrix[1][1] * this->coordinates[1]) + (matrix[1][2] * this->coordinates[2]) + (matrix[1][3] * 1);
+	double z = (matrix[2][0] * this->coordinates[0]) + (matrix[2][1] * this->coordinates[1]) + (matrix[2][2] * this->coordinates[2]) + (matrix[2][3] * 1);
+
+	Vector ret = Vector(x, y, z);
+
+	return ret;
+}
+
+
+// REFLEXÃO
+Vector Vector::reflectionXY() {
+	double matrix[4][4] = { {1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, -1, 0}, {0, 0, 0, 1} };
+
+	Vector ret = Vector((matrix[0][0] * this->getCoordinate(0) + matrix[0][1] * this->getCoordinate(1) + matrix[0][2] * this->getCoordinate(2) + matrix[0][3] * 1),
+		(matrix[1][0] * this->getCoordinate(0) + matrix[1][1] * this->getCoordinate(1) + matrix[1][2] * this->getCoordinate(2) + matrix[1][3] * 1),
+		(matrix[2][0] * this->getCoordinate(0) + matrix[2][1] * this->getCoordinate(1) + matrix[2][2] * this->getCoordinate(2) + matrix[2][3] * 1));
+
+	return ret;
+}
+
+Vector Vector::reflectionXZ() {
+	double matrix[4][4] = { {1, 0, 0, 0}, {0, -1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1} };
+
+	Vector ret = Vector((matrix[0][0] * this->getCoordinate(0) + matrix[0][1] * this->getCoordinate(1) + matrix[0][2] * this->getCoordinate(2) + matrix[0][3] * 1),
+		(matrix[1][0] * this->getCoordinate(0) + matrix[1][1] * this->getCoordinate(1) + matrix[1][2] * this->getCoordinate(2) + matrix[1][3] * 1),
+		(matrix[2][0] * this->getCoordinate(0) + matrix[2][1] * this->getCoordinate(1) + matrix[2][2] * this->getCoordinate(2) + matrix[2][3] * 1));
+
+	return ret;
+}
+
+Vector Vector::reflectionYZ() {
+	double matrix[4][4] = { {-1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1} };
+
+	Vector ret = Vector((matrix[0][0] * this->getCoordinate(0) + matrix[0][1] * this->getCoordinate(1) + matrix[0][2] * this->getCoordinate(2) + matrix[0][3] * 1),
+		(matrix[1][0] * this->getCoordinate(0) + matrix[1][1] * this->getCoordinate(1) + matrix[1][2] * this->getCoordinate(2) + matrix[1][3] * 1),
+		(matrix[2][0] * this->getCoordinate(0) + matrix[2][1] * this->getCoordinate(1) + matrix[2][2] * this->getCoordinate(2) + matrix[2][3] * 1));
+
+	return ret;
+}

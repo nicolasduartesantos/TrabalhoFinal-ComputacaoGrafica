@@ -1,6 +1,5 @@
 #include "Cylinder.h"
-#include "Object.h"
-#include "Vector.h"
+#include "Camera.h"
 #include <iostream>
 #include <cmath>
 
@@ -9,6 +8,14 @@ void Cylinder::setRad(double rad) {
 }
 double Cylinder::getRad() {
     return this->rad;
+}
+
+
+void Cylinder::setHeight(double height) {
+    this->height = height;
+}
+double Cylinder::getHeight() {
+    return this->height;
 }
 
 
@@ -98,7 +105,6 @@ bool Cylinder::intersect(Vector* p0, Vector* dir) {
             this->setObjectSurface(ObjectSurface::CYLINDER_TOP);
 
         }
-        std::cout << "return true 1\n";
         return true;
     }
 
@@ -652,6 +658,171 @@ Color* Cylinder::getRGB(std::vector<Light*> lights, std::vector<Object*> objects
 }
 
 
+
+
+
+void Cylinder::scaling(double sx, double sy, double sz) {
+
+    Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
+    Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+    *center_top = center_top->scaling(sx, sy, sz);
+
+    Vector* center_base = this->getCenter_base();
+    *center_base = center_base->scaling(sx, sy, sz);
+
+    Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+    Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+    Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+    this->setDirection(direction);
+
+    this->setRad(std::max(std::max(sx, sy), sz) * this->getRad());
+    this->setHeight((*center_top - *this->getCenter_base()).getLength());
+}
+
+
+void Cylinder::translation(double tx, double ty, double tz) {
+
+    Vector* center_base = this->getCenter_base();
+    *center_base = center_base->translation(tx, ty, tz);
+}
+
+
+void Cylinder::rotX(double a) {
+
+    Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
+    Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+    *center_top = center_top->rotX(a);
+
+    Vector* center_base = this->getCenter_base();
+    *center_base = center_base->rotX(a);
+
+    Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+    Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+    Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+    this->setDirection(direction);
+
+}
+
+
+void Cylinder::rotY(double a) {
+
+    Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
+    Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+    *center_top = center_top->rotY(a);
+
+    Vector* center_base = this->getCenter_base();
+    *center_base = center_base->rotY(a);
+
+    Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+    Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+    Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+    this->setDirection(direction);
+
+}
+
+
+void Cylinder::rotZ(double a) {
+
+    Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
+    Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+    *center_top = center_top->rotZ(a);
+
+    Vector* center_base = this->getCenter_base();
+    *center_base = center_base->rotZ(a);
+
+    Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+    Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+    Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+    this->setDirection(direction);
+
+}
+
+
+void Cylinder::reflectionXY() {
+
+    Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
+    Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+    *center_top = center_top->reflectionXY();
+
+    Vector* center_base = this->getCenter_base();
+    *center_base = center_base->reflectionXY();
+
+    Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+    Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+    Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+    this->setDirection(direction);
+
+}
+
+
+void Cylinder::reflectionXZ() {
+
+    Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
+    Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+    *center_top = center_top->reflectionXZ();
+
+    Vector* center_base = this->getCenter_base();
+    *center_base = center_base->reflectionXZ();
+
+    Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+    Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+    Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+    this->setDirection(direction);
+
+}
+
+
+void Cylinder::reflectionYZ() {
+
+    Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
+    Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+    *center_top = center_top->reflectionYZ();
+
+    Vector* center_base = this->getCenter_base();
+    *center_base = center_base->reflectionYZ();
+
+    Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+    Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
+    Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
+    this->setDirection(direction);
+
+}
+
+
+
+
+
+void Cylinder::doWorldToCamera(Camera* camera) {
+
+    Vector* cb = new Vector(camera->worldToCamera(*this->getCenter_base()));
+    delete this->getCenter_base();
+    this->setCenter_base(cb);
+
+    Vector d = camera->worldToCamera(*this->getDirection()) - camera->worldToCamera(Vector(0, 0, 0));
+    Vector* dNormalized = new Vector(d / d.getLength());
+    delete this->getDirection();
+    this->setDirection(dNormalized);
+
+}
+
+
+bool Cylinder::inside(Vector* p) {
+
+    double ver = (*p - *this->getCenter_base()).scalarProd(*this->getDirection());
+    Vector projection = *this->getDirection() * ver;
+
+    if ((projection - *p).getLength() < this->getRad() && ver >= 0 && ver <= this->getHeight()) {
+        return true;
+    }
+    else {
+        false;
+    }
+}
+
+
+Cylinder::Cylinder() {}
+
+
 Cylinder::Cylinder(double rad, Vector* center_base, Vector* direction, double height, Vector* kd, Vector* ke, Vector* ka, double shininess) {
     this->rad = rad;
     this->center_base = center_base;
@@ -662,4 +833,10 @@ Cylinder::Cylinder(double rad, Vector* center_base, Vector* direction, double he
     this->ka = ka;
     this->shininess = shininess;
     this->setObjectType(ObjectType::CYLINDER);
+}
+
+
+Cylinder::~Cylinder() {
+    delete this->getCenter_base();
+    delete this->getDirection();
 }

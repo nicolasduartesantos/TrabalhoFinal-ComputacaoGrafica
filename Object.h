@@ -1,11 +1,12 @@
 #pragma once
 
+#include <vector>
 #include "Vector.h"
 #include "Light.h"
 #include "Color.h"
-#include <vector>
+#include "Camera.h"
 
-enum class ObjectType { SPHERE, PLAN, CYLINDER, CONE, MESH };
+enum class ObjectType { SPHERE, PLAN, CYLINDER, CONE, MESH, TEXTURE, MESH_TEXTURIZED };
 enum class ObjectSurface { ON_SPHERE, ON_PLAN, CYLINDER_SURFACE, CYLINDER_BASE, CYLINDER_TOP, CONE_SURFACE, CONE_BASE, UNKNOWN };
 
 
@@ -76,8 +77,22 @@ public:
 
     virtual Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) = 0;
 
-    bool hasShadow(std::vector<Object*> objects, Vector* pi, Vector l, Vector* pf);
+    bool hasShadow(std::vector<Object*> objects, Vector* pi, Vector l, Light* light);
 
     Color* RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight, Vector* normal, Object* obj);
 
+    virtual void rotX(double a) = 0;
+    virtual void rotY(double a) = 0;
+    virtual void rotZ(double a) = 0;
+    virtual void translation(double tx, double ty, double tz) = 0;
+    virtual void scaling(double sx, double sy, double sz) = 0;
+    virtual void reflectionXY() = 0;
+    virtual void reflectionXZ() = 0;
+    virtual void reflectionYZ() = 0;
+
+    virtual void doWorldToCamera(Camera* camera) = 0;
+
+    //virtual bool inside(Vector* p) = 0;
+
+    virtual ~Object();
 };

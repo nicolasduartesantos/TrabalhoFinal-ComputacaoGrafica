@@ -1,3 +1,2 @@
 ﻿  Main.cpp
-Main.obj : error LNK2019: símbolo externo não resolvido, "public: __cdecl TexturePlan::TexturePlan(class Image *,class Vector *,class Vector *,double)" (??0TexturePlan@@QEAA@PEAVImage@@PEAVVector@@1N@Z), referenciado na função SDL_main
-C:\Users\Nicolas\source\repos\Tarefa3\x64\Debug\Tarefa3.exe : fatal error LNK1120: 1 externo não resolvidos
+  Tarefa3.vcxproj -> C:\Users\Nicolas\source\repos\Tarefa3\x64\Debug\Tarefa3.exe
