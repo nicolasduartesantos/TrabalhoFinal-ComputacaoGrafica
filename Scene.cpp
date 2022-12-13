@@ -148,7 +148,7 @@ void Scene::paintCanvas(SDL_Renderer* renderer) {
             }
             else {
                 p0 = new Vector(x, y, 0);
-                p = new Vector(0, 0, -1);
+                p = new Vector(x, y, -1);
             }
 
             Vector dirtemp = ((*p - *p0) / ((*p - *p0).getLength()));
@@ -235,7 +235,6 @@ void Scene::mainLoop() {
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
 
 
     ImGui_ImplSDL2_InitForSDLRenderer(window, renderer);
@@ -250,11 +249,6 @@ void Scene::mainLoop() {
     bool change = true;
     while (!done)
     {
-        // Poll and handle events (inputs, window resize, etc.)
-        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
-        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
-        // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
@@ -277,13 +271,15 @@ void Scene::mainLoop() {
         window_flags |= ImGuiWindowFlags_NoMove;
         window_flags |= ImGuiWindowFlags_NoSavedSettings;
 
+
         ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
-        ImGui::SetNextWindowSize(ImVec2(250, 100), ImGuiCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(260, 140), ImGuiCond_Once);
 
         static bool show_window = true;
 
         ImGui::Begin("Menu", NULL, window_flags);
         ImGui::Text("Escolha o que deseja alterar:");
+
 
         if (ImGui::CollapsingHeader("Camera")) {
 
@@ -324,9 +320,9 @@ void Scene::mainLoop() {
             }
         }
 
-        if (ImGui::CollapsingHeader("Material")) {
+        //if (ImGui::CollapsingHeader("Material")) {
             //mdmaterial
-        }
+        //}
 
         if (ImGui::CollapsingHeader("Lights")) {
             //mdmaterial
@@ -334,12 +330,25 @@ void Scene::mainLoop() {
 
         if (ImGui::CollapsingHeader("Picking")) {
             //mdcamera
+            //Object* o = this->interaction->picking();
+
         }
 
+        if (ImGui::CollapsingHeader("Projection")) {
 
-        if (ImGui::CollapsingHeader("Perspective")) {
-            //mdmaterial
+            if (ImGui::Button("Perspective")) {
+                this->setProjection(ProjectionType::PERSPECTIVE);
+                change = true;
+            }
+
+            ImGui::SameLine();
+
+            if (ImGui::Button("Orthographic")) {
+                this->setProjection(ProjectionType::ORTHOGRAPHIC);
+                change = true;
+            }
         }
+
         ImGui::End();
 
         // Rendering
@@ -349,7 +358,7 @@ void Scene::mainLoop() {
         }
         ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
         SDL_RenderPresent(renderer);
-        
+
     }
 
     // Cleanup
@@ -362,7 +371,7 @@ void Scene::mainLoop() {
     SDL_Quit();
 
     return;
-    
+
 }
 
 

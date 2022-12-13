@@ -12,6 +12,9 @@ private:
 
 public:
 
+	Vector* initial_center_base = nullptr;
+	Vector* initial_direction = nullptr;
+
 	void setRad(double rad);
 	double getRad();
 

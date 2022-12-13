@@ -157,6 +157,7 @@ bool Cylinder::intersect(Vector* p0, Vector* dir) {
 
         // CASO 1
         if ((ver1 >= 0 and ver1 <= this->height) and (ver2 >= 0 and ver2 <= this->height)) {
+            
 
             if (distancePi1P0 < distancePi2P0) {
 
@@ -467,28 +468,45 @@ bool Cylinder::intersect_for_shadow(Vector* p0, Vector* dir) {
         // CASO 1
         if ((ver1 >= 0 and ver1 <= this->height) and (ver2 >= 0 and ver2 <= this->height)) {
 
-            if (distancePi1P0 < distancePi2P0) {
+            if (t1 < 0 and t2 < 0) {
+                this->setHasIntersectionShadow(false);
+                return false;
+            }
 
-                if (t1 < 0) {
-                    this->setHasIntersectionShadow(false);
-                    return false;
-                }
-
+            if (t1 > 0 and t2 < 0) {
                 this->setP0distanceShadow(distancePi1P0);
                 this->setTShadow(t1);
             }
 
-            else {
-
-                if (t2 < 0) {
-                    this->setHasIntersectionShadow(false);
-                    return false;
-                }
-
+            if (t1 < 0 and t2 > 0) {
                 this->setP0distanceShadow(distancePi2P0);
                 this->setTShadow(t2);
             }
 
+            if (t1 > 0 and t2 > 0) {
+
+                if (distancePi1P0 < distancePi2P0) {
+
+                    if (t1 < 0) {
+                        this->setHasIntersectionShadow(false);
+                        return false;
+                    }
+
+                    this->setP0distanceShadow(distancePi1P0);
+                    this->setTShadow(t1);
+                }
+
+                else {
+
+                    if (t2 < 0) {
+                        this->setHasIntersectionShadow(false);
+                        return false;
+                    }
+
+                    this->setP0distanceShadow(distancePi2P0);
+                    this->setTShadow(t2);
+                }
+            }
         }
 
         // CASO 2
@@ -496,56 +514,91 @@ bool Cylinder::intersect_for_shadow(Vector* p0, Vector* dir) {
 
             if (interceptsBase) {
 
-                if (distancePi1P0 < distancePiBaseP0) {
+                if (t1 < 0 and tBase < 0) {
+                    this->setHasIntersectionShadow(false);
+                    return false;
+                }
 
-                    if (t1 < 0) {
-                        this->setHasIntersectionShadow(false);
-                        return false;
-                    }
-
+                if (t1 > 0 and tBase < 0) {
                     this->setP0distanceShadow(distancePi1P0);
                     this->setTShadow(t1);
-
                 }
 
-                else {
-
-                    if (tBase < 0) {
-                        this->setHasIntersectionShadow(false);
-                        return false;
-                    }
-
+                if (t1 < 0 and tBase > 0) {
                     this->setP0distanceShadow(distancePiBaseP0);
                     this->setTShadow(tBase);
-
                 }
 
+                if (t1 > 0 and tBase > 0) {
+
+                    if (distancePi1P0 < distancePiBaseP0) {
+
+                        if (t1 < 0) {
+                            this->setHasIntersectionShadow(false);
+                            return false;
+                        }
+
+                        this->setP0distanceShadow(distancePi1P0);
+                        this->setTShadow(t1);
+
+                    }
+
+                    else {
+
+                        if (tBase < 0) {
+                            this->setHasIntersectionShadow(false);
+                            return false;
+                        }
+
+                        this->setP0distanceShadow(distancePiBaseP0);
+                        this->setTShadow(tBase);
+
+                    }
+                }
             }
 
             else {
 
-                if (distancePi1P0 < distancePiTopP0) {
-
-                    if (t1 < 0) {
-                        this->setHasIntersectionShadow(false);
-                        return false;
-                    }
-
-                    this->setP0distanceShadow(distancePi1P0);
-                    this->setTShadow(t1);
-
+                if (t1 < 0 and tTop < 0) {
+                    this->setHasIntersectionShadow(false);
+                    return false;
                 }
 
-                else {
+                if (t1 > 0 and tTop < 0) {
+                    this->setP0distanceShadow(distancePi1P0);
+                    this->setTShadow(t1);
+                }
 
-                    if (tTop < 0) {
-                        this->setHasIntersectionShadow(false);
-                        return false;
-                    }
-
+                if (t1 < 0 and tTop > 0) {
                     this->setP0distanceShadow(distancePiTopP0);
                     this->setTShadow(tTop);
+                }
 
+                if (t1 > 0 and tTop > 0) {
+
+                    if (distancePi1P0 < distancePiTopP0) {
+
+                        if (t1 < 0) {
+                            this->setHasIntersectionShadow(false);
+                            return false;
+                        }
+
+                        this->setP0distanceShadow(distancePi1P0);
+                        this->setTShadow(t1);
+
+                    }
+
+                    else {
+
+                        if (tTop < 0) {
+                            this->setHasIntersectionShadow(false);
+                            return false;
+                        }
+
+                        this->setP0distanceShadow(distancePiTopP0);
+                        this->setTShadow(tTop);
+
+                    }
                 }
 
             }
@@ -557,27 +610,45 @@ bool Cylinder::intersect_for_shadow(Vector* p0, Vector* dir) {
 
             if (interceptsBase) {
 
-                if (distancePi2P0 < distancePiBaseP0) {
-
-                    if (t2 < 0) {
-                        this->setHasIntersectionShadow(false);
-                        return false;
-                    }
-
-                    this->setP0distanceShadow(distancePi2P0);
-                    this->setTShadow(t2);
-
+                if (t2 < 0 and tBase < 0) {
+                    this->setHasIntersectionShadow(false);
+                    return false;
                 }
 
-                else {
+                if (t2 > 0 and tBase < 0) {
+                    this->setP0distanceShadow(distancePi1P0);
+                    this->setTShadow(t2);
+                }
 
-                    if (tBase < 0) {
-                        this->setHasIntersectionShadow(false);
-                        return false;
-                    }
-
+                if (t2 < 0 and tBase > 0) {
                     this->setP0distanceShadow(distancePiBaseP0);
                     this->setTShadow(tBase);
+                }
+
+                if (t2 > 0 and tBase > 0) {
+
+                    if (distancePi2P0 < distancePiBaseP0) {
+
+                        if (t2 < 0) {
+                            this->setHasIntersectionShadow(false);
+                            return false;
+                        }
+
+                        this->setP0distanceShadow(distancePi2P0);
+                        this->setTShadow(t2);
+
+                    }
+
+                    else {
+
+                        if (tBase < 0) {
+                            this->setHasIntersectionShadow(false);
+                            return false;
+                        }
+
+                        this->setP0distanceShadow(distancePiBaseP0);
+                        this->setTShadow(tBase);
+                    }
 
                 }
 
@@ -585,30 +656,47 @@ bool Cylinder::intersect_for_shadow(Vector* p0, Vector* dir) {
 
             else {
 
-                if (distancePi2P0 < distancePiTopP0) {
-
-                    if (t2 < 0) {
-                        this->setHasIntersectionShadow(false);
-                        return false;
-                    }
-
-                    this->setP0distanceShadow(distancePi2P0);
-                    this->setTShadow(t2);
-
+                if (t2 < 0 and tTop < 0) {
+                    this->setHasIntersectionShadow(false);
+                    return false;
                 }
 
-                else {
+                if (t2 > 0 and tTop < 0) {
+                    this->setP0distanceShadow(distancePi1P0);
+                    this->setTShadow(t2);
+                }
 
-                    if (tTop < 0) {
-                        this->setHasIntersectionShadow(false);
-                        return false;
-                    }
-
+                if (t2 < 0 and tTop > 0) {
                     this->setP0distanceShadow(distancePiTopP0);
                     this->setTShadow(tTop);
-
                 }
 
+                if (t2 > 0 and tTop > 0) {
+
+                    if (distancePi2P0 < distancePiTopP0) {
+
+                        if (t2 < 0) {
+                            this->setHasIntersectionShadow(false);
+                            return false;
+                        }
+
+                        this->setP0distanceShadow(distancePi2P0);
+                        this->setTShadow(t2);
+
+                    }
+
+                    else {
+
+                        if (tTop < 0) {
+                            this->setHasIntersectionShadow(false);
+                            return false;
+                        }
+
+                        this->setP0distanceShadow(distancePiTopP0);
+                        this->setTShadow(tTop);
+
+                    }
+                }
             }
 
         }
@@ -794,11 +882,11 @@ void Cylinder::reflectionYZ() {
 
 void Cylinder::doWorldToCamera(Camera* camera) {
 
-    Vector* cb = new Vector(camera->worldToCamera(*this->getCenter_base()));
+    Vector* cb = new Vector(camera->worldToCamera(*this->initial_center_base));
     delete this->getCenter_base();
     this->setCenter_base(cb);
 
-    Vector d = camera->worldToCamera(*this->getDirection()) - camera->worldToCamera(Vector(0, 0, 0));
+    Vector d = camera->worldToCamera(*this->initial_direction) - camera->worldToCamera(Vector(0, 0, 0));
     Vector* dNormalized = new Vector(d / d.getLength());
     delete this->getDirection();
     this->setDirection(dNormalized);
@@ -833,6 +921,9 @@ Cylinder::Cylinder(double rad, Vector* center_base, Vector* direction, double he
     this->ka = ka;
     this->shininess = shininess;
     this->setObjectType(ObjectType::CYLINDER);
+
+    this->initial_center_base = new Vector(*this->center_base);
+    this->initial_direction = new Vector(*this->direction);
 }
 
 

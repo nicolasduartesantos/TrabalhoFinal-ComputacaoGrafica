@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
 
 	Light* light = new Point(new Vector(0.7, 0.7, 0.7), new Vector(350., 350., -250.));
 
-	Cluster* cluster = new Cluster(0.5, new Vector(0.5, 0., 0.5), new Vector(0.0, 1.0, 0.0), 1.0);
+	Cluster* cluster = new Cluster(2, new Vector(0.5, 0., 0.5), new Vector(0.0, 1.0, 0.0), 1.0);
 
 	Mesh* coluna1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
 	coluna1->scaling(50, 500, 30);
@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 	coluna4->scaling(50, 500, 30);
 	coluna4->translation(650, 0, -1030);
 
-
+	/*
 	Mesh* semiteto1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
 	semiteto1->scaling(300, 50, 30);
 	semiteto1->shearingXY(atan(0.75));
@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 	Mesh* semiteto4 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
 	semiteto4->scaling(300, 50, 30);
 	semiteto4->shearingXY(atan(-0.75));
-	semiteto4->translation(350, 675, -1030);
+	semiteto4->translation(350, 675, -1030);*/
 
 
 	Mesh* teto1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
 	scene->addLight(light);
 	scene->addObject(plan1);
 	
-	scene->addObject(coluna1);
+	/*scene->addObject(coluna1);
 	scene->addObject(coluna2);
 	scene->addObject(coluna3);
 	scene->addObject(coluna4);
@@ -121,8 +121,8 @@ int main(int argc, char* argv[]) {
 
 	scene->addObject(parede1);
 	scene->addObject(parede2);
-	scene->addObject(parede3);
-
+	scene->addObject(parede3);*/
+	
 	scene->addObject(peMesa1);
 	scene->addObject(peMesa2);
 	scene->addObject(mesa);
@@ -137,8 +137,6 @@ int main(int argc, char* argv[]) {
 	scene->camera(new Vector(400., 300., 400.), new Vector(400., 250., 0.), new Vector(400., 300., 0.));
 
 	scene->interaction = new Interaction();
-
-	scene->mainLoop(); scene->interaction = new Interaction();
 
 	scene->mainLoop();
 

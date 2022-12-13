@@ -189,7 +189,7 @@ void Sphere::reflectionYZ() {
 
 void Sphere::doWorldToCamera(Camera* camera) {
 
-    Vector* c = new Vector(camera->worldToCamera(*this->getCenter()));
+    Vector* c = new Vector(camera->worldToCamera(*this->initial_center));
     delete this->getCenter();
     this->setCenter(c);
 
@@ -216,9 +216,13 @@ Sphere::Sphere(double rad, Vector* center, Vector* kd, Vector* ke, Vector* ka, d
     this->center = center;
     this->shininess = shininess;
     this->setObjectType(ObjectType::SPHERE);
+
+    this->initial_center = new Vector(*this->center);
 }
 
 
 Sphere::~Sphere() {
     delete this->getCenter();
+
+    delete this->initial_center;
 }

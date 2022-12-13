@@ -19,6 +19,8 @@ private:
 
 public:
 
+	std::vector<Vector*> initial_vertices;
+
 	void addFace(Face* face);
 	std::vector<Face*> getFaces();
 

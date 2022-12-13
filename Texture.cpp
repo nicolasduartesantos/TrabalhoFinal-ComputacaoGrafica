@@ -68,6 +68,9 @@ Texture::Texture(Image* texture, Vector* p_pi, Vector* normal, double shininess)
     this->setP_PI(p_pi);
     this->setNormal(normal);
     this->setShininess(shininess);
+
+    this->initial_p_pi = new Vector(*this->p_pi);
+    this->initial_normal = new Vector(*this->normal);
 }
 
 

@@ -408,8 +408,8 @@ void MeshTexturized::reflectionYZ() {
 
 void MeshTexturized::doWorldToCamera(Camera* camera) {
 
-	for (Vector* v : this->vertices) {
-		*v = Vector(camera->worldToCamera(*v));
+	for (int i = 0; i < this->vertices.size(); i++) {
+		*this->vertices[i] = Vector(camera->worldToCamera(*this->initial_vertices[i]));
 	}
 
 	this->cluster->doWorldToCamera(camera);

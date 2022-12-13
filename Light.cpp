@@ -11,6 +11,14 @@ Vector* Light::getIntensity() {
 }
 
 
+void Light::setActive(bool active) {
+    this->active = active;
+}
+bool Light::getActive() {
+    return this->active;
+}
+
+
 Light::Light(Vector* intensity) {
     this->setIntensity(intensity);
 }
@@ -71,12 +79,11 @@ double Spot::distance(Vector p) {
 
 void Spot::doWorldToCamera(Camera* camera) {
 
-    Vector d = camera->worldToCamera(*this->getDirection()) - camera->worldToCamera(Vector(0, 0, 0));
-    Vector* dNormalized = new Vector(d / d.getLength());
+    Vector* d = new Vector(camera->worldToCamera(*this->initial_direction) - camera->worldToCamera(Vector(0, 0, 0)));
     delete this->getDirection();
-    this->setDirection(dNormalized);
+    this->setDirection(d);
 
-    Vector* c = new Vector(camera->worldToCamera(*this->getCoordinate()));
+    Vector* c = new Vector(camera->worldToCamera(*this->initial_coordinate));
     delete this->getCoordinate();
     this->setCoordinate(c);
 
@@ -88,12 +95,18 @@ Spot::Spot(Vector* intensity, Vector* coordinate, Vector* direction, double angl
     this->coordinate = coordinate;
     this->direction = direction;
     this->angle = angle;
+
+    this->initial_direction = new Vector(*this->direction);
+    this->initial_coordinate = new Vector(*this->coordinate);
 }
 
 
 Spot::~Spot() {
     delete this->getCoordinate();
     delete this->getDirection();
+
+    delete this->initial_coordinate;
+    delete this->initial_direction;
 }
 
 
@@ -126,7 +139,7 @@ double Point::distance(Vector p) {
 
 void Point::doWorldToCamera(Camera* camera) {
 
-    Vector* c = new Vector(camera->worldToCamera(*this->getCoordinate()));
+    Vector* c = new Vector(camera->worldToCamera(*this->initial_coordinate));
     delete this->getCoordinate();
     this->setCoordinate(c);
 
@@ -136,11 +149,15 @@ void Point::doWorldToCamera(Camera* camera) {
 Point::Point(Vector* intensity, Vector* coordinate) {
     this->setIntensity(intensity);
     this->coordinate = coordinate;
+
+    this->initial_coordinate = new Vector(*this->coordinate);
 }
 
 
 Point::~Point() {
     delete this->getCoordinate();
+
+    delete this->initial_coordinate;
 }
 
 
@@ -172,10 +189,9 @@ double Directional::distance(Vector p) {
 
 void Directional::doWorldToCamera(Camera* camera) {
 
-    Vector d = camera->worldToCamera(*this->getDirection()) - camera->worldToCamera(Vector(0, 0, 0));
-    Vector* dNormalized = new Vector(d / d.getLength());
+    Vector* d = new Vector(camera->worldToCamera(*this->initial_direction) - camera->worldToCamera(Vector(0, 0, 0)));
     delete this->getDirection();
-    this->setDirection(dNormalized);
+    this->setDirection(d);
 
 }
 
@@ -183,9 +199,13 @@ void Directional::doWorldToCamera(Camera* camera) {
 Directional::Directional(Vector* intensity, Vector* direction) {
     this->setIntensity(intensity);
     this->direction = direction;
+
+    this->initial_direction = new Vector(*this->direction);
 }
 
 
 Directional::~Directional() {
     delete this->getDirection();
+
+    delete this->initial_direction;
 }

@@ -23,6 +23,16 @@ Mesh* Cube::create(Vector* center_base, double edgeSize, Vector* kd, Vector* ke,
     mesh->addVertex(vertex7);
     mesh->addVertex(vertex8);
 
+    mesh->initial_vertices.push_back(new Vector(vertex1->getCoordinate(0), vertex1->getCoordinate(1), vertex1->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex2->getCoordinate(0), vertex2->getCoordinate(1), vertex2->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex3->getCoordinate(0), vertex3->getCoordinate(1), vertex3->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex4->getCoordinate(0), vertex4->getCoordinate(1), vertex4->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex5->getCoordinate(0), vertex5->getCoordinate(1), vertex5->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex6->getCoordinate(0), vertex6->getCoordinate(1), vertex6->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex7->getCoordinate(0), vertex7->getCoordinate(1), vertex7->getCoordinate(2)));
+    mesh->initial_vertices.push_back(new Vector(vertex8->getCoordinate(0), vertex8->getCoordinate(1), vertex8->getCoordinate(2)));
+
+
     //edges
     mesh->addEdge(new Edge(0, 1));
     mesh->addEdge(new Edge(1, 2));

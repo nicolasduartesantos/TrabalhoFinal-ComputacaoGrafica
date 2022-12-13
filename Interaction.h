@@ -11,7 +11,9 @@ public:
 
 	void picking();
 
-	void changeProjection();
+
+
+
 
 
 

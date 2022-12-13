@@ -6,10 +6,14 @@
 class Light {
 private:
     Vector* intensity = nullptr;
+    bool active = true;
 
 public:
     void setIntensity(Vector* intensity);
     Vector* getIntensity();
+
+    void setActive(bool active);
+    bool getActive();
 
     virtual Vector calculateL(Vector pi) = 0;
 
@@ -32,6 +36,10 @@ private:
     double angle;
 
 public:
+
+    Vector* initial_direction = nullptr;
+    Vector* initial_coordinate = nullptr;
+
     void setDirection(Vector* direction);
     Vector* getDirection();
 
@@ -60,6 +68,8 @@ private:
 
 public:
 
+    Vector* initial_coordinate = nullptr;
+
     void setCoordinate(Vector* coordinate);
     Vector* getCoordinate();
 
@@ -81,6 +91,9 @@ private:
     Vector* direction = nullptr;
 
 public:
+
+    Vector* initial_direction = nullptr;
+
     void setDirection(Vector* direction);
     Vector* getDirection();
 
