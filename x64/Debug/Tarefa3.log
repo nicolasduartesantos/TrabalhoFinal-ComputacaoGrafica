@@ -1,27 +1,2 @@
-﻿  Cluster.cpp
-  Cone.cpp
-  Cube.cpp
-  Cylinder.cpp
-  Interaction.cpp
-C:\Users\julia\source\repos\Tarefa3\Tarefa3\Interaction.cpp(209,17): error C2059: erro de sintaxe: '}'
-  Mesh.cpp
-C:\Users\julia\source\repos\Tarefa3\Tarefa3\Mesh.cpp(77,31): warning C4244: 'argumento': conversão de 'double' para 'const unsigned __int64', possível perda de dados
-C:\Users\julia\source\repos\Tarefa3\Tarefa3\Mesh.cpp(78,31): warning C4244: 'argumento': conversão de 'double' para 'const unsigned __int64', possível perda de dados
-C:\Users\julia\source\repos\Tarefa3\Tarefa3\Mesh.cpp(79,31): warning C4244: 'argumento': conversão de 'double' para 'const unsigned __int64', possível perda de dados
-C:\Users\julia\source\repos\Tarefa3\Tarefa3\Mesh.cpp(157,31): warning C4244: 'argumento': conversão de 'double' para 'const unsigned __int64', possível perda de dados
-C:\Users\julia\source\repos\Tarefa3\Tarefa3\Mesh.cpp(158,31): warning C4244: 'argumento': conversão de 'double' para 'const unsigned __int64', possível perda de dados
-C:\Users\julia\source\repos\Tarefa3\Tarefa3\Mesh.cpp(159,31): warning C4244: 'argumento': conversão de 'double' para 'const unsigned __int64', possível perda de dados
-  Object.cpp
-C:\Users\julia\source\repos\Tarefa3\Tarefa3\Object.cpp(168,108): warning C4244: 'argumento': conversão de 'double' para 'int', possível perda de dados
-C:\Users\julia\source\repos\Tarefa3\Tarefa3\Object.cpp(168,80): warning C4244: 'argumento': conversão de 'double' para 'int', possível perda de dados
-C:\Users\julia\source\repos\Tarefa3\Tarefa3\Object.cpp(168,52): warning C4244: 'argumento': conversão de 'double' para 'int', possível perda de dados
-  Plan.cpp
-  Scene.cpp
-  Sphere.cpp
-  Main.cpp
-  Teste.cpp
-  Texture.cpp
-  Gerando Código...
-C:\Users\julia\source\repos\Tarefa3\Tarefa3\Cylinder.cpp(628): warning C4715: 'Cylinder::intersect_for_shadow': nem todos os caminhos de controle retornam um valor
-C:\Users\julia\source\repos\Tarefa3\Tarefa3\Cylinder.cpp(820): warning C4715: 'Cylinder::inside': nem todos os caminhos de controle retornam um valor
-C:\Users\julia\source\repos\Tarefa3\Tarefa3\Cone.cpp(712): warning C4715: 'Cone::inside': nem todos os caminhos de controle retornam um valor
+﻿  Main.cpp
+  Tarefa3.vcxproj -> C:\Users\julia\source\repos\Tarefa3\x64\Debug\Tarefa3.exe

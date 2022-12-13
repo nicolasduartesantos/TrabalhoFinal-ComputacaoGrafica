@@ -14,6 +14,9 @@ private:
 
 public:
 
+	Vector* initial_center_base = nullptr;
+	Vector* initial_vertex = nullptr;
+
 	void setRad(double rad);
 	double getRad();
 
@@ -22,6 +25,9 @@ public:
 
 	void setDirection(Vector* direction);
 	Vector* getDirection();
+
+	void setVertex(Vector* vertex);
+	Vector* getVertex();
 
 	void setHeight(double height);
 	double getHeight();

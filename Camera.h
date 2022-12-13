@@ -3,13 +3,15 @@
 #include "Vector.h"
 
 class Camera {
-private:
+
+	
+
+public:
+
 
 	Vector* eye = nullptr;
 	Vector* at = nullptr;
 	Vector* up = nullptr;
-
-public:
 
 	void setEye(Vector* eye);
 	Vector* getEye();

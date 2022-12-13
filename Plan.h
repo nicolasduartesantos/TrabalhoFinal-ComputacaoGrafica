@@ -8,6 +8,9 @@ public:
     Vector* p_pi = nullptr;
     Vector* normal = nullptr;
 
+    Vector* initial_p_pi = nullptr;
+    Vector* initial_normal = nullptr;
+
     void setP_PI(Vector* p_pi);
     Vector* getP_PI();
 

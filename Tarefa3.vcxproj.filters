@@ -108,8 +108,8 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Arquivos de Recurso\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Teste.cpp">
-      <Filter>Arquivos de Recurso\imgui</Filter>
+    <ClCompile Include="MeshTexturized.cpp">
+      <Filter>Arquivos de Recurso</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="imgui\imgui.h">
       <Filter>Arquivos de Cabeçalho\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshTexturized.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

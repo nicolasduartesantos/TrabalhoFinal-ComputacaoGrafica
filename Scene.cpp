@@ -8,6 +8,7 @@
 #include <vector>
 #include <SDL.h>
 #include <iostream>
+#include "Interaction.cpp"
 
 void Scene::setEye(Vector* eye) {
     this->cameraTo->setEye(eye);
@@ -62,7 +63,6 @@ double Scene::getDWindow() {
     return this->dWindow;
 }
 
-
 void Scene::setProjection(ProjectionType projection) {
     this->projection = projection;
 }
@@ -70,7 +70,6 @@ void Scene::setProjection(ProjectionType projection) {
 ProjectionType Scene::getProjection() {
     return this->projection;
 }
-
 
 void Scene::setEnvironmentLight(Vector* environmentLight) {
     this->environmentLight = environmentLight;
@@ -130,7 +129,7 @@ void Scene::paintCanvas(SDL_Renderer* renderer) {
     double dy = hWindow / nLin;
 
     Image* bgImage = this->bgImage;
-    
+
     for (int l = 0; l < nLin; l++) {
 
         double y = (hWindow / 2.) - (dy / 2.) - (l * dy);
@@ -159,9 +158,9 @@ void Scene::paintCanvas(SDL_Renderer* renderer) {
             int iClosest = 0;
             Object* closest = this->getObjects()[0];
             closest->setHasIntersection(false);
-            
+
             for (int i = 0; i < this->getObjects().size(); i++) {
-                
+
                 (this->getObjects()[i])->intersect(p0, dir);
 
                 if ((this->getObjects()[i])->getHasIntersection() &&
@@ -182,12 +181,9 @@ void Scene::paintCanvas(SDL_Renderer* renderer) {
 
             /*
             else if (bgImage != nullptr) {
-
                 double x = (double(c) * double(bgImage->getW())) / this->getWWindow();
                 double y = (double(l) * double(bgImage->getH())) / this->getHWindow();
-
                 Color pixel = bgImage->getColor(x, y);
-
                 drawColor(renderer, pixel.r, pixel.g, pixel.b, 255);
                 //std::cout << "passei draw color\n";
                 drawPoint(renderer, c, l);
@@ -201,27 +197,172 @@ void Scene::paintCanvas(SDL_Renderer* renderer) {
 
 void Scene::preparePaint() {
 
-    SDL_Renderer* renderer = nullptr;
-    SDL_Window* window = nullptr;
-    init(&renderer, &window, this->getNCol(), this->getNLin());
-
-    ImGui_ImplSDLRenderer_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-    ImGui::NewFrame();
-    this->interaction->display_imgui();
-    ImGui::Render();
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
     background(renderer, this->bgColor->r, this->bgColor->g, this->bgColor->b, 255);
     this->renderer = renderer;
     this->window = window;
 
     this->paintCanvas(renderer);
-    ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
-    present(renderer);
-    //destroy(window);
-    this->interaction->scene = this;
 }
+
+void Scene::mainLoop() {
+
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
+    {
+        printf("Error: %s\n", SDL_GetError());
+        return;
+    }
+
+    // Setup window
+    SDL_Init(SDL_INIT_VIDEO);
+    window = SDL_CreateWindow("SDL2 Pixel Drawing",
+        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, nCol, nLin, 0);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (renderer == NULL)
+    {
+        SDL_Log("Error creating SDL_Renderer!");
+        return;
+    }
+    //SDL_RendererInfo info;
+    //SDL_GetRendererInfo(renderer, &info);
+    //SDL_Log("Current SDL_Renderer: %s", info.name);
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+
+
+    ImGui_ImplSDL2_InitForSDLRenderer(window, renderer);
+    ImGui_ImplSDLRenderer_Init(renderer);
+
+    bool show_demo_window = true;
+    bool show_another_window = false;
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+    // Main loop
+    bool done = false;
+    bool change = true;
+    while (!done)
+    {
+        SDL_Event event;
+        while (SDL_PollEvent(&event))
+        {
+            ImGui_ImplSDL2_ProcessEvent(&event);
+            if (event.type == SDL_QUIT)
+                done = true;
+            if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(window))
+                done = true;
+        }
+
+        // Start the Dear ImGui frame
+        ImGui_ImplSDLRenderer_NewFrame();
+        ImGui_ImplSDL2_NewFrame();
+        ImGui::NewFrame();
+
+        ImGuiColorEditFlags picker_flags = ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_Float;
+        ImGuiWindowFlags window_flags = 0;
+
+        window_flags |= ImGuiWindowFlags_NoResize;
+        window_flags |= ImGuiWindowFlags_NoMove;
+        window_flags |= ImGuiWindowFlags_NoSavedSettings;
+
+
+        ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(260, 140), ImGuiCond_Once);
+
+        static bool show_window = true;
+
+        ImGui::Begin("Menu", NULL, window_flags);
+        ImGui::Text("Escolha o que deseja alterar:");
+
+
+        if (ImGui::CollapsingHeader("Camera")) {
+
+            Vector* e = this->cameraTo->getEye();
+            float eye[3] = { (float)e->getCoordinate(0), (float)e->getCoordinate(1), (float)e->getCoordinate(2) };
+
+            Vector* a = this->cameraTo->getAt();
+            float at[3] = { (float)a->getCoordinate(0),(float)a->getCoordinate(1), (float)a->getCoordinate(2) };
+
+            Vector* u = this->cameraTo->getUp();
+            float up[3] = { (float)u->getCoordinate(0), (float)u->getCoordinate(1), (float)u->getCoordinate(2) };
+
+            ImGui::InputFloat3("eye", eye);
+            if (ImGui::IsItemDeactivatedAfterEdit()) {
+                Vector* newEye = new Vector(eye[0], eye[1], eye[2]);
+                Vector* newAt = new Vector(at[0], at[1], at[2]);
+                Vector* newUp = new Vector(up[0], up[1], up[2]);
+                this->camera(newEye, newAt, newUp);
+                change = true;
+            }
+
+            ImGui::InputFloat3("at", at);
+            if (ImGui::IsItemDeactivatedAfterEdit()) {
+                Vector* newEye = new Vector(eye[0], eye[1], eye[2]);
+                Vector* newAt = new Vector(at[0], at[1], at[2]);
+                Vector* newUp = new Vector(up[0], up[1], up[2]);
+                this->camera(newEye, newAt, newUp);
+                change = true;
+            }
+
+            ImGui::InputFloat3("up", up);
+            if (ImGui::IsItemDeactivatedAfterEdit()) {
+                Vector* newEye = new Vector(eye[0], eye[1], eye[2]);
+                Vector* newAt = new Vector(at[0], at[1], at[2]);
+                Vector* newUp = new Vector(up[0], up[1], up[2]);
+                this->camera(newEye, newAt, newUp);
+                change = true;
+            }
+        }
+
+        //if (ImGui::CollapsingHeader("Material")) {
+            //mdmaterial
+        //}
+
+        if (ImGui::CollapsingHeader("Lights")) {
+            //mdmaterial
+        }
+
+        if (ImGui::CollapsingHeader("Picking")) {
+            //mdcamera
+            //Object* o = this->interaction->picking();
+
+        }
+
+        if (ImGui::CollapsingHeader("Perspective")) {
+            //mdmaterial
+        }
+        
+        ImGui::End();
+
+        // Rendering
+        ImGui::Render();
+        if (change) {
+            preparePaint(); change = false;
+        }
+        ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
+        SDL_RenderPresent(renderer);
+
+    }
+
+    // Cleanup
+    ImGui_ImplSDLRenderer_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    return;
+
+}
+
 
 
 void Scene::camera(Vector* eye, Vector* at, Vector* up) {
@@ -248,8 +389,6 @@ Scene::Scene(double hWindow, double wWindow, int nLin, int nCol, double dWindow,
     else {
         this->setBGColor(bgColor);
     }
-
-    this->interaction = new Interaction();
 
     this->cameraTo = new Camera(new Vector(0, 0, 0), new Vector(0, 0, -1), new Vector(0, 1, 0));
 }

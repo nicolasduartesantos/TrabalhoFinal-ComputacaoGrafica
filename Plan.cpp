@@ -147,14 +147,21 @@ void Plan::reflectionYZ() {
 
 void Plan::doWorldToCamera(Camera* camera) {
 
-	Vector n = camera->worldToCamera(*this->getNormal()) - camera->worldToCamera(Vector(0, 0, 0));
-	Vector* nUnitary = new Vector(n / n.getLength());
-	delete this->getNormal();
-	this->setNormal(nUnitary);
+	std::cout << "entrei\n";
 
-	Vector* ppi = new Vector(camera->worldToCamera(*this->getP_PI()));
+	Vector n_temp = camera->worldToCamera(*this->initial_normal);
+	std::cout << "passei 1\n";
+	Vector* n = new Vector(n_temp / n_temp.getLength());
+	delete this->getNormal();
+	this->setNormal(n);
+
+	std::cout << "passei normal\n";
+
+	Vector* ppi = new Vector(camera->worldToCamera(*this->initial_p_pi));
 	delete this->getP_PI();
 	this->setP_PI(ppi);
+
+	std::cout << "passei ppi\n";
 
 }
 
@@ -167,6 +174,9 @@ Plan::Plan(Vector* p_pi, Vector* normal, Vector* kd, Vector* ke, Vector* ka, dou
 	this->ka = ka;
     this->shininess = shininess;
     this->setObjectType(ObjectType::PLAN);
+
+	this->initial_p_pi = new Vector(*this->p_pi);
+	this->initial_normal = new Vector(*this->normal);
 }
 
 
@@ -176,4 +186,7 @@ Plan::Plan() { }
 Plan::~Plan() { 
 	delete this->getP_PI();
 	delete this->getNormal();
+
+	//delete this->initial_p_pi;
+	//delete this->initial_normal;
 }

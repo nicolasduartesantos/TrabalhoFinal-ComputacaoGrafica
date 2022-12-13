@@ -129,14 +129,16 @@ int main(int argc, char* argv[]) {
 	*/
 	//scene->addObject(baseArvore);
 	//scene->addObject(troncoArvore);
-	//scene->addObject(arvore);
+	scene->addObject(arvore);
 	//scene->addObject(bolaArvore);
 
 	//scene->setBGImage(ceu);
 
 	scene->camera(new Vector(400., 300., 400.), new Vector(400., 250., 0.), new Vector(400., 300., 0.));
 
-	scene->preparePaint();
+	scene->interaction = new Interaction();
+
+	scene->mainLoop();
 
 	return 0;
 

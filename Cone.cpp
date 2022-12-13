@@ -26,6 +26,14 @@ Vector* Cone::getDirection() {
 }
 
 
+void Cone::setVertex(Vector* vertex) {
+	this->vertex = vertex;
+}
+Vector* Cone::getVertex() {
+	return this->vertex;
+}
+
+
 void Cone::setHeight(double height) {
 	this->height = height;
 }
@@ -680,19 +688,18 @@ void Cone::reflectionYZ() {
 
 void Cone::doWorldToCamera(Camera* camera) {
 
-	Vector* cb = new Vector(camera->worldToCamera(*this->getCenter_base()));
+	Vector* cb = new Vector(camera->worldToCamera(*this->initial_center_base));
 	delete this->getCenter_base();
 	this->setCenter_base(cb);
 
-	Vector d = camera->worldToCamera(*this->getDirection()) - camera->worldToCamera(Vector(0, 0, 0));
-	Vector* dNormalized = new Vector(d / d.getLength());
-	delete this->getDirection();
-	this->setDirection(dNormalized);
+	Vector* v = new Vector(camera->worldToCamera(*this->initial_vertex));
+	delete this->getVertex();
+	this->setVertex(v);
 
-	Vector v_temp = *cb + (*dNormalized * this->height);
-	Vector* v = new Vector(v_temp.getCoordinate(0), v_temp.getCoordinate(1), v_temp.getCoordinate(2));
-	delete this->vertex;
-	this->vertex = v;
+	Vector* d = new Vector((*this->getVertex() - *this->getCenter_base()) / (*this->getVertex() - *this->getCenter_base()).getLength());
+	delete this->getDirection();
+	this->setDirection(d);
+	
 }
 
 
@@ -726,6 +733,9 @@ Cone::Cone(double rad, Vector* center_base, Vector* direction, double height, Ve
 	this->vertex = new Vector(v_temp.getCoordinate(0), v_temp.getCoordinate(1), v_temp.getCoordinate(2));
 	this->cos = height / sqrt(rad * rad + height * height);
 	this->setObjectType(ObjectType::CONE);
+
+	this->initial_center_base = new Vector(*this->getCenter_base());
+	this->initial_vertex = new Vector(*this->getVertex());
 }
 
 
@@ -742,10 +752,16 @@ Cone::Cone(double rad, Vector* center_base, Vector* direction, double height, Ve
 	this->shininess = shininess;
 	this->cos = height / sqrt(rad * rad + height * height);
 	this->setObjectType(ObjectType::CONE);
+
+	this->initial_center_base = new Vector(*this->getCenter_base());
+	this->initial_vertex = new Vector(*this->getVertex());
 }
 
 
 Cone::~Cone() {
 	delete this->getCenter_base();
 	delete this->getDirection();
+
+	delete this->initial_center_base;
+	delete this->initial_vertex;
 }

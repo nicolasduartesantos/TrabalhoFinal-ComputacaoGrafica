@@ -155,13 +155,13 @@
     <ClCompile Include="Interaction.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshTexturized.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="libSDL.cpp" />
     <ClCompile Include="Plan.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Teste.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
@@ -189,6 +189,7 @@
     <ClInclude Include="Interaction.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshTexturized.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="libSDL.h" />
     <ClInclude Include="Plan.h" />

@@ -11,11 +11,15 @@
 #include "Cylinder.h"
 #include "Cone.h"
 #include "Mesh.h"
-//#include <vector>
+#include <vector>
 #include <SDL.h>
 #include <iostream>
 
 
+
+
+
+/*
 void Interaction::picking() {
 
 	SDL_Event event;
@@ -80,7 +84,7 @@ void Interaction::picking() {
 
                 Object* closestObject = closest;
                 ObjectType closestObjectType = closest->getObjectType();
-
+                
                 switch (closestObjectType) {
                     
                     case ObjectType::SPHERE:
@@ -239,8 +243,8 @@ void Interaction::picking() {
                         objectMeshTexturized->scaling();
                         objectMeshTexturized->doWorldToCamera(this->scene->cameraTo);
 
-
-                }
+                        
+                //}
             }
         }
 				exit = true;
@@ -250,8 +254,4 @@ void Interaction::picking() {
 
 
 
-void Interaction::changeProjection() {
-
-
-
-}
+*/
