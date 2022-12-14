@@ -46,9 +46,6 @@ public:
     SDL_Renderer* renderer = nullptr;
     SDL_Window* window = nullptr;
 
-    void setEye(Vector* eye);
-    Vector* getEye();
-
     void setHWindow(double hWindow);
     double getHWindow();
 

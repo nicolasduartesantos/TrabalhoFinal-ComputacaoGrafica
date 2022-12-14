@@ -5,18 +5,16 @@
 #include "libSDL.h"
 #include "Image.h"
 #include "Interaction.h"
+#include "Sphere.h"
+#include "Plan.h"
+#include "Texture.h"
+#include "Cylinder.h"
+#include "Cone.h"
+#include "Mesh.h"
+#include "MeshTexturized.h"
 #include <vector>
 #include <SDL.h>
 #include <iostream>
-#include "Interaction.cpp"
-
-void Scene::setEye(Vector* eye) {
-    this->cameraTo->setEye(eye);
-}
-
-Vector* Scene::getEye() {
-    return this->cameraTo->getEye();
-}
 
 
 void Scene::setHWindow(double hWindow) {
@@ -275,15 +273,18 @@ void Scene::mainLoop() {
 
 
         ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
-        ImGui::SetNextWindowSize(ImVec2(260, 140), ImGuiCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(260, 150), ImGuiCond_Once);
 
         static bool show_window = true;
+        bool show_another_window = false;
 
         ImGui::Begin("Menu", NULL, window_flags);
         ImGui::Text("Escolha o que deseja alterar:");
 
 
         if (ImGui::CollapsingHeader("Camera")) {
+
+            std::cout << "camera\n";
 
             Vector* e = this->cameraTo->getEye();
             float eye[3] = { (float)e->getCoordinate(0), (float)e->getCoordinate(1), (float)e->getCoordinate(2) };
@@ -326,14 +327,1110 @@ void Scene::mainLoop() {
             //mdmaterial
         }
 
+        //Object* object = new Sphere(0, new Vector(0.0, 0.0, 0.0), new Vector(0.0, 0.0, 0.0), new Vector(0.0, 0.0, 0.0), new Vector(0.0, 0.0, 0.0), 0.0);
+        //bool test = false;
+
         if (ImGui::CollapsingHeader("Picking")) {
-            //mdcamera
-            //Object* o = this->interaction->picking();
+
+            std::cout << "antes\n";
+
+            if (ImGui::Button("Butao")) {
+                std::cout << "apertei botao\n";
+                Object* object = this->interaction->picking();
+                //test = true;
+
+                std::cout << (int)object->getObjectType() << "\n";
+
+                if (object->getObjectType() == ObjectType::SPHERE) {
+
+                    std::cout << "--- SPHERE ---\n";
+                    std::cout << "1- kd\n";
+                    std::cout << "2- ke\n";
+                    std::cout << "3- ka\n";
+                    std::cout << "4- shininess\n";
+                    std::cout << "5- translation\n";
+                    std::cout << "6- rotate x\n";
+                    std::cout << "7- rotate y\n";
+                    std::cout << "8- rotate z\n";
+                    std::cout << "9- reflect XY\n";
+                    std::cout << "10- reflect XZ\n";
+                    std::cout << "11- reflect YZ\n";
+                    std::cout << "Digite uma opcao: ";
+
+                    std::string opc;
+                    std::cin >> opc;
+
+                    Sphere* objectSphere;
+                    objectSphere = (Sphere*)object;
+
+                    if (opc == "1") {
+
+                        double kd1, kd2, kd3;
+
+                        std::cout << "Digite o primeiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd1;
+                        std::cout << "Digite o segundo valor de kd(de 0 a 1): ";
+                        std::cin >> kd2;
+                        std::cout << "Digite o terceiro valor de kd(de 0 a 1): ";
+                        std::cin >> kd3;
+
+                        Vector* newKD = new Vector(kd1, kd2, kd3);
+                        objectSphere->setKD(newKD);
+                        change = true;
+                    }
+
+                    if (opc == "2") {
+                        double ke1, ke2, ke3;
+
+                        std::cout << "Digite o primeiro valor de ke(de 0 a 1): ";
+                        std::cin >> ke1;
+                        std::cout << "Digite o segundo valor de ke(de 0 a 1): ";
+                        std::cin >> ke2;
+                        std::cout << "Digite o terceiro valor de ke(de 0 a 1): ";
+                        std::cin >> ke3;
+
+                        Vector* newKE = new Vector(ke1, ke2, ke3);
+                        objectSphere->setKE(newKE);
+                        change = true;
+                    }
+
+                    if (opc == "3") {
+                        double ka1, ka2, ka3;
+
+                        std::cout << "Digite o primeiro valor de ka(de 0 a 1): ";
+                        std::cin >> ka1;
+                        std::cout << "Digite o segundo valor de ka(de 0 a 1): ";
+                        std::cin >> ka2;
+                        std::cout << "Digite o terceiro valor de ka(de 0 a 1): ";
+                        std::cin >> ka3;
+
+                        Vector* newKA = new Vector(ka1, ka2, ka3);
+                        objectSphere->setKA(newKA);
+                        change = true;
+                    }
+
+                    if (opc == "4") {
+
+                        double shininess;
+
+                        std::cout << "Digite o valor de shininess: ";
+                        std::cin >> shininess;
+
+                        objectSphere->setShininess(shininess);
+
+                    }
+
+                    if (opc == "4") {
+
+                        double shininess;
+
+                        std::cout << "Digite o valor de shininess: ";
+                        std::cin >> shininess;
+
+                        objectSphere->setShininess(shininess);
+
+                    }
+
+                    if (opc == "5") {
+
+                        double tx, ty, tz;
+
+                        std::cout << "Digite o x da translacao: ";
+                        std::cin >> tx;
+                        std::cout << "Digite o y da translacao: ";
+                        std::cin >> ty;
+                        std::cout << "Digite o z da translacao: ";
+                        std::cin >> tz;
+
+                        objectSphere->translation(tx, ty, tz);
+                        change = true;
+                    }
+
+                    else if (opc == "6") {
+
+                        double ax;
+
+                        std::cout << "Digite o angulo da rotacao no eixo X: ";
+                        std::cin >> ax;
+
+                        objectSphere->rotX(ax);
+                        change = true;
+                    }
+
+                    else if (opc == "7") {
+
+                        double ay;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Y: ";
+                        std::cin >> ay;
+
+                        objectSphere->rotY(ay);
+                        change = true;
+                    }
+
+                    else if (opc == "8") {
+
+                        double az;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Z: ";
+                        std::cin >> az;
+
+                        objectSphere->rotZ(az);
+                        change = true;
+                    }
+
+                    else if (opc == "9") {
+
+                        objectSphere->reflectionXY();
+                        change = true;
+                    }
+
+                    else if (opc == "10") {
+
+                        objectSphere->reflectionXZ();
+                        change = true;
+                    }
+
+                    else if (opc == "11") {
+
+                        objectSphere->reflectionYZ();
+                        change = true;
+                    }
+
+                    objectSphere->doWorldToCamera(this->cameraTo);
+                }
+
+                else if (object->getObjectType() == ObjectType::PLAN)
+                {
+                    Plan* objectPlan;
+                    objectPlan = (Plan*)object;
+
+                    std::cout << "--- PLAN ---\n";
+
+                    std::cout << "1- kd\n";
+                    std::cout << "2- ke\n";
+                    std::cout << "3- ka\n";
+                    std::cout << "4- shininess\n";
+                    std::cout << "5- translation\n";
+                    std::cout << "6- rotate X\n";
+                    std::cout << "7- rotate Y\n";
+                    std::cout << "8- rotate Z\n";
+                    std::cout << "9- reflect XY\n";
+                    std::cout << "10- reflect XZ\n";
+                    std::cout << "11- reflect YZ\n\n";
+
+                    std::cout << "Digite a opcao escolhida: ";
+                    std::string opc;
+                    std::cin >> opc;
+
+
+                    if (opc == "1") {
+
+                        double kd1, kd2, kd3;
+
+                        std::cout << "Digite o primeiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd1;
+                        std::cout << "Digite o segundo valor de kd (de 0 a 1): ";
+                        std::cin >> kd2;
+                        std::cout << "Digite o terceiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd3;
+
+                        Vector* newKD = new Vector(kd1, kd2, kd3);
+                        objectPlan->setKD(newKD);
+                        change = true;
+                    }
+
+                    else if (opc == "2") {
+
+                        double ke1, ke2, ke3;
+
+                        std::cout << "Digite o primeiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke1;
+                        std::cout << "Digite o segundo valor de ke (de 0 a 1): ";
+                        std::cin >> ke2;
+                        std::cout << "Digite o terceiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke3;
+
+                        Vector* newKE = new Vector(ke1, ke2, ke3);
+                        objectPlan->setKE(newKE);
+                        change = true;
+                    }
+
+                    else if (opc == "3") {
+
+                        double ka1, ka2, ka3;
+
+                        std::cout << "Digite o primeiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka1;
+                        std::cout << "Digite o segundo valor de ka (de 0 a 1): ";
+                        std::cin >> ka2;
+                        std::cout << "Digite o terceiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka3;
+
+                        Vector* newKA = new Vector(ka1, ka2, ka3);
+                        objectPlan->setKA(newKA);
+                        change = true;
+                    }
+
+                    else if (opc == "4") {
+
+                        double shininess;
+
+                        std::cout << "Digite o valor de shininess: ";
+                        std::cin >> shininess;
+
+                        objectPlan->setShininess(shininess);
+                        change = true;
+                    }
+
+                    else if (opc == "5") {
+
+                        double tx, ty, tz;
+
+                        std::cout << "Digite o x da translacao: ";
+                        std::cin >> tx;
+                        std::cout << "Digite o y da translacao: ";
+                        std::cin >> ty;
+                        std::cout << "Digite o z da translacao: ";
+                        std::cin >> tz;
+
+                        objectPlan->translation(tx, ty, tz);
+                        change = true;
+                    }
+
+                    else if (opc == "6") {
+
+                        double ax;
+
+                        std::cout << "Digite o angulo da rotacao no eixo X: ";
+                        std::cin >> ax;
+
+                        objectPlan->rotX(ax);
+                        change = true;
+                    }
+
+                    else if (opc == "7") {
+
+                        double ay;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Y: ";
+                        std::cin >> ay;
+
+                        objectPlan->rotY(ay);
+                        change = true;
+                    }
+
+                    else if (opc == "8") {
+
+                        double az;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Z: ";
+                        std::cin >> az;
+
+                        objectPlan->rotZ(az);
+                        change = true;
+                    }
+
+                    else if (opc == "9") {
+
+                        objectPlan->reflectionXY();
+                        change = true;
+                    }
+
+                    else if (opc == "10") {
+
+                        objectPlan->reflectionXZ();
+                        change = true;
+                    }
+
+                    else if (opc == "11") {
+
+                        objectPlan->reflectionYZ();
+                        change = true;
+                    }
+
+                    objectPlan->doWorldToCamera(this->cameraTo);
+
+                }
+
+                else if (object->getObjectType() == ObjectType::TEXTURE)
+                {
+                    Texture* objectTexture;
+                    objectTexture = (Texture*)object;
+
+                    std::cout << "--- TEXTURE ---\n";
+
+                    std::cout << "1- kd\n";
+                    std::cout << "2- ke\n";
+                    std::cout << "3- ka\n";
+                    std::cout << "4- shininess\n";
+                    std::cout << "5- translation\n";
+                    std::cout << "6- rotate X\n";
+                    std::cout << "7- rotate Y\n";
+                    std::cout << "8- rotate Z\n";
+                    std::cout << "9- reflect XY\n";
+                    std::cout << "10- reflect XZ\n";
+                    std::cout << "11- reflect YZ\n\n";
+
+                    std::cout << "Digite a opcao escolhida: ";
+                    std::string opc;
+                    std::cin >> opc;
+
+
+                    if (opc == "1") {
+
+                        double kd1, kd2, kd3;
+
+                        std::cout << "Digite o primeiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd1;
+                        std::cout << "Digite o segundo valor de kd (de 0 a 1): ";
+                        std::cin >> kd2;
+                        std::cout << "Digite o terceiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd3;
+
+                        Vector* newKD = new Vector(kd1, kd2, kd3);
+                        objectTexture->setKD(newKD);
+                        change = true;
+                    }
+
+                    else if (opc == "2") {
+
+                        double ke1, ke2, ke3;
+
+                        std::cout << "Digite o primeiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke1;
+                        std::cout << "Digite o segundo valor de ke (de 0 a 1): ";
+                        std::cin >> ke2;
+                        std::cout << "Digite o terceiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke3;
+
+                        Vector* newKE = new Vector(ke1, ke2, ke3);
+                        objectTexture->setKE(newKE);
+                        change = true;
+                    }
+
+                    else if (opc == "3") {
+
+                        double ka1, ka2, ka3;
+
+                        std::cout << "Digite o primeiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka1;
+                        std::cout << "Digite o segundo valor de ka (de 0 a 1): ";
+                        std::cin >> ka2;
+                        std::cout << "Digite o terceiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka3;
+
+                        Vector* newKA = new Vector(ka1, ka2, ka3);
+                        objectTexture->setKA(newKA);
+                        change = true;
+                    }
+
+                    else if (opc == "4") {
+
+                        double shininess;
+
+                        std::cout << "Digite o valor de shininess: ";
+                        std::cin >> shininess;
+
+                        objectTexture->setShininess(shininess);
+                        change = true;
+                    }
+
+                    else if (opc == "5") {
+
+                        double tx, ty, tz;
+
+                        std::cout << "Digite o x da translacao: ";
+                        std::cin >> tx;
+                        std::cout << "Digite o y da translacao: ";
+                        std::cin >> ty;
+                        std::cout << "Digite o z da translacao: ";
+                        std::cin >> tz;
+
+                        objectTexture->translation(tx, ty, tz);
+                        change = true;
+                    }
+
+                    else if (opc == "6") {
+
+                        double ax;
+
+                        std::cout << "Digite o angulo da rotacao no eixo X: ";
+                        std::cin >> ax;
+
+                        objectTexture->rotX(ax);
+                        change = true;
+                    }
+
+                    else if (opc == "7") {
+
+                        double ay;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Y: ";
+                        std::cin >> ay;
+
+                        objectTexture->rotY(ay);
+                        change = true;
+                    }
+
+                    else if (opc == "8") {
+
+                        double az;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Z: ";
+                        std::cin >> az;
+
+                        objectTexture->rotZ(az);
+                        change = true;
+                    }
+
+                    else if (opc == "9") {
+
+                        objectTexture->reflectionXY();
+                        change = true;
+                    }
+
+                    else if (opc == "10") {
+
+                        objectTexture->reflectionXZ();
+                        change = true;
+                    }
+
+                    else if (opc == "11") {
+
+                        objectTexture->reflectionYZ();
+                        change = true;
+                    }
+
+                    objectTexture->doWorldToCamera(this->cameraTo);
+
+
+                }
+
+                else if (object->getObjectType() == ObjectType::CYLINDER)
+                {
+                    Cylinder* objectCylinder;
+                    objectCylinder = (Cylinder*)object;
+
+                    std::cout << "--- CYLINDER ---\n";
+
+                    std::cout << "1- kd\n";
+                    std::cout << "2- ke\n";
+                    std::cout << "3- ka\n";
+                    std::cout << "4- shininess\n";
+                    std::cout << "5- translation\n";
+                    std::cout << "6- rotate X\n";
+                    std::cout << "7- rotate Y\n";
+                    std::cout << "8- rotate Z\n";
+                    std::cout << "9- reflect XY\n";
+                    std::cout << "10- reflect XZ\n";
+                    std::cout << "11- reflect YZ\n\n";
+
+                    std::cout << "Digite a opcao escolhida: ";
+                    std::string opc;
+                    std::cin >> opc;
+
+
+                    if (opc == "1") {
+
+                        double kd1, kd2, kd3;
+
+                        std::cout << "Digite o primeiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd1;
+                        std::cout << "Digite o segundo valor de kd (de 0 a 1): ";
+                        std::cin >> kd2;
+                        std::cout << "Digite o terceiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd3;
+
+                        Vector* newKD = new Vector(kd1, kd2, kd3);
+                        objectCylinder->setKD(newKD);
+                        change = true;
+                    }
+
+                    else if (opc == "2") {
+
+                        double ke1, ke2, ke3;
+
+                        std::cout << "Digite o primeiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke1;
+                        std::cout << "Digite o segundo valor de ke (de 0 a 1): ";
+                        std::cin >> ke2;
+                        std::cout << "Digite o terceiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke3;
+
+                        Vector* newKE = new Vector(ke1, ke2, ke3);
+                        objectCylinder->setKE(newKE);
+                        change = true;
+                    }
+
+                    else if (opc == "3") {
+
+                        double ka1, ka2, ka3;
+
+                        std::cout << "Digite o primeiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka1;
+                        std::cout << "Digite o segundo valor de ka (de 0 a 1): ";
+                        std::cin >> ka2;
+                        std::cout << "Digite o terceiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka3;
+
+                        Vector* newKA = new Vector(ka1, ka2, ka3);
+                        objectCylinder->setKA(newKA);
+                        change = true;
+                    }
+
+                    else if (opc == "4") {
+
+                        double shininess;
+
+                        std::cout << "Digite o valor de shininess: ";
+                        std::cin >> shininess;
+
+                        objectCylinder->setShininess(shininess);
+                        change = true;
+                    }
+
+                    else if (opc == "5") {
+
+                        double tx, ty, tz;
+
+                        std::cout << "Digite o x da translacao: ";
+                        std::cin >> tx;
+                        std::cout << "Digite o y da translacao: ";
+                        std::cin >> ty;
+                        std::cout << "Digite o z da translacao: ";
+                        std::cin >> tz;
+
+                        objectCylinder->translation(tx, ty, tz);
+                        change = true;
+                    }
+
+                    else if (opc == "6") {
+
+                        double ax;
+
+                        std::cout << "Digite o angulo da rotacao no eixo X: ";
+                        std::cin >> ax;
+
+                        objectCylinder->rotX(ax);
+                        change = true;
+                    }
+
+                    else if (opc == "7") {
+
+                        double ay;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Y: ";
+                        std::cin >> ay;
+
+                        objectCylinder->rotY(ay);
+                        change = true;
+                    }
+
+                    else if (opc == "8") {
+
+                        double az;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Z: ";
+                        std::cin >> az;
+
+                        objectCylinder->rotZ(az);
+                        change = true;
+                    }
+
+                    else if (opc == "9") {
+
+                        objectCylinder->reflectionXY();
+                        change = true;
+                    }
+
+                    else if (opc == "10") {
+
+                        objectCylinder->reflectionXZ();
+                        change = true;
+                    }
+
+                    else if (opc == "11") {
+
+                        objectCylinder->reflectionYZ();
+                        change = true;
+                    }
+
+                    objectCylinder->doWorldToCamera(this->cameraTo);
+
+                }
+
+                else if (object->getObjectType() == ObjectType::CONE)
+                {
+                    Cone* objectCone;
+                    objectCone = (Cone*)object;
+
+                    std::cout << "--- CONE ---\n";
+
+                    std::cout << "1- kd\n";
+                    std::cout << "2- ke\n";
+                    std::cout << "3- ka\n";
+                    std::cout << "4- shininess\n";
+                    std::cout << "5- translation\n";
+                    std::cout << "6- rotate X\n";
+                    std::cout << "7- rotate Y\n";
+                    std::cout << "8- rotate Z\n";
+                    std::cout << "9- reflect XY\n";
+                    std::cout << "10- reflect XZ\n";
+                    std::cout << "11- reflect YZ\n\n";
+
+                    std::cout << "Digite a opcao escolhida: ";
+                    std::string opc;
+                    std::cin >> opc;
+
+
+                    if (opc == "1") {
+
+                        double kd1, kd2, kd3;
+
+                        std::cout << "Digite o primeiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd1;
+                        std::cout << "Digite o segundo valor de kd (de 0 a 1): ";
+                        std::cin >> kd2;
+                        std::cout << "Digite o terceiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd3;
+
+                        Vector* newKD = new Vector(kd1, kd2, kd3);
+                        objectCone->setKD(newKD);
+                        change = true;
+                    }
+
+                    else if (opc == "2") {
+
+                        double ke1, ke2, ke3;
+
+                        std::cout << "Digite o primeiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke1;
+                        std::cout << "Digite o segundo valor de ke (de 0 a 1): ";
+                        std::cin >> ke2;
+                        std::cout << "Digite o terceiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke3;
+
+                        Vector* newKE = new Vector(ke1, ke2, ke3);
+                        objectCone->setKE(newKE);
+                        change = true;
+                    }
+
+                    else if (opc == "3") {
+
+                        double ka1, ka2, ka3;
+
+                        std::cout << "Digite o primeiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka1;
+                        std::cout << "Digite o segundo valor de ka (de 0 a 1): ";
+                        std::cin >> ka2;
+                        std::cout << "Digite o terceiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka3;
+
+                        Vector* newKA = new Vector(ka1, ka2, ka3);
+                        objectCone->setKA(newKA);
+                        change = true;
+                    }
+
+                    else if (opc == "4") {
+
+                        double shininess;
+
+                        std::cout << "Digite o valor de shininess: ";
+                        std::cin >> shininess;
+
+                        objectCone->setShininess(shininess);
+                        change = true;
+                    }
+
+                    else if (opc == "5") {
+
+                        double tx, ty, tz;
+
+                        std::cout << "Digite o x da translacao: ";
+                        std::cin >> tx;
+                        std::cout << "Digite o y da translacao: ";
+                        std::cin >> ty;
+                        std::cout << "Digite o z da translacao: ";
+                        std::cin >> tz;
+
+                        objectCone->translation(tx, ty, tz);
+                        change = true;
+                    }
+
+                    else if (opc == "6") {
+
+                        double ax;
+
+                        std::cout << "Digite o angulo da rotacao no eixo X: ";
+                        std::cin >> ax;
+
+                        objectCone->rotX(ax);
+                        change = true;
+                    }
+
+                    else if (opc == "7") {
+
+                        double ay;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Y: ";
+                        std::cin >> ay;
+
+                        objectCone->rotY(ay);
+                        change = true;
+                    }
+
+                    else if (opc == "8") {
+
+                        double az;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Z: ";
+                        std::cin >> az;
+
+                        objectCone->rotZ(az);
+                        change = true;
+                    }
+
+                    else if (opc == "9") {
+
+                        objectCone->reflectionXY();
+                        change = true;
+                    }
+
+                    else if (opc == "10") {
+
+                        objectCone->reflectionXZ();
+                        change = true;
+                    }
+
+                    else if (opc == "11") {
+
+                        objectCone->reflectionYZ();
+                        change = true;
+                    }
+
+                    objectCone->doWorldToCamera(this->cameraTo);
+
+                }
+
+                else if (object->getObjectType() == ObjectType::MESH)
+                {
+                    Mesh* objectMesh;
+                    objectMesh = (Mesh*)object;
+
+                    std::cout << "--- MESH ---\n";
+
+                    std::cout << "1- kd\n";
+                    std::cout << "2- ke\n";
+                    std::cout << "3- ka\n";
+                    std::cout << "4- shininess\n";
+                    std::cout << "5- translation\n";
+                    std::cout << "6- rotate X\n";
+                    std::cout << "7- rotate Y\n";
+                    std::cout << "8- rotate Z\n";
+                    std::cout << "9- reflect XY\n";
+                    std::cout << "10- reflect XZ\n";
+                    std::cout << "11- reflect YZ\n\n";
+
+                    std::cout << "Digite a opcao escolhida: ";
+                    std::string opc;
+                    std::cin >> opc;
+
+
+                    if (opc == "1") {
+
+                        double kd1, kd2, kd3;
+
+                        std::cout << "Digite o primeiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd1;
+                        std::cout << "Digite o segundo valor de kd (de 0 a 1): ";
+                        std::cin >> kd2;
+                        std::cout << "Digite o terceiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd3;
+
+                        Vector* newKD = new Vector(kd1, kd2, kd3);
+                        objectMesh->setKD(newKD);
+                        change = true;
+                    }
+
+                    else if (opc == "2") {
+
+                        double ke1, ke2, ke3;
+
+                        std::cout << "Digite o primeiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke1;
+                        std::cout << "Digite o segundo valor de ke (de 0 a 1): ";
+                        std::cin >> ke2;
+                        std::cout << "Digite o terceiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke3;
+
+                        Vector* newKE = new Vector(ke1, ke2, ke3);
+                        objectMesh->setKE(newKE);
+                        change = true;
+                    }
+
+                    else if (opc == "3") {
+
+                        double ka1, ka2, ka3;
+
+                        std::cout << "Digite o primeiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka1;
+                        std::cout << "Digite o segundo valor de ka (de 0 a 1): ";
+                        std::cin >> ka2;
+                        std::cout << "Digite o terceiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka3;
+
+                        Vector* newKA = new Vector(ka1, ka2, ka3);
+                        objectMesh->setKA(newKA);
+                        change = true;
+                    }
+
+                    else if (opc == "4") {
+
+                        double shininess;
+
+                        std::cout << "Digite o valor de shininess: ";
+                        std::cin >> shininess;
+
+                        objectMesh->setShininess(shininess);
+                        change = true;
+                    }
+
+                    else if (opc == "5") {
+
+                        double tx, ty, tz;
+
+                        std::cout << "Digite o x da translacao: ";
+                        std::cin >> tx;
+                        std::cout << "Digite o y da translacao: ";
+                        std::cin >> ty;
+                        std::cout << "Digite o z da translacao: ";
+                        std::cin >> tz;
+
+                        objectMesh->translation(tx, ty, tz);
+                        change = true;
+                    }
+
+                    else if (opc == "6") {
+
+                        double ax;
+
+                        std::cout << "Digite o angulo da rotacao no eixo X: ";
+                        std::cin >> ax;
+
+                        objectMesh->rotX(ax);
+                        change = true;
+                    }
+
+                    else if (opc == "7") {
+
+                        double ay;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Y: ";
+                        std::cin >> ay;
+
+                        objectMesh->rotY(ay);
+                        change = true;
+                    }
+
+                    else if (opc == "8") {
+
+                        double az;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Z: ";
+                        std::cin >> az;
+
+                        objectMesh->rotZ(az);
+                        change = true;
+                    }
+
+                    else if (opc == "9") {
+
+                        objectMesh->reflectionXY();
+                        change = true;
+                    }
+
+                    else if (opc == "10") {
+
+                        objectMesh->reflectionXZ();
+                        change = true;
+                    }
+
+                    else if (opc == "11") {
+
+                        objectMesh->reflectionYZ();
+                        change = true;
+                    }
+
+                    objectMesh->doWorldToCamera(this->cameraTo);
+
+                }
+
+                else if (object->getObjectType() == ObjectType::MESH_TEXTURIZED)
+                {
+                    MeshTexturized* objectMeshTexturized;
+                    objectMeshTexturized = (MeshTexturized*)object;
+
+                    std::cout << "--- MESH_TEXTURE ---\n";
+
+                    std::cout << "1- kd\n";
+                    std::cout << "2- ke\n";
+                    std::cout << "3- ka\n";
+                    std::cout << "4- shininess\n";
+                    std::cout << "5- translation\n";
+                    std::cout << "6- rotate X\n";
+                    std::cout << "7- rotate Y\n";
+                    std::cout << "8- rotate Z\n";
+                    std::cout << "9- reflect XY\n";
+                    std::cout << "10- reflect XZ\n";
+                    std::cout << "11- reflect YZ\n\n";
+
+                    std::cout << "Digite a opcao escolhida: ";
+                    std::string opc;
+                    std::cin >> opc;
+
+
+                    if (opc == "1") {
+
+                        double kd1, kd2, kd3;
+
+                        std::cout << "Digite o primeiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd1;
+                        std::cout << "Digite o segundo valor de kd (de 0 a 1): ";
+                        std::cin >> kd2;
+                        std::cout << "Digite o terceiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd3;
+
+                        Vector* newKD = new Vector(kd1, kd2, kd3);
+                        objectMeshTexturized->setKD(newKD);
+                        change = true;
+                    }
+
+                    else if (opc == "2") {
+
+                        double ke1, ke2, ke3;
+
+                        std::cout << "Digite o primeiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke1;
+                        std::cout << "Digite o segundo valor de ke (de 0 a 1): ";
+                        std::cin >> ke2;
+                        std::cout << "Digite o terceiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke3;
+
+                        Vector* newKE = new Vector(ke1, ke2, ke3);
+                        objectMeshTexturized->setKE(newKE);
+                        change = true;
+                    }
+
+                    else if (opc == "3") {
+
+                        double ka1, ka2, ka3;
+
+                        std::cout << "Digite o primeiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka1;
+                        std::cout << "Digite o segundo valor de ka (de 0 a 1): ";
+                        std::cin >> ka2;
+                        std::cout << "Digite o terceiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka3;
+
+                        Vector* newKA = new Vector(ka1, ka2, ka3);
+                        objectMeshTexturized->setKA(newKA);
+                        change = true;
+                    }
+
+                    else if (opc == "4") {
+
+                        double shininess;
+
+                        std::cout << "Digite o valor de shininess: ";
+                        std::cin >> shininess;
+
+                        objectMeshTexturized->setShininess(shininess);
+                        change = true;
+                    }
+
+                    else if (opc == "5") {
+
+                        double tx, ty, tz;
+
+                        std::cout << "Digite o x da translacao: ";
+                        std::cin >> tx;
+                        std::cout << "Digite o y da translacao: ";
+                        std::cin >> ty;
+                        std::cout << "Digite o z da translacao: ";
+                        std::cin >> tz;
+
+                        objectMeshTexturized->translation(tx, ty, tz);
+                        change = true;
+                    }
+
+                    else if (opc == "6") {
+
+                        double ax;
+
+                        std::cout << "Digite o angulo da rotacao no eixo X: ";
+                        std::cin >> ax;
+
+                        objectMeshTexturized->rotX(ax);
+                        change = true;
+                    }
+
+                    else if (opc == "7") {
+
+                        double ay;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Y: ";
+                        std::cin >> ay;
+
+                        objectMeshTexturized->rotY(ay);
+                        change = true;
+                    }
+
+                    else if (opc == "8") {
+
+                        double az;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Z: ";
+                        std::cin >> az;
+
+                        objectMeshTexturized->rotZ(az);
+                        change = true;
+                    }
+
+                    else if (opc == "9") {
+
+                        objectMeshTexturized->reflectionXY();
+                        change = true;
+                    }
+
+                    else if (opc == "10") {
+
+                        objectMeshTexturized->reflectionXZ();
+                        change = true;
+                    }
+
+                    else if (opc == "11") {
+
+                        objectMeshTexturized->reflectionYZ();
+                        change = true;
+                    }
+
+                    objectMeshTexturized->doWorldToCamera(this->cameraTo);
+
+                }
+
+            }
+
+            std::cout << "depois\n";
+
+
 
         }
+        //ImGui::GetStateStorage()->SetInt(ImGui::GetID("Picking"), 0);
+
 
         if (ImGui::CollapsingHeader("Projection")) {
-            
+
             if (ImGui::Button("Perspective")) {
                 this->setProjection(ProjectionType::PERSPECTIVE);
                 change = true;
@@ -348,7 +1445,7 @@ void Scene::mainLoop() {
 
 
         }
-        
+
         ImGui::End();
 
         // Rendering

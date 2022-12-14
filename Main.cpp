@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 	coluna4->scaling(50, 500, 30);
 	coluna4->translation(650, 0, -1030);
 
-
+	/*
 	Mesh* semiteto1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
 	semiteto1->scaling(300, 50, 30);
 	semiteto1->shearingXY(atan(0.75));
@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
 	semiteto4->scaling(300, 50, 30);
 	semiteto4->shearingXY(atan(-0.75));
 	semiteto4->translation(350, 675, -1030);
-
+	*/
 
 	Mesh* teto1 = Cube::create(new Vector(0.5, 0., 0.5), 1, new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), new Vector(0.898, 0.898, 0), 5.0, cluster);
 	teto1->scaling(450, 30, 1000);
@@ -97,7 +97,7 @@ int main(int argc, char* argv[]) {
 	Cylinder* baseArvore = new Cylinder(30., new Vector(350., 100., -325.), new Vector(0., 1., 0.), 9.0, new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), 5.0);
 	Cylinder* troncoArvore = new Cylinder(6., new Vector(350., 109., -325.), new Vector(0., 1., 0.), 40.0, new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), 5.0);
 	Cone* arvore = new Cone(60., new Vector(350., 145., -325.), new Vector(0., 1., 0.), 150.0, new Vector(0.0, 0.9, 0.2), new Vector(0.0, 0.9, 0.2), new Vector(0.0, 0.9, 0.2), 5.0);
-	Sphere* bolaArvore = new Sphere(4.5, new Vector(350., 299., -325.), new Vector(1., 1., 0.), new Vector(1., 1., 0.), new Vector(1., 1., 0.), 5.0);
+	Sphere* bolaArvore = new Sphere(50, new Vector(350., 299., -325.), new Vector(1., 1., 0.), new Vector(1., 1., 0.), new Vector(1., 1., 0.), 5.0);
 
 	Scene* scene = new Scene(60, 60, 500, 500, 20, new Color(100, 100, 100, 255));
 
@@ -125,18 +125,20 @@ int main(int argc, char* argv[]) {
 	*/
 	//scene->addObject(peMesa1);
 	//scene->addObject(peMesa2);
-	scene->addObject(mesa);
+	//scene->addObject(mesa);
 	
 	//scene->addObject(baseArvore);
 	//scene->addObject(troncoArvore);
-	scene->addObject(arvore);
-	//scene->addObject(bolaArvore);
+	//scene->addObject(arvore);
+	scene->addObject(bolaArvore);
 
 	//scene->setBGImage(ceu);
 
 	scene->camera(new Vector(400., 300., 400.), new Vector(400., 250., 0.), new Vector(400., 300., 0.));
 
 	scene->interaction = new Interaction();
+
+	scene->interaction->scene = scene;
 
 	scene->mainLoop();
 
