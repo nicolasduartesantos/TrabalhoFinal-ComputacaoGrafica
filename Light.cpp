@@ -98,6 +98,8 @@ Spot::Spot(Vector* intensity, Vector* coordinate, Vector* direction, double angl
 
     this->initial_direction = new Vector(*this->direction);
     this->initial_coordinate = new Vector(*this->coordinate);
+
+    this->lightType = LightType::SPOT;
 }
 
 
@@ -151,6 +153,8 @@ Point::Point(Vector* intensity, Vector* coordinate) {
     this->coordinate = coordinate;
 
     this->initial_coordinate = new Vector(*this->coordinate);
+
+    this->lightType = LightType::POINT;
 }
 
 
@@ -201,6 +205,8 @@ Directional::Directional(Vector* intensity, Vector* direction) {
     this->direction = direction;
 
     this->initial_direction = new Vector(*this->direction);
+
+    this->lightType = LightType::DIRECTIONAL;
 }
 
 

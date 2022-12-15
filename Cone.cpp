@@ -555,7 +555,7 @@ bool Cone::intersect_for_shadow(Vector* p0, Vector* dir) {
 }
 
 
-Color* Cone::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) {
+Color* Cone::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Light* environmentLight) {
 
 	if (this->surface == ObjectSurface::CONE_BASE) {
 

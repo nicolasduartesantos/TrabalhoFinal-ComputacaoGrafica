@@ -3,12 +3,17 @@
 #include "Vector.h"
 #include "Camera.h"
 
+enum class LightType { POINT, DIRECTIONAL, SPOT };
+
 class Light {
 private:
 	Vector* intensity = nullptr;
     bool active = true;
 
 public:
+
+    LightType lightType;
+
     void setIntensity(Vector* intensity);
     Vector* getIntensity();
 

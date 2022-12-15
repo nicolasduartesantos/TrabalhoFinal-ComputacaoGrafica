@@ -123,7 +123,7 @@ bool Object::hasShadow(std::vector<Object*> objects, Vector* pi, Vector l, Light
 }
 
 
-Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight, Vector* normal, Object* obj) {
+Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Light* environmentLight, Vector* normal, Object* obj) {
 
     Vector rgb(0, 0, 0);
 
@@ -136,27 +136,31 @@ Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objec
 
     for (int i = 0; i < lights.size(); i++) {
 
-        l = lights[i]->calculateL(*pi);
+        if (lights[i]->getActive()) {
 
-        bool hasShadow = obj->hasShadow(objects, pi, l, lights[i]);
+            l = lights[i]->calculateL(*pi);
 
-        if (!hasShadow) {
+            bool hasShadow = obj->hasShadow(objects, pi, l, lights[i]);
 
-            r = (*normal * (2 * (l.scalarProd(*normal)))) - l;
+            if (!hasShadow) {
 
-            double f_diffuse = std::max(0.0, (l.scalarProd(*normal)));
-            double f_speculated = std::pow(std::max(0.0, (r.scalarProd(v))), shininess);
+                r = (*normal * (2 * (l.scalarProd(*normal)))) - l;
 
-            Vector i_diffuse = (*(lights[i]->getIntensity())) * (*obj->kd) * f_diffuse;
-            Vector i_speculated = (*lights[i]->getIntensity()) * (*obj->ke) * f_speculated;
+                double f_diffuse = std::max(0.0, (l.scalarProd(*normal)));
+                double f_speculated = std::pow(std::max(0.0, (r.scalarProd(v))), shininess);
 
-            rgb = rgb + i_diffuse + i_speculated;
+                Vector i_diffuse = (*(lights[i]->getIntensity())) * (*obj->kd) * f_diffuse;
+                Vector i_speculated = (*lights[i]->getIntensity()) * (*obj->ke) * f_speculated;
 
+                rgb = rgb + i_diffuse + i_speculated;
+
+            }
         }
+
     }
 
-    if (environmentLight != nullptr) {
-        Vector i_environment = (*environmentLight) * (*obj->ka);
+    if (environmentLight != nullptr && environmentLight->getActive()) {
+        Vector i_environment = (*environmentLight->getIntensity()) * (*obj->ka);
         rgb = rgb + i_environment;
     }
 

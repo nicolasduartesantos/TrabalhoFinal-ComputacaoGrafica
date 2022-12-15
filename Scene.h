@@ -18,8 +18,8 @@ private:
 
     ProjectionType projection = ProjectionType::PERSPECTIVE;
 
-    double hWindow = 60.0;
-    double wWindow = 60.0;
+    double hWindow = 100.0;
+    double wWindow = 100.0;
 
     int nLin = 500;
     int nCol = 500;
@@ -30,7 +30,7 @@ private:
 
     std::vector<Light*> lights;
 
-    Vector* environmentLight = nullptr;
+    Light* environmentLight = nullptr;
 
     Color* bgColor = nullptr;
 
@@ -64,8 +64,8 @@ public:
     void setProjection(ProjectionType projection);
     ProjectionType getProjection();
 
-    void setEnvironmentLight(Vector* environmentLight);
-    Vector* getEnvironmentLight();
+    void setEnvironmentLight(Light* environmentLight);
+    Light* getEnvironmentLight();
 
     void setBGColor(Color* bgColor);
     Color* getBGColor();

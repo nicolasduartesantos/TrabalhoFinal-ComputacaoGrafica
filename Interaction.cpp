@@ -56,7 +56,7 @@ Object* Interaction::picking() {
                 }
                 else {
                     p0 = new Vector(x, y, 0);
-                    p = new Vector(0, 0, -1);
+                    p = new Vector(x, y, -1);
                 }
 
 

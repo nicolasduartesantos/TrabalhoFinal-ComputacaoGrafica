@@ -21,7 +21,7 @@ public:
 
     bool intersect_for_shadow(Vector* p0, Vector* dir);
 
-    Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight);
+    Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Light* environmentLight);
 
     void rotX(double a);
     void rotY(double a);

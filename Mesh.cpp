@@ -213,7 +213,7 @@ bool Mesh::intersect_for_shadow(Vector* p0, Vector* dir) {
 }
 
 
-Color* Mesh::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) {
+Color* Mesh::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Light* environmentLight) {
 
 	return this->RGBtoPaint(lights, objects, p0, dir, environmentLight, this->normal, this);
 

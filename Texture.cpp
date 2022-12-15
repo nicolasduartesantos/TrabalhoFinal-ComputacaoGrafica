@@ -10,7 +10,7 @@ Image* Texture::getTexture() {
 }
 
 
-Color* Texture::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) {
+Color* Texture::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Light* environmentLight) {
 
 	Vector* normal = this->getNormal();
 	Vector* pi = this->getIntersectionPoint();

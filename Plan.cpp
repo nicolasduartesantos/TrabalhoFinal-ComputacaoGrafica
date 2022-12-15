@@ -101,7 +101,7 @@ bool Plan::intersect_for_shadow(Vector* p0, Vector* dir) {
 }
 
 
-Color* Plan::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) {
+Color* Plan::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Light* environmentLight) {
 
 	return RGBtoPaint(lights, objects, p0, dir, environmentLight, this->normal, this);
 

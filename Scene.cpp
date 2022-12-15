@@ -69,11 +69,11 @@ ProjectionType Scene::getProjection() {
     return this->projection;
 }
 
-void Scene::setEnvironmentLight(Vector* environmentLight) {
+void Scene::setEnvironmentLight(Light* environmentLight) {
     this->environmentLight = environmentLight;
 }
 
-Vector* Scene::getEnvironmentLight() {
+Light* Scene::getEnvironmentLight() {
     return this->environmentLight;
 }
 
@@ -146,7 +146,7 @@ void Scene::paintCanvas(SDL_Renderer* renderer) {
             }
             else {
                 p0 = new Vector(x, y, 0);
-                p = new Vector(0, 0, -1);
+                p = new Vector(x, y, -1);
             }
 
             Vector dirtemp = ((*p - *p0) / ((*p - *p0).getLength()));
@@ -213,7 +213,7 @@ void Scene::mainLoop() {
     // Setup window
     SDL_Init(SDL_INIT_VIDEO);
     window = SDL_CreateWindow("SDL2 Pixel Drawing",
-        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, nCol, nLin, 0);
+        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->nCol, this->nLin, 0);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == NULL)
     {
@@ -247,6 +247,8 @@ void Scene::mainLoop() {
     bool change = true;
     bool perspective = true;
     bool orthographic = false;
+    int num;
+
     while (!done)
     {
         SDL_Event event;
@@ -284,8 +286,6 @@ void Scene::mainLoop() {
 
         if (ImGui::CollapsingHeader("Camera")) {
 
-            std::cout << "camera\n";
-
             Vector* e = this->cameraTo->getEye();
             float eye[3] = { (float)e->getCoordinate(0), (float)e->getCoordinate(1), (float)e->getCoordinate(2) };
 
@@ -321,25 +321,168 @@ void Scene::mainLoop() {
                 this->camera(newEye, newAt, newUp);
                 change = true;
             }
+
+            float windowsize[2] = { (float)this->getHWindow(), (float)this->getWWindow() };
+            ImGui::InputFloat2("H, W", windowsize);
+            if (ImGui::IsItemDeactivatedAfterEdit()) {
+                this->setHWindow(windowsize[0]);
+                this->setWWindow(windowsize[1]);
+                this->setNLin((this->getHWindow() / 100) * 500);
+                this->setNCol((this->getWWindow() / 100) * 500);
+
+                ImGui_ImplSDLRenderer_Shutdown();
+                ImGui_ImplSDL2_Shutdown();
+                ImGui::DestroyContext();
+                SDL_DestroyWindow(window);
+                SDL_DestroyRenderer(renderer);
+                this->mainLoop();
+            }
+
+            double d = this->getDWindow();
+            ImGui::InputDouble("distancia focal", &d);
+            if (ImGui::IsItemDeactivatedAfterEdit()) {
+                this->setDWindow(d);
+                change = true;
+            }
+
         }
 
         if (ImGui::CollapsingHeader("Lights")) {
-            //mdmaterial
+
+            if (ImGui::Button("Pick Light")) {
+
+                int i = 0;
+
+                std::cout << "--- LISTA DE LUZES ---\n";
+                for (i = 0; i < this->lights.size(); i++) {
+
+                    if (lights[i]->lightType == LightType::POINT) {
+                        Point* luz = (Point*)lights[i];
+                        std::cout << i << "- Pontual na posicao: (" << luz->initial_coordinate->getCoordinate(0) << ", " << luz->initial_coordinate->getCoordinate(1) << ", " << luz->initial_coordinate->getCoordinate(2) << ")\n";
+                        if (luz->getActive()) std::cout << "   Luz ativa\n\n";
+                        else             std::cout << "   Luz inativa\n\n";
+                    }
+
+                    else if (lights[i]->lightType == LightType::DIRECTIONAL) {
+                        Directional* luz = (Directional*)lights[i];
+                        std::cout << i << "- Direcional com direcao: (" << luz->initial_direction->getCoordinate(0) << ", " << luz->initial_direction->getCoordinate(1) << ", " << luz->initial_direction->getCoordinate(2) << ")\n";
+                        if (luz->getActive()) std::cout << "   Luz ativa\n\n";
+                        else             std::cout << "   Luz inativa\n\n";
+                    }
+
+                    else if (lights[i]->lightType == LightType::SPOT) {
+                        Spot* luz = (Spot*)lights[i];
+                        std::cout << i << "- Spot na posicao: (" << luz->initial_coordinate->getCoordinate(0) << ", " << luz->initial_coordinate->getCoordinate(1) << ", " << luz->initial_coordinate->getCoordinate(2) << ")\n";
+                        std::cout << "- E direcao: (" << luz->initial_direction->getCoordinate(0) << ", " << luz->initial_direction->getCoordinate(1) << ", " << luz->initial_direction->getCoordinate(2) << ")\n";
+                        if (luz->getActive()) std::cout << "   Luz ativa\n\n";
+                        else             std::cout << "   Luz inativa\n\n";
+                    }
+                }
+
+                if (this->getEnvironmentLight() != nullptr) {
+                    i++;
+                    std::cout << i << "- Luz ambiente com intensidade: (" << this->getEnvironmentLight()->getCoordinate(0) << ", " << this->getEnvironmentLight()->getCoordinate(1) << ", " << this->getEnvironmentLight()->getCoordinate(2) << ")\n";
+                    if (this->getEnvironmentLight()->getActive()) std::cout << "   Luz ativa\n";
+                    else             std::cout << "   Luz inativa\n";
+                }
+
+                std::cout << "\nDigite o numero da luz que deseja: ";
+                std::cin >> num;
+            }
+
+            if (ImGui::CollapsingHeader("Point")) {
+
+                Point* point = (Point*)this->lights[num];
+                float p_coord[3] = { (float)point->initial_coordinate->getCoordinate(0), (float)point->initial_coordinate->getCoordinate(1), (float)point->initial_coordinate->getCoordinate(2) };
+                
+                ImGui::InputFloat3("Coordinates", p_coord);
+                if (ImGui::IsItemDeactivatedAfterEdit()) {
+                    Vector* new_point = new Vector(p_coord[0], p_coord[1], p_coord[2]);
+                    ((Point*)this->lights[num])->initial_coordinate = new_point;
+                    change = true;
+
+                    ((Point*)this->lights[num])->doWorldToCamera(this->cameraTo);
+                }
+
+                if (ImGui::Button("Turn ON/OFF")) {
+                    if (((Point*)this->lights[num])->getActive()) {
+                        ((Point*)this->lights[num])->setActive(false);
+                    }
+                    else {
+                        ((Point*)this->lights[num])->setActive(true);
+                    }
+                    change = true;
+                }
+            }
+
+            if (ImGui::CollapsingHeader("Directional")) {
+
+                Directional* direct = (Directional*)this->lights[num];
+                float d_coord[3] = { (float)direct->initial_direction->getCoordinate(0), (float)direct->initial_direction->getCoordinate(1), (float)direct->initial_direction->getCoordinate(2) };
+                
+                ImGui::InputFloat3("Directions", d_coord);
+                if (ImGui::IsItemDeactivatedAfterEdit()) {
+                    Vector* new_direct = new Vector(d_coord[0], d_coord[1], d_coord[2]);
+                    ((Directional*)this->lights[num])->initial_direction = new_direct;
+                    change = true;
+
+                    ((Directional*)this->lights[num])->doWorldToCamera(this->cameraTo);
+                }
+
+                if (ImGui::Button("Turn ON/OFF")) {
+                    if (((Directional*)this->lights[num])->getActive()) {
+                        ((Directional*)this->lights[num])->setActive(false);
+                    }
+                    else {
+                        ((Directional*)this->lights[num])->setActive(true);
+                    }
+                    change = true;
+                }
+            }
+
+            if (ImGui::CollapsingHeader("Spot")) {
+
+                Spot* spot = (Spot*)this->lights[num];
+                float s_coord[3] = { (float)spot->initial_coordinate->getCoordinate(0), (float)spot->initial_coordinate->getCoordinate(1), (float)spot->initial_coordinate->getCoordinate(2) };
+                
+                ImGui::InputFloat3("Coordinates", s_coord);
+                if (ImGui::IsItemDeactivatedAfterEdit()) {
+                    Vector* new_spot = new Vector(s_coord[0], s_coord[1], s_coord[2]);
+                    ((Spot*)this->lights[num])->initial_coordinate = new_spot;
+                    change = true;
+
+                    ((Spot*)this->lights[num])->doWorldToCamera(this->cameraTo);
+                }
+
+                float sd_coord[3] = { (float)spot->initial_direction->getCoordinate(0), (float)spot->initial_direction->getCoordinate(1), (float)spot->initial_direction->getCoordinate(2) };
+                ImGui::InputFloat3("Directions", sd_coord);
+                
+                if (ImGui::IsItemDeactivatedAfterEdit()) {
+                    Vector* new_spotdirect = new Vector(sd_coord[0], sd_coord[1], sd_coord[2]);
+                    ((Spot*)this->lights[num])->initial_direction = new_spotdirect;
+                    change = true;
+
+                    ((Spot*)this->lights[num])->doWorldToCamera(this->cameraTo);
+                }
+
+                if (ImGui::Button("Turn ON/OFF")) {
+                    if (((Spot*)this->lights[num])->getActive()) {
+                        ((Spot*)this->lights[num])->setActive(false);
+                    }
+                    else {
+                        ((Spot*)this->lights[num])->setActive(true);
+                    }
+                    change = true;
+                }
+            }
         }
 
-        //Object* object = new Sphere(0, new Vector(0.0, 0.0, 0.0), new Vector(0.0, 0.0, 0.0), new Vector(0.0, 0.0, 0.0), new Vector(0.0, 0.0, 0.0), 0.0);
-        //bool test = false;
 
         if (ImGui::CollapsingHeader("Picking")) {
 
-            std::cout << "antes\n";
-
             if (ImGui::Button("Butao")) {
-                std::cout << "apertei botao\n";
                 Object* object = this->interaction->picking();
-                //test = true;
-
-                std::cout << (int)object->getObjectType() << "\n";
+                
 
                 if (object->getObjectType() == ObjectType::SPHERE) {
 
@@ -1418,15 +1561,8 @@ void Scene::mainLoop() {
                     objectMeshTexturized->doWorldToCamera(this->cameraTo);
 
                 }
-
             }
-
-            std::cout << "depois\n";
-
-
-
         }
-        //ImGui::GetStateStorage()->SetInt(ImGui::GetID("Picking"), 0);
 
 
         if (ImGui::CollapsingHeader("Projection")) {

@@ -97,7 +97,7 @@ int main(int argc, char* argv[]) {
 	Cylinder* baseArvore = new Cylinder(30., new Vector(350., 100., -325.), new Vector(0., 1., 0.), 9.0, new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), 5.0);
 	Cylinder* troncoArvore = new Cylinder(6., new Vector(350., 109., -325.), new Vector(0., 1., 0.), 40.0, new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), new Vector(0.9, 0.6, 0.1), 5.0);
 	Cone* arvore = new Cone(60., new Vector(350., 145., -325.), new Vector(0., 1., 0.), 150.0, new Vector(0.0, 0.9, 0.2), new Vector(0.0, 0.9, 0.2), new Vector(0.0, 0.9, 0.2), 5.0);
-	Sphere* bolaArvore = new Sphere(50, new Vector(350., 299., -325.), new Vector(1., 1., 0.), new Vector(1., 1., 0.), new Vector(1., 1., 0.), 5.0);
+	Sphere* bolaArvore = new Sphere(10, new Vector(350., 299., -325.), new Vector(1., 1., 0.), new Vector(1., 1., 0.), new Vector(1., 1., 0.), 5.0);
 
 	Scene* scene = new Scene(60, 60, 500, 500, 20, new Color(100, 100, 100, 255));
 
@@ -129,7 +129,7 @@ int main(int argc, char* argv[]) {
 	
 	//scene->addObject(baseArvore);
 	//scene->addObject(troncoArvore);
-	//scene->addObject(arvore);
+	scene->addObject(arvore);
 	scene->addObject(bolaArvore);
 
 	//scene->setBGImage(ceu);
