@@ -30,7 +30,7 @@ private:
 
     std::vector<Light*> lights;
 
-    Light* environmentLight = nullptr;
+    Environment* environmentLight = nullptr;
 
     Color* bgColor = nullptr;
 
@@ -64,8 +64,8 @@ public:
     void setProjection(ProjectionType projection);
     ProjectionType getProjection();
 
-    void setEnvironmentLight(Light* environmentLight);
-    Light* getEnvironmentLight();
+    void setEnvironmentLight(Environment* environmentLight);
+    Environment* getEnvironmentLight();
 
     void setBGColor(Color* bgColor);
     Color* getBGColor();

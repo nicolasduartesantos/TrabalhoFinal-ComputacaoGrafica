@@ -207,7 +207,7 @@ bool MeshTexturized::intersect_for_shadow(Vector* p0, Vector* dir) {
 }
 
 
-Color* MeshTexturized::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Light* environmentLight) {
+Color* MeshTexturized::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight) {
 
 	//if () {
 

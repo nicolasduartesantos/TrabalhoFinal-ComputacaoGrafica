@@ -44,7 +44,7 @@ public:
 
 	bool intersect_for_shadow(Vector* p0, Vector* dir);
 
-	Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Light* environmentLight);
+	Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight);
 
 	void scaling(double sx, double sy, double sz);
 	void translation(double tx, double ty, double tz);

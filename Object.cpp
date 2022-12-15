@@ -123,7 +123,7 @@ bool Object::hasShadow(std::vector<Object*> objects, Vector* pi, Vector l, Light
 }
 
 
-Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Light* environmentLight, Vector* normal, Object* obj) {
+Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight, Vector* normal, Object* obj) {
 
     Vector rgb(0, 0, 0);
 

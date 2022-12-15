@@ -137,7 +137,7 @@ bool Sphere::intersect_for_shadow(Vector* p0, Vector* dir) {
 }
 
 
-Color* Sphere::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Light* environmentLight) {
+Color* Sphere::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight) {
 
     Vector rgb(0, 0, 0);
 

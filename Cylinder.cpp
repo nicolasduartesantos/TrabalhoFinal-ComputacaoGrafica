@@ -716,7 +716,7 @@ bool Cylinder::intersect_for_shadow(Vector* p0, Vector* dir) {
 }
 
 
-Color* Cylinder::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Light* environmentLight) {
+Color* Cylinder::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight) {
 
     if (this->surface == ObjectSurface::CYLINDER_TOP) {
 

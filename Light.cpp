@@ -215,3 +215,24 @@ Directional::~Directional() {
 
     delete this->initial_direction;
 }
+
+
+
+
+///////////////////////////////// Environment /////////////////////////////////
+
+Vector Environment::calculateL(Vector pi) {
+    return Vector(0, 0, 0);
+}
+
+double Environment::distance(Vector p) {
+    return 0;
+}
+
+void Environment::doWorldToCamera(Camera* camera) { }
+
+Environment::Environment(Vector* intensity) {
+    this->setIntensity(intensity);
+}
+
+Environment::~Environment() { }

@@ -113,3 +113,20 @@ public:
     ~Directional();
 
 };
+
+
+class Environment : public Light {
+
+public:
+
+    Vector calculateL(Vector pi);
+
+    double distance(Vector p);
+
+    void doWorldToCamera(Camera* camera);
+
+    Environment(Vector* intensity);
+
+    ~Environment();
+
+};

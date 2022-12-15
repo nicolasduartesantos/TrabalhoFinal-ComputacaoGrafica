@@ -101,7 +101,9 @@ int main(int argc, char* argv[]) {
 
 	Scene* scene = new Scene(60, 60, 500, 500, 20, new Color(100, 100, 100, 255));
 
-	scene->setEnvironmentLight(new Vector(0.3, 0.3, 0.3));
+	Environment* environmentLight = new Environment(new Vector(0.3, 0.3, 0.3));
+
+	scene->setEnvironmentLight(environmentLight);
 
 	scene->addLight(light);
 	scene->addObject(plan1);

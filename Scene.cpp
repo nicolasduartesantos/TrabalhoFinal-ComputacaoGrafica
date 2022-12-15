@@ -20,7 +20,6 @@
 void Scene::setHWindow(double hWindow) {
     this->hWindow = hWindow;
 }
-
 double Scene::getHWindow() {
     return this->hWindow;
 }
@@ -29,7 +28,6 @@ double Scene::getHWindow() {
 void Scene::setWWindow(double wWindow) {
     this->wWindow = wWindow;
 }
-
 double Scene::getWWindow() {
     return this->wWindow;
 }
@@ -38,7 +36,6 @@ double Scene::getWWindow() {
 void Scene::setNLin(int nLin) {
     this->nLin = nLin;
 }
-
 int Scene::getNLin() {
     return this->nLin;
 }
@@ -47,7 +44,6 @@ int Scene::getNLin() {
 void Scene::setNCol(int nCol) {
     this->nCol = nCol;
 }
-
 int Scene::getNCol() {
     return this->nCol;
 }
@@ -56,24 +52,23 @@ int Scene::getNCol() {
 void Scene::setDWindow(double dWindow) {
     this->dWindow = dWindow;
 }
-
 double Scene::getDWindow() {
     return this->dWindow;
 }
 
+
 void Scene::setProjection(ProjectionType projection) {
     this->projection = projection;
 }
-
 ProjectionType Scene::getProjection() {
     return this->projection;
 }
 
-void Scene::setEnvironmentLight(Light* environmentLight) {
+
+void Scene::setEnvironmentLight(Environment* environmentLight) {
     this->environmentLight = environmentLight;
 }
-
-Light* Scene::getEnvironmentLight() {
+Environment* Scene::getEnvironmentLight() {
     return this->environmentLight;
 }
 
@@ -81,7 +76,6 @@ Light* Scene::getEnvironmentLight() {
 void Scene::setBGColor(Color* bgColor) {
     this->bgColor = bgColor;
 }
-
 Color* Scene::getBGColor() {
     return this->bgColor;
 }
@@ -90,7 +84,6 @@ Color* Scene::getBGColor() {
 void Scene::setBGImage(Image* bgImage) {
     this->bgImage = bgImage;
 }
-
 Image* Scene::getBGImage() {
     return this->bgImage;
 }
@@ -99,7 +92,6 @@ Image* Scene::getBGImage() {
 void Scene::addLight(Light* light) {
     this->lights.push_back(light);
 }
-
 std::vector<Light*> Scene::getLights() {
     return this->lights;
 }
@@ -108,7 +100,6 @@ std::vector<Light*> Scene::getLights() {
 void Scene::addObject(Object* object) {
     this->objects.push_back(object);
 }
-
 std::vector<Object*> Scene::getObjects() {
     return this->objects;
 }
@@ -379,13 +370,12 @@ void Scene::mainLoop() {
                 }
 
                 if (this->getEnvironmentLight() != nullptr) {
-                    i++;
                     std::cout << i << "- Luz ambiente com intensidade: (" << this->getEnvironmentLight()->getIntensity()->getCoordinate(0) << ", " << this->getEnvironmentLight()->getIntensity()->getCoordinate(1) << ", " << this->getEnvironmentLight()->getIntensity()->getCoordinate(2) << ")\n";
                     if (this->getEnvironmentLight()->getActive()) std::cout << "   Luz ativa\n";
                     else             std::cout << "   Luz inativa\n";
                 }
 
-                std::cout << "Digite o numero da luz que deseja: ";
+                std::cout << "\nDigite o numero da luz que deseja: ";
                 std::cin >> num;
             }
 
@@ -481,6 +471,28 @@ void Scene::mainLoop() {
                     else ((Spot*)this->lights[num])->setActive(true);
                     change = true;
                 }
+            }
+
+            if (ImGui::CollapsingHeader("Environment")) {
+
+                Light* environment = this->environmentLight;
+                
+                float intensity[3] = { environment->getIntensity()->getCoordinate(0), environment->getIntensity()->getCoordinate(1), environment->getIntensity()->getCoordinate(2) };
+                ImGui::InputFloat3("Intensity", intensity);
+                if (ImGui::IsItemDeactivatedAfterEdit()) {
+                    Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
+                    environment->setIntensity(new_intensity);
+                    change = true;
+                }
+
+                if (ImGui::Button("Turn ON/OFF")) {
+                    if (environment->getActive()) {
+                        environment->setActive(false);
+                    }
+                    else environment->setActive(true);
+                    change = true;
+                }
+
             }
         }
 
