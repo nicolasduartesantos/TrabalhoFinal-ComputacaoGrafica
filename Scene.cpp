@@ -349,10 +349,9 @@ void Scene::mainLoop() {
 
         if (ImGui::CollapsingHeader("Lights")) {
 
+            int i;
+
             if (ImGui::Button("Pick Light")) {
-
-                int i = 0;
-
                 std::cout << "--- LISTA DE LUZES ---\n";
                 for (i = 0; i < this->lights.size(); i++) {
 
@@ -381,97 +380,105 @@ void Scene::mainLoop() {
 
                 if (this->getEnvironmentLight() != nullptr) {
                     i++;
-                    std::cout << i << "- Luz ambiente com intensidade: (" << this->getEnvironmentLight()->getCoordinate(0) << ", " << this->getEnvironmentLight()->getCoordinate(1) << ", " << this->getEnvironmentLight()->getCoordinate(2) << ")\n";
+                    std::cout << i << "- Luz ambiente com intensidade: (" << this->getEnvironmentLight()->getIntensity()->getCoordinate(0) << ", " << this->getEnvironmentLight()->getIntensity()->getCoordinate(1) << ", " << this->getEnvironmentLight()->getIntensity()->getCoordinate(2) << ")\n";
                     if (this->getEnvironmentLight()->getActive()) std::cout << "   Luz ativa\n";
                     else             std::cout << "   Luz inativa\n";
                 }
 
-                std::cout << "\nDigite o numero da luz que deseja: ";
+                std::cout << "Digite o numero da luz que deseja: ";
                 std::cin >> num;
             }
 
             if (ImGui::CollapsingHeader("Point")) {
-
                 Point* point = (Point*)this->lights[num];
-                float p_coord[3] = { (float)point->initial_coordinate->getCoordinate(0), (float)point->initial_coordinate->getCoordinate(1), (float)point->initial_coordinate->getCoordinate(2) };
-                
+                float p_coord[3] = { point->initial_coordinate->getCoordinate(0), point->initial_coordinate->getCoordinate(1), point->initial_coordinate->getCoordinate(2) };
                 ImGui::InputFloat3("Coordinates", p_coord);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_point = new Vector(p_coord[0], p_coord[1], p_coord[2]);
                     ((Point*)this->lights[num])->initial_coordinate = new_point;
                     change = true;
-
                     ((Point*)this->lights[num])->doWorldToCamera(this->cameraTo);
+                }
+
+                float intensity[3] = { point->getIntensity()->getCoordinate(0), point->getIntensity()->getCoordinate(1), point->getIntensity()->getCoordinate(2) };
+                ImGui::InputFloat3("Intensity", intensity);
+                if (ImGui::IsItemDeactivatedAfterEdit()) {
+                    Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
+                    ((Point*)this->lights[num])->setIntensity(new_intensity);
+                    change = true;
                 }
 
                 if (ImGui::Button("Turn ON/OFF")) {
                     if (((Point*)this->lights[num])->getActive()) {
                         ((Point*)this->lights[num])->setActive(false);
                     }
-                    else {
-                        ((Point*)this->lights[num])->setActive(true);
-                    }
+                    else ((Point*)this->lights[num])->setActive(true);
                     change = true;
                 }
+
             }
 
             if (ImGui::CollapsingHeader("Directional")) {
-
                 Directional* direct = (Directional*)this->lights[num];
-                float d_coord[3] = { (float)direct->initial_direction->getCoordinate(0), (float)direct->initial_direction->getCoordinate(1), (float)direct->initial_direction->getCoordinate(2) };
-                
+                float d_coord[3] = { direct->initial_direction->getCoordinate(0), direct->initial_direction->getCoordinate(1), direct->initial_direction->getCoordinate(2) };
                 ImGui::InputFloat3("Directions", d_coord);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_direct = new Vector(d_coord[0], d_coord[1], d_coord[2]);
                     ((Directional*)this->lights[num])->initial_direction = new_direct;
                     change = true;
-
                     ((Directional*)this->lights[num])->doWorldToCamera(this->cameraTo);
+                }
+
+                float intensity[3] = { direct->getIntensity()->getCoordinate(0), direct->getIntensity()->getCoordinate(1), direct->getIntensity()->getCoordinate(2) };
+                ImGui::InputFloat3("Intensity", intensity);
+                if (ImGui::IsItemDeactivatedAfterEdit()) {
+                    Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
+                    ((Point*)this->lights[num])->setIntensity(new_intensity);
+                    change = true;
                 }
 
                 if (ImGui::Button("Turn ON/OFF")) {
                     if (((Directional*)this->lights[num])->getActive()) {
                         ((Directional*)this->lights[num])->setActive(false);
                     }
-                    else {
-                        ((Directional*)this->lights[num])->setActive(true);
-                    }
+                    else ((Directional*)this->lights[num])->setActive(true);
                     change = true;
                 }
             }
 
             if (ImGui::CollapsingHeader("Spot")) {
-
                 Spot* spot = (Spot*)this->lights[num];
-                float s_coord[3] = { (float)spot->initial_coordinate->getCoordinate(0), (float)spot->initial_coordinate->getCoordinate(1), (float)spot->initial_coordinate->getCoordinate(2) };
-                
+                float s_coord[3] = { spot->initial_coordinate->getCoordinate(0), spot->initial_coordinate->getCoordinate(1), spot->initial_coordinate->getCoordinate(2) };
                 ImGui::InputFloat3("Coordinates", s_coord);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_spot = new Vector(s_coord[0], s_coord[1], s_coord[2]);
                     ((Spot*)this->lights[num])->initial_coordinate = new_spot;
                     change = true;
-
                     ((Spot*)this->lights[num])->doWorldToCamera(this->cameraTo);
                 }
 
-                float sd_coord[3] = { (float)spot->initial_direction->getCoordinate(0), (float)spot->initial_direction->getCoordinate(1), (float)spot->initial_direction->getCoordinate(2) };
+                float sd_coord[3] = { spot->initial_direction->getCoordinate(0), spot->initial_direction->getCoordinate(1), spot->initial_direction->getCoordinate(2) };
                 ImGui::InputFloat3("Directions", sd_coord);
-                
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_spotdirect = new Vector(sd_coord[0], sd_coord[1], sd_coord[2]);
                     ((Spot*)this->lights[num])->initial_direction = new_spotdirect;
                     change = true;
-
                     ((Spot*)this->lights[num])->doWorldToCamera(this->cameraTo);
+                }
+
+                float intensity[3] = { spot->getIntensity()->getCoordinate(0), spot->getIntensity()->getCoordinate(1), spot->getIntensity()->getCoordinate(2) };
+                ImGui::InputFloat3("Intensity", intensity);
+                if (ImGui::IsItemDeactivatedAfterEdit()) {
+                    Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
+                    ((Point*)this->lights[num])->setIntensity(new_intensity);
+                    change = true;
                 }
 
                 if (ImGui::Button("Turn ON/OFF")) {
                     if (((Spot*)this->lights[num])->getActive()) {
                         ((Spot*)this->lights[num])->setActive(false);
                     }
-                    else {
-                        ((Spot*)this->lights[num])->setActive(true);
-                    }
+                    else ((Spot*)this->lights[num])->setActive(true);
                     change = true;
                 }
             }
