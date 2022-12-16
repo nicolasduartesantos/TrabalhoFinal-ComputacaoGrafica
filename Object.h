@@ -75,11 +75,11 @@ public:
 
     virtual bool intersect_for_shadow(Vector* p0, Vector* dir) = 0;
 
-    virtual Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) = 0;
+    virtual Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight) = 0;
 
     bool hasShadow(std::vector<Object*> objects, Vector* pi, Vector l, Light* light);
 
-    Color* RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight, Vector* normal, Object* obj);
+    Color* RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight, Vector* normal, Object* obj);
 
     virtual void rotX(double a) = 0;
     virtual void rotY(double a) = 0;

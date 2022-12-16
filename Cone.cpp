@@ -555,7 +555,7 @@ bool Cone::intersect_for_shadow(Vector* p0, Vector* dir) {
 }
 
 
-Color* Cone::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) {
+Color* Cone::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight) {
 
 	if (this->surface == ObjectSurface::CONE_BASE) {
 
@@ -584,57 +584,53 @@ Color* Cone::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Ve
 
 
 void Cone::rotX(double a) {
-	Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
-	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
-	*center_top = center_top->rotX(a);
 
-	*this->center_base = (*this->center_base).rotX(a);
+	*this->initial_vertex = (*this->initial_vertex).rotX(a);
 
-	Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+	*this->initial_center_base = (*this->initial_center_base).rotX(a);
+
+	Vector directionNotNormalized = (*this->getVertex() - *this->getCenter_base());
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->setDirection(direction);
 }
 
 void Cone::rotY(double a) {
-	Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
-	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
-	*center_top = center_top->rotY(a);
 
-	*this->center_base = (*this->center_base).rotY(a);
+	*this->initial_vertex = (*this->initial_vertex).rotY(a);
 
-	Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+	*this->initial_center_base = (*this->initial_center_base).rotY(a);
+
+	Vector directionNotNormalized = (*this->getVertex() - *this->getCenter_base());
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->setDirection(direction);
 }
 
 void Cone::rotZ(double a) {
-	Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
-	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
-	*center_top = center_top->rotZ(a);
 
-	*this->center_base = (*this->center_base).rotZ(a);
+	*this->initial_vertex = (*this->initial_vertex).rotZ(a);
 
-	Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+	*this->initial_center_base = (*this->initial_center_base).rotZ(a);
+
+	Vector directionNotNormalized = (*this->getVertex() - *this->getCenter_base());
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->setDirection(direction);
 }
 
 void Cone::translation(double tx, double ty, double tz) {
-	*this->center_base = (*this->center_base).translation(tx, ty, tz);
+	*this->initial_center_base = (*this->initial_center_base).translation(tx, ty, tz);
+	*this->initial_vertex = (*this->initial_vertex).translation(tx, ty, tz);
 }
 
 void Cone::scaling(double sx, double sy, double sz) {
 
-	Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
-	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
-	*center_top = center_top->scaling(sx, sy, sz);
+	*this->initial_vertex = (*this->initial_vertex).scaling(sx, sy, sz);
 
-	*this->center_base = (*this->center_base).scaling(sx, sy, sz);
+	*this->initial_center_base = (*this->initial_center_base).scaling(sx, sy, sz);
 
-	Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+	Vector directionNotNormalized = (*this->getVertex() - *this->getCenter_base());
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->setDirection(direction);
@@ -644,39 +640,36 @@ void Cone::scaling(double sx, double sy, double sz) {
 }
 
 void Cone::reflectionXY() {
-	Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
-	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
-	*center_top = center_top->reflectionXY();
 
-	*this->center_base = (*this->center_base).reflectionXY();
+	*this->initial_vertex = (*this->initial_vertex).reflectionXY();
 
-	Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+	*this->initial_center_base = (*this->initial_center_base).reflectionXY();
+
+	Vector directionNotNormalized = (*this->getVertex() - *this->getCenter_base());
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->setDirection(direction);
 }
 
 void Cone::reflectionXZ() {
-	Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
-	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
-	*center_top = center_top->reflectionXZ();
 
-	*this->center_base = (*this->center_base).reflectionXZ();
+	*this->initial_vertex = (*this->initial_vertex).reflectionXZ();
 
-	Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+	*this->initial_center_base = (*this->initial_center_base).reflectionXZ();
+
+	Vector directionNotNormalized = (*this->getVertex() - *this->getCenter_base());
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->setDirection(direction);
 }
 
 void Cone::reflectionYZ() {
-	Vector ct = *this->getCenter_base() + (*this->getDirection() * this->getHeight());
-	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
-	*center_top = center_top->reflectionYZ();
 
-	*this->center_base = (*this->center_base).reflectionYZ();
+	*this->initial_vertex = (*this->initial_vertex).reflectionYZ();
 
-	Vector directionNotNormalized = (*center_top - *this->getCenter_base());
+	*this->initial_center_base = (*this->initial_center_base).reflectionYZ();
+
+	Vector directionNotNormalized = (*this->getVertex() - *this->getCenter_base());
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->setDirection(direction);

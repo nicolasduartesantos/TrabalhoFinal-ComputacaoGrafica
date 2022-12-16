@@ -22,5 +22,8 @@
 #include "Mesh.h"
 #include "Cube.h"
 #include "Texture.h"
+#include "MeshTexturized.h"
+#include "Cluster.h"
 #include "Image.h"
 #include "Camera.h"
+#include "Interaction.h"

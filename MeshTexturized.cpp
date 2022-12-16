@@ -57,8 +57,8 @@ bool MeshTexturized::intersect(Vector* p0, Vector* dir) {
 	Vector* meshNormal = new Vector();
 	for (FaceTexturized* face : this->getFaces()) {
 
-		int idEdge1 = face->edgeIds[0];
-		int idEdge2 = face->edgeIds[1];
+		int idEdge1 = face->edgeIdsT[0];
+		int idEdge2 = face->edgeIdsT[1];
 
 		int idVertex11 = this->edges[idEdge1]->vertexIds[0];
 		int idVertex12 = this->edges[idEdge1]->vertexIds[1];
@@ -123,6 +123,9 @@ bool MeshTexturized::intersect(Vector* p0, Vector* dir) {
 				*meshNormal = normalUnitary;
 				this->setNormal(meshNormal);
 
+				this->pis.push_back(pi);
+				this->facesPI.push_back(face);
+
 			}
 		}
 	}
@@ -137,8 +140,8 @@ bool MeshTexturized::intersect_for_shadow(Vector* p0, Vector* dir) {
 
 	for (FaceTexturized* face : this->getFaces()) {
 
-		int idEdge1 = face->edgeIds[0];
-		int idEdge2 = face->edgeIds[1];
+		int idEdge1 = face->edgeIdsT[0];
+		int idEdge2 = face->edgeIdsT[1];
 
 		int idVertex11 = this->edges[idEdge1]->vertexIds[0];
 		int idVertex12 = this->edges[idEdge1]->vertexIds[1];
@@ -207,59 +210,129 @@ bool MeshTexturized::intersect_for_shadow(Vector* p0, Vector* dir) {
 }
 
 
-Color* MeshTexturized::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) {
+Color* MeshTexturized::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight) {
 
+	Vector* pi = this->getIntersectionPoint();
 
-	return this->RGBtoPaint(lights, objects, p0, dir, environmentLight, this->normal, this);
+	for (int i = 0; i < this->pis.size(); i++) {
 
+		if (pi->getCoordinate(0) == this->pis[i]->getCoordinate(0) && pi->getCoordinate(1) == this->pis[i]->getCoordinate(1) && pi->getCoordinate(2) == this->pis[i]->getCoordinate(2)) {
+
+			if (!(this->facesPI[i])->getActive()) {
+
+				this->kd = new Vector(1.0, 0.078, 0.576);
+				this->ke = new Vector(1.0, 0.078, 0.576);
+				this->ka = new Vector(1.0, 0.078, 0.576);
+
+				return this->RGBtoPaint(lights, objects, p0, dir, environmentLight, this->normal, this);
+			}
+
+			else {
+
+				Vector* normal = this->getNormal();
+				Vector* pi = this->getIntersectionPoint();
+				Vector piMinusp0 = *pi - Vector(0, 0, 0);
+				Vector piMinusp02 = piMinusp0;
+
+				if (normal->getCoordinate(0) != 0 || normal->getCoordinate(2) != 0) {
+
+					Vector normalWithYRotated = normal->rotY(-asin(normal->getCoordinate(0) / (sqrt(pow(normal->getCoordinate(0), 2.0) + pow(normal->getCoordinate(2), 2.0)))));
+
+					Vector piMinusp_piWithYRotated = piMinusp0.rotY(-asin(normal->getCoordinate(0) / (sqrt(pow(normal->getCoordinate(0), 2.0) + pow(normal->getCoordinate(2), 2.0)))));
+
+					piMinusp02 = piMinusp_piWithYRotated.rotX(-acos(normalWithYRotated.getCoordinate(1)));
+
+				}
+
+				int x = (int)piMinusp02.getCoordinate(0);
+				int z = (int)piMinusp02.getCoordinate(2);
+
+				int posPixelX;
+				int posPixelY;
+
+				if (x < 0) {
+					posPixelX = this->texture->getW() - (abs(x) % this->texture->getW());
+				}
+				else {
+					posPixelX = (abs(x) % this->texture->getW());
+				}
+
+				if (z < 0) {
+					posPixelY = this->texture->getH() - (abs(z) % this->texture->getH());
+				}
+				else {
+					posPixelY = (abs(z) % this->texture->getH());
+				}
+
+				Color pixel = this->texture->getColor(posPixelX, posPixelY);
+
+				double r = (pixel.r / 255.0);
+				double g = (pixel.g / 255.0);
+				double b = (pixel.b / 255.0);
+
+				Vector* pixelColor = new Vector(r, g, b);
+
+				this->kd = pixelColor;
+				this->ke = pixelColor;
+				this->ka = pixelColor;
+
+				return this->RGBtoPaint(lights, objects, p0, dir, environmentLight, this->normal, this);
+
+			}
+		}
+	}
 }
 
 
 void MeshTexturized::scaling(double sx, double sy, double sz) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->scaling(sx, sy, sz);
 	}
 
-	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
-	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
-	*cluster_center_top = cluster_center_top->scaling(sx, sy, sz);
+	
 
-	Vector* cluster_center_base = this->cluster->getCenter_base();
-	*cluster_center_base = cluster_center_base->scaling(sx, sy, sz);
+	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
+	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+	*center_top = center_top->scaling(sx, sy, sz);
 
-	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector* center_base = this->cluster->initial_center_base;
+	*center_base = center_base->scaling(sx, sy, sz);
+
+	Vector directionNotNormalized = (*center_top - *this->cluster->initial_center_base);
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
 
 	this->cluster->setRad(std::max(std::max(sx, sy), sz) * this->cluster->getRad());
-	this->cluster->setHeight((*cluster_center_top - *this->cluster->getCenter_base()).getLength());
+	this->cluster->setHeight((*center_top - *this->cluster->getCenter_base()).getLength());
+
+	
 }
 
 
 void MeshTexturized::translation(double tx, double ty, double tz) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->translation(tx, ty, tz);
 	}
 
-	Vector* cluster_center_base = this->cluster->getCenter_base();
-	*cluster_center_base = cluster_center_base->translation(tx, ty, tz);
+	Vector* center_base = this->cluster->initial_center_base;
+	*center_base = center_base->translation(tx, ty, tz);
 }
 
 
 void MeshTexturized::rotX(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->rotX(a);
 	}
 
-	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
-	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
-	*cluster_center_top = cluster_center_top->rotX(a);
+	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
+	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+	*center_top = center_top->rotX(a);
 
-	Vector* cluster_center_base = this->cluster->getCenter_base();
-	*cluster_center_base = cluster_center_base->rotX(a);
+	Vector* center_base = this->cluster->initial_center_base;
+	*center_base = center_base->rotX(a);
 
-	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector directionNotNormalized = (*center_top - *this->cluster->initial_center_base);
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
@@ -267,18 +340,18 @@ void MeshTexturized::rotX(double a) {
 
 
 void MeshTexturized::rotY(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->rotY(a);
 	}
 
-	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
-	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
-	*cluster_center_top = cluster_center_top->rotY(a);
+	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
+	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+	*center_top = center_top->rotY(a);
 
-	Vector* cluster_center_base = this->cluster->getCenter_base();
-	*cluster_center_base = cluster_center_base->rotY(a);
+	Vector* center_base = this->cluster->initial_center_base;
+	*center_base = center_base->rotY(a);
 
-	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector directionNotNormalized = (*center_top - *this->cluster->initial_center_base);
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
@@ -286,18 +359,18 @@ void MeshTexturized::rotY(double a) {
 
 
 void MeshTexturized::rotZ(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->rotZ(a);
 	}
 
-	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
-	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
-	*cluster_center_top = cluster_center_top->rotZ(a);
+	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
+	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+	*center_top = center_top->rotZ(a);
 
-	Vector* cluster_center_base = this->cluster->getCenter_base();
-	*cluster_center_base = cluster_center_base->rotZ(a);
+	Vector* center_base = this->cluster->initial_center_base;
+	*center_base = center_base->rotZ(a);
 
-	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector directionNotNormalized = (*center_top - *this->cluster->initial_center_base);
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
@@ -305,61 +378,73 @@ void MeshTexturized::rotZ(double a) {
 
 
 void MeshTexturized::shearingYX(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingYX(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void MeshTexturized::shearingXY(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingXY(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void MeshTexturized::shearingYZ(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingYZ(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void MeshTexturized::shearingZY(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingZY(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void MeshTexturized::shearingXZ(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingXZ(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void MeshTexturized::shearingZX(double a) {
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->shearingZX(a);
 	}
+
+	this->cluster = nullptr;
 }
 
 
 void MeshTexturized::reflectionXY() {
 
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionXY();
 	}
 
-	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
-	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
-	*cluster_center_top = cluster_center_top->reflectionXY();
+	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
+	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+	*center_top = center_top->reflectionXY();
 
-	Vector* cluster_center_base = this->cluster->getCenter_base();
-	*cluster_center_base = cluster_center_base->reflectionXY();
+	Vector* center_base = this->cluster->initial_center_base;
+	*center_base = center_base->reflectionXY();
 
-	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector directionNotNormalized = (*center_top - *this->cluster->initial_center_base);
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
@@ -368,18 +453,18 @@ void MeshTexturized::reflectionXY() {
 
 void MeshTexturized::reflectionXZ() {
 
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionXZ();
 	}
 
-	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
-	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
-	*cluster_center_top = cluster_center_top->reflectionXZ();
+	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
+	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+	*center_top = center_top->reflectionXZ();
 
-	Vector* cluster_center_base = this->cluster->getCenter_base();
-	*cluster_center_base = cluster_center_base->reflectionXZ();
+	Vector* center_base = this->cluster->initial_center_base;
+	*center_base = center_base->reflectionXZ();
 
-	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector directionNotNormalized = (*center_top - *this->cluster->initial_center_base);
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
@@ -388,18 +473,18 @@ void MeshTexturized::reflectionXZ() {
 
 void MeshTexturized::reflectionYZ() {
 
-	for (Vector* v : this->vertices) {
+	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionYZ();
 	}
 
-	Vector cluster_ct = *this->cluster->getCenter_base() + (*this->cluster->getDirection() * this->cluster->getHeight());
-	Vector* cluster_center_top = new Vector(cluster_ct.getCoordinate(0), cluster_ct.getCoordinate(1), cluster_ct.getCoordinate(2));
-	*cluster_center_top = cluster_center_top->reflectionYZ();
+	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
+	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
+	*center_top = center_top->reflectionYZ();
 
-	Vector* cluster_center_base = this->cluster->getCenter_base();
-	*cluster_center_base = cluster_center_base->reflectionYZ();
+	Vector* center_base = this->cluster->initial_center_base;
+	*center_base = center_base->reflectionYZ();
 
-	Vector directionNotNormalized = (*cluster_center_top - *this->cluster->getCenter_base());
+	Vector directionNotNormalized = (*center_top - *this->cluster->initial_center_base);
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
@@ -424,10 +509,8 @@ bool MeshTexturized::inside(Vector* p) {
 }
 
 
-MeshTexturized::MeshTexturized(Vector* kd, Vector* ke, Vector* ka, double shininess, Cluster* cluster) {
-	this->kd = kd;
-	this->ke = ke;
-	this->ka = ka;
+MeshTexturized::MeshTexturized(Image* texture, double shininess, Cluster* cluster) {
+	this->texture = texture;
 	this->shininess = shininess;
 	this->cluster = cluster;
 	this->setObjectType(ObjectType::MESH_TEXTURIZED);
@@ -445,6 +528,10 @@ MeshTexturized::~MeshTexturized() {
 
 	for (Vector* v : this->getVertices()) {
 		delete v;
+	}
+
+	for (Vector* iv : this->initial_vertices) {
+		delete iv;
 	}
 
 	delete this->cluster;

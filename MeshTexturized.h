@@ -18,12 +18,16 @@ private:
 	std::vector<FaceTexturized*> faces;
 	std::vector<Edge*> edges;
 	std::vector<Vector*> vertices;
+
 	Vector* normal = nullptr;
 	Cluster* cluster = nullptr;
 
 public:
 
 	std::vector<Vector*> initial_vertices;
+
+	std::vector<Vector*> pis;
+	std::vector<FaceTexturized*> facesPI;
 
 	void setTexture(Image* texture);
 	Image* getTexture();
@@ -44,7 +48,7 @@ public:
 
 	bool intersect_for_shadow(Vector* p0, Vector* dir);
 
-	Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight);
+	Color* getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight);
 
 	void scaling(double sx, double sy, double sz);
 	void translation(double tx, double ty, double tz);
@@ -67,7 +71,7 @@ public:
 
 	bool inside(Vector* p);
 
-	MeshTexturized(Vector* kd, Vector* ke, Vector* ka, double shininess, Cluster* cluster);
+	MeshTexturized(Image* texture, double shininess, Cluster* cluster);
 
 	~MeshTexturized();
 };

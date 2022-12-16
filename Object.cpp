@@ -123,7 +123,7 @@ bool Object::hasShadow(std::vector<Object*> objects, Vector* pi, Vector l, Light
 }
 
 
-Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight, Vector* normal, Object* obj) {
+Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight, Vector* normal, Object* obj) {
 
     Vector rgb(0, 0, 0);
 
@@ -136,27 +136,46 @@ Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objec
 
     for (int i = 0; i < lights.size(); i++) {
 
-        l = lights[i]->calculateL(*pi);
+        if (lights[i]->getActive()) {
 
-        bool hasShadow = obj->hasShadow(objects, pi, l, lights[i]);
+            l = lights[i]->calculateL(*pi);
 
-        if (!hasShadow) {
+            Vector intensity = *lights[i]->getIntensity();
 
-            r = (*normal * (2 * (l.scalarProd(*normal)))) - l;
+            if (lights[i]->lightType == LightType::SPOT) {
 
-            double f_diffuse = std::max(0.0, (l.scalarProd(*normal)));
-            double f_speculated = std::pow(std::max(0.0, (r.scalarProd(v))), shininess);
+                double calcspot = l.scalarProd(*((Spot*)lights[i])->getDirection() * -1);
 
-            Vector i_diffuse = (*(lights[i]->getIntensity())) * (*obj->kd) * f_diffuse;
-            Vector i_speculated = (*lights[i]->getIntensity()) * (*obj->ke) * f_speculated;
+                if (calcspot < cos(((Spot*)lights[i])->getAngle())) {
+                    intensity = Vector(0, 0, 0);
+                }
+                else {
+                    intensity = *((Spot*)lights[i])->getIntensity() * calcspot;
+                }
+            }
 
-            rgb = rgb + i_diffuse + i_speculated;
 
+            bool hasShadow = obj->hasShadow(objects, pi, l, lights[i]);
+
+            if (!hasShadow) {
+
+                r = (*normal * (2 * (l.scalarProd(*normal)))) - l;
+
+                double f_diffuse = std::max(0.0, (l.scalarProd(*normal)));
+                double f_speculated = std::pow(std::max(0.0, (r.scalarProd(v))), shininess);
+
+                Vector i_diffuse = (intensity) * (*obj->kd) * f_diffuse;
+                Vector i_speculated = (intensity) * (*obj->ke) * f_speculated;
+
+                rgb = rgb + i_diffuse + i_speculated;
+
+            }
         }
+
     }
 
-    if (environmentLight != nullptr) {
-        Vector i_environment = (*environmentLight) * (*obj->ka);
+    if (environmentLight != nullptr && environmentLight->getActive()) {
+        Vector i_environment = (*environmentLight->getIntensity()) * (*obj->ka);
         rgb = rgb + i_environment;
     }
 

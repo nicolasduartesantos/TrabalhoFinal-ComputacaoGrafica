@@ -63,12 +63,10 @@ double Spot::getAngle() {
 
 
 Vector Spot::calculateL(Vector pi) {
-    Vector l = (*this->getCoordinate() * (-1));
-    l = l / (l.getLength());
+    Vector l = (*this->getCoordinate() - pi) / ((*this->getCoordinate() - pi).getLength());
 
     return l;
 }
-// INTENSIDADE DO SPOT ?
 
 
 double Spot::distance(Vector p) {
@@ -98,6 +96,8 @@ Spot::Spot(Vector* intensity, Vector* coordinate, Vector* direction, double angl
 
     this->initial_direction = new Vector(*this->direction);
     this->initial_coordinate = new Vector(*this->coordinate);
+
+    this->lightType = LightType::SPOT;
 }
 
 
@@ -151,6 +151,8 @@ Point::Point(Vector* intensity, Vector* coordinate) {
     this->coordinate = coordinate;
 
     this->initial_coordinate = new Vector(*this->coordinate);
+
+    this->lightType = LightType::POINT;
 }
 
 
@@ -175,8 +177,8 @@ Vector* Directional::getDirection() {
 
 Vector Directional::calculateL(Vector pi) {
 
-    Vector l = (*this->getDirection() * (-1));
-    l = l / (l.getLength());
+    Vector ln = (*this->getDirection() * (-1));
+    Vector l = ln / (ln.getLength());
 
     return l;
 }
@@ -201,6 +203,8 @@ Directional::Directional(Vector* intensity, Vector* direction) {
     this->direction = direction;
 
     this->initial_direction = new Vector(*this->direction);
+
+    this->lightType = LightType::DIRECTIONAL;
 }
 
 
@@ -209,3 +213,24 @@ Directional::~Directional() {
 
     delete this->initial_direction;
 }
+
+
+
+
+///////////////////////////////// Environment /////////////////////////////////
+
+Vector Environment::calculateL(Vector pi) {
+    return Vector(0, 0, 0);
+}
+
+double Environment::distance(Vector p) {
+    return 0;
+}
+
+void Environment::doWorldToCamera(Camera* camera) { }
+
+Environment::Environment(Vector* intensity) {
+    this->setIntensity(intensity);
+}
+
+Environment::~Environment() { }

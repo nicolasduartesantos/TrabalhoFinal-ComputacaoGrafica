@@ -10,7 +10,7 @@ Image* Texture::getTexture() {
 }
 
 
-Color* Texture::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) {
+Color* Texture::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight) {
 
     Vector* normal = this->getNormal();
     Vector* pi = this->getIntersectionPoint();
@@ -68,6 +68,8 @@ Texture::Texture(Image* texture, Vector* p_pi, Vector* normal, double shininess)
     this->setP_PI(p_pi);
     this->setNormal(normal);
     this->setShininess(shininess);
+
+    this->setObjectType(ObjectType::TEXTURE);
 
     this->initial_p_pi = new Vector(*this->p_pi);
     this->initial_normal = new Vector(*this->normal);

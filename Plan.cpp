@@ -101,7 +101,7 @@ bool Plan::intersect_for_shadow(Vector* p0, Vector* dir) {
 }
 
 
-Color* Plan::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Vector* environmentLight) {
+Color* Plan::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight) {
 
 	return RGBtoPaint(lights, objects, p0, dir, environmentLight, this->normal, this);
 
@@ -109,49 +109,48 @@ Color* Plan::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Ve
 
 
 void Plan::rotX(double a) {
-	*this->p_pi = (*this->p_pi).rotX(a);
-	*this->normal = (*this->normal).rotX(a);
+	*this->initial_p_pi = (*this->initial_p_pi).rotX(a);
+	*this->initial_normal = (*this->initial_normal).rotX(a);
 }
 
 void Plan::rotY(double a) {
-	*this->p_pi = (*this->p_pi).rotY(a);
-	*this->normal = (*this->normal).rotY(a);
+	*this->initial_p_pi = (*this->initial_p_pi).rotY(a);
+	*this->initial_normal = (*this->initial_normal).rotY(a);
 }
 
 void Plan::rotZ(double a) {
-	*this->p_pi = (*this->p_pi).rotZ(a);
-	*this->normal = (*this->normal).rotZ(a);
+	*this->initial_p_pi = (*this->initial_p_pi).rotZ(a);
+	*this->initial_normal = (*this->initial_normal).rotZ(a);
 }
 
 void Plan::translation(double tx, double ty, double tz) {
-	*this->p_pi = (*this->p_pi).translation(tx, ty, tz);
+	*this->initial_p_pi = (*this->initial_p_pi).translation(tx, ty, tz);
 }
 
 void Plan::scaling(double sx, double sy, double sz) { }
 
 void Plan::reflectionXY() {
-	*this->p_pi = (*this->p_pi).reflectionXY();
-	*this->normal = (*this->normal).reflectionXY();
+	*this->initial_p_pi = (*this->initial_p_pi).reflectionXY();
+	*this->initial_normal = (*this->initial_normal).reflectionXY();
 }
 
 void Plan::reflectionXZ() {
-	*this->p_pi = (*this->p_pi).reflectionXZ();
-	*this->normal = (*this->normal).reflectionXZ();
+	*this->initial_p_pi = (*this->initial_p_pi).reflectionXZ();
+	*this->initial_normal = (*this->initial_normal).reflectionXZ();
 }
 
 void Plan::reflectionYZ() {
-	*this->p_pi = (*this->p_pi).reflectionYZ();
-	*this->normal = (*this->normal).reflectionYZ();
+	*this->initial_p_pi = (*this->initial_p_pi).reflectionYZ();
+	*this->initial_normal = (*this->initial_normal).reflectionYZ();
 }
 
 
 void Plan::doWorldToCamera(Camera* camera) {
 
-	Vector n_temp = camera->worldToCamera(*this->initial_normal) - camera->worldToCamera(Vector(0, 0, 0));
-	
-	Vector* n = new Vector(n_temp / n_temp.getLength());
+	Vector n = camera->worldToCamera(*this->initial_normal) - camera->worldToCamera(Vector(0, 0, 0));
+	Vector* n_Normalized = new Vector(n / n.getLength());
 	delete this->getNormal();
-	this->setNormal(n);
+	this->setNormal(n_Normalized);
 
 	Vector* ppi = new Vector(camera->worldToCamera(*this->initial_p_pi));
 	delete this->getP_PI();

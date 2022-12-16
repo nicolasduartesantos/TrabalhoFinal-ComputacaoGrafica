@@ -3,12 +3,17 @@
 #include "Vector.h"
 #include "Camera.h"
 
+enum class LightType { POINT, DIRECTIONAL, SPOT };
+
 class Light {
 private:
     Vector* intensity = nullptr;
     bool active = true;
 
 public:
+
+    LightType lightType;
+
     void setIntensity(Vector* intensity);
     Vector* getIntensity();
 
@@ -106,5 +111,22 @@ public:
     Directional(Vector* intensity, Vector* direction);
 
     ~Directional();
+
+};
+
+
+class Environment : public Light {
+
+public:
+
+    Vector calculateL(Vector pi);
+
+    double distance(Vector p);
+
+    void doWorldToCamera(Camera* camera);
+
+    Environment(Vector* intensity);
+
+    ~Environment();
 
 };

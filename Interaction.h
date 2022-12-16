@@ -9,11 +9,7 @@ public:
 
 	Scene* scene = nullptr;
 
-	void picking();
-
-
-
-
+	Object* picking();
 
 
 
