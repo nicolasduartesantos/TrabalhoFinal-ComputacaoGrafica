@@ -1,6 +1,7 @@
 #include "Vector.h"
 #include "Light.h"
 #include "Camera.h"
+#include <iostream>
 
 
 void Light::setIntensity(Vector* intensity) {
@@ -178,6 +179,7 @@ Vector* Directional::getDirection() {
 Vector Directional::calculateL(Vector pi) {
 
     Vector ln = (*this->getDirection() * (-1));
+
     Vector l = ln / (ln.getLength());
 
     return l;

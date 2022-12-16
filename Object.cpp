@@ -144,6 +144,8 @@ Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objec
 
             if (lights[i]->lightType == LightType::SPOT) {
 
+                //std::cout << ((Spot*)lights[i])->getAngle() << '\n';
+
                 double calcspot = l.scalarProd(*((Spot*)lights[i])->getDirection() * -1);
 
                 if (calcspot < cos(((Spot*)lights[i])->getAngle())) {
@@ -151,7 +153,10 @@ Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objec
                 }
                 else {
                     intensity = *((Spot*)lights[i])->getIntensity() * calcspot;
+                    //std::cout << intensity.getCoordinate(0) << " " << intensity.getCoordinate(1) << " " << intensity.getCoordinate(2) << '\n';
                 }
+
+                
             }
 
 
@@ -159,7 +164,7 @@ Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objec
 
             if (!hasShadow) {
 
-                r = (*normal * (2 * (l.scalarProd(*normal)))) - l;
+                r = ((*normal) * (2 * (l.scalarProd(*normal)))) - l;
 
                 double f_diffuse = std::max(0.0, (l.scalarProd(*normal)));
                 double f_speculated = std::pow(std::max(0.0, (r.scalarProd(v))), shininess);

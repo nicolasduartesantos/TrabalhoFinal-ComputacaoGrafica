@@ -430,7 +430,7 @@ void Scene::mainLoop() {
                 ImGui::InputFloat3("Intensity", intensity);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
-                    ((Point*)this->lights[num])->setIntensity(new_intensity);
+                    ((Directional*)this->lights[num])->setIntensity(new_intensity);
                     change = true;
                 }
 
@@ -467,7 +467,14 @@ void Scene::mainLoop() {
                 ImGui::InputFloat3("Intensity", intensity);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
-                    ((Point*)this->lights[num])->setIntensity(new_intensity);
+                    ((Spot*)this->lights[num])->setIntensity(new_intensity);
+                    change = true;
+                }
+
+                double angle = spot->getAngle();
+                ImGui::InputDouble("Angle", &angle);
+                if (ImGui::IsItemDeactivatedAfterEdit()) {
+                    ((Spot*)this->lights[num])->setAngle(angle);
                     change = true;
                 }
 
