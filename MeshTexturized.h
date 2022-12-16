@@ -18,12 +18,16 @@ private:
 	std::vector<FaceTexturized*> faces;
 	std::vector<Edge*> edges;
 	std::vector<Vector*> vertices;
+
 	Vector* normal = nullptr;
 	Cluster* cluster = nullptr;
 
 public:
 
 	std::vector<Vector*> initial_vertices;
+
+	std::vector<Vector*> pis;
+	std::vector<FaceTexturized*> facesPI;
 
 	void setTexture(Image* texture);
 	Image* getTexture();
@@ -67,7 +71,7 @@ public:
 
 	bool inside(Vector* p);
 
-	MeshTexturized(Vector* kd, Vector* ke, Vector* ka, double shininess, Cluster* cluster);
+	MeshTexturized(Image* texture, double shininess, Cluster* cluster);
 
 	~MeshTexturized();
 };

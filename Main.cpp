@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
 	scene->setEnvironmentLight(environmentLight);
 
 	scene->addLight(light);
-	scene->addObject(plan1);
+	//scene->addObject(plan1);
 	/*
 	scene->addObject(coluna1);
 	scene->addObject(coluna2);
@@ -131,8 +131,27 @@ int main(int argc, char* argv[]) {
 	
 	//scene->addObject(baseArvore);
 	//scene->addObject(troncoArvore);
-	scene->addObject(arvore);
-	scene->addObject(bolaArvore);
+	//scene->addObject(arvore);
+	//scene->addObject(bolaArvore);
+
+	MeshTexturized* mesh = Cube::createWithTexture(new Vector(0.5, 0., 0.5), 40, img, 5.0, cluster);
+	Plan* plan2 = new Plan(new Vector(0., 0., 0.), new Vector(0., 1., 0.), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), new Vector(0.686, 0.933, 0.933), 5.0);
+
+	mesh->getFaces()[0]->setActive(true);
+	mesh->getFaces()[1]->setActive(true);
+	mesh->getFaces()[2]->setActive(false);
+	mesh->getFaces()[3]->setActive(false);
+	mesh->getFaces()[4]->setActive(false);
+	mesh->getFaces()[5]->setActive(false);
+	mesh->getFaces()[6]->setActive(false);
+	mesh->getFaces()[7]->setActive(false);
+	mesh->getFaces()[8]->setActive(false);
+	mesh->getFaces()[9]->setActive(false);
+	mesh->getFaces()[10]->setActive(false);
+	mesh->getFaces()[11]->setActive(false);
+
+	scene->addObject(mesh);
+	scene->addObject(plan2);
 
 	//scene->setBGImage(ceu);
 

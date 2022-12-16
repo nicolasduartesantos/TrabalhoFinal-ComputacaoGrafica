@@ -13,12 +13,15 @@ public:
 
 
 
-class FaceTexturized : public Face {
+class FaceTexturized {
 public:
 
+	std::vector<int> edgeIdsT = std::vector<int>(3);
 	bool active = true;
 
 	void setActive(bool active);
 	bool getActive();
+
+	FaceTexturized(int e1, int e2, int e3);
 
 };

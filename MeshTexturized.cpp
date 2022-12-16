@@ -57,8 +57,8 @@ bool MeshTexturized::intersect(Vector* p0, Vector* dir) {
 	Vector* meshNormal = new Vector();
 	for (FaceTexturized* face : this->getFaces()) {
 
-		int idEdge1 = face->edgeIds[0];
-		int idEdge2 = face->edgeIds[1];
+		int idEdge1 = face->edgeIdsT[0];
+		int idEdge2 = face->edgeIdsT[1];
 
 		int idVertex11 = this->edges[idEdge1]->vertexIds[0];
 		int idVertex12 = this->edges[idEdge1]->vertexIds[1];
@@ -123,6 +123,9 @@ bool MeshTexturized::intersect(Vector* p0, Vector* dir) {
 				*meshNormal = normalUnitary;
 				this->setNormal(meshNormal);
 
+				this->pis.push_back(pi);
+				this->facesPI.push_back(face);
+
 			}
 		}
 	}
@@ -137,8 +140,8 @@ bool MeshTexturized::intersect_for_shadow(Vector* p0, Vector* dir) {
 
 	for (FaceTexturized* face : this->getFaces()) {
 
-		int idEdge1 = face->edgeIds[0];
-		int idEdge2 = face->edgeIds[1];
+		int idEdge1 = face->edgeIdsT[0];
+		int idEdge2 = face->edgeIdsT[1];
 
 		int idVertex11 = this->edges[idEdge1]->vertexIds[0];
 		int idVertex12 = this->edges[idEdge1]->vertexIds[1];
@@ -209,66 +212,75 @@ bool MeshTexturized::intersect_for_shadow(Vector* p0, Vector* dir) {
 
 Color* MeshTexturized::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight) {
 
-	//if () {
-
-
-		return this->RGBtoPaint(lights, objects, p0, dir, environmentLight, this->normal, this);
-	//}
-	
-
-
-
-
-		/*
-	Vector* normal = this->getNormal();
 	Vector* pi = this->getIntersectionPoint();
-	Vector piMinusp0 = *pi - Vector(0, 0, 0);
-	Vector piMinusp02 = piMinusp0;
 
-	if (normal->getCoordinate(0) != 0 || normal->getCoordinate(2) != 0) {
+	for (int i = 0; i < this->pis.size(); i++) {
 
-		Vector normalWithYRotated = normal->rotY(-asin(normal->getCoordinate(0) / (sqrt(pow(normal->getCoordinate(0), 2.0) + pow(normal->getCoordinate(2), 2.0)))));
+		if (pi->getCoordinate(0) == this->pis[i]->getCoordinate(0) && pi->getCoordinate(1) == this->pis[i]->getCoordinate(1) && pi->getCoordinate(2) == this->pis[i]->getCoordinate(2)) {
 
-		Vector piMinusp_piWithYRotated = piMinusp_pi.rotY(-asin(normal->getCoordinate(0) / (sqrt(pow(normal->getCoordinate(0), 2.0) + pow(normal->getCoordinate(2), 2.0)))));
+			if (!(this->facesPI[i])->getActive()) {
 
-		piMinusp_pi2 = piMinusp_piWithYRotated.rotX(-acos(normalWithYRotated.getCoordinate(1)));
+				this->kd = new Vector(1.0, 0.078, 0.576);
+				this->ke = new Vector(1.0, 0.078, 0.576);
+				this->ka = new Vector(1.0, 0.078, 0.576);
 
+				return this->RGBtoPaint(lights, objects, p0, dir, environmentLight, this->normal, this);
+			}
+			
+			else {
+
+				Vector* normal = this->getNormal();
+				Vector* pi = this->getIntersectionPoint();
+				Vector piMinusp0 = *pi - Vector(0, 0, 0);
+				Vector piMinusp02 = piMinusp0;
+
+				if (normal->getCoordinate(0) != 0 || normal->getCoordinate(2) != 0) {
+
+					Vector normalWithYRotated = normal->rotY(-asin(normal->getCoordinate(0) / (sqrt(pow(normal->getCoordinate(0), 2.0) + pow(normal->getCoordinate(2), 2.0)))));
+
+					Vector piMinusp_piWithYRotated = piMinusp0.rotY(-asin(normal->getCoordinate(0) / (sqrt(pow(normal->getCoordinate(0), 2.0) + pow(normal->getCoordinate(2), 2.0)))));
+
+					piMinusp02 = piMinusp_piWithYRotated.rotX(-acos(normalWithYRotated.getCoordinate(1)));
+
+				}
+
+				int x = (int)piMinusp02.getCoordinate(0);
+				int z = (int)piMinusp02.getCoordinate(2);
+
+				int posPixelX;
+				int posPixelY;
+
+				if (x < 0) {
+					posPixelX = this->texture->getW() - (abs(x) % this->texture->getW());
+				}
+				else {
+					posPixelX = (abs(x) % this->texture->getW());
+				}
+
+				if (z < 0) {
+					posPixelY = this->texture->getH() - (abs(z) % this->texture->getH());
+				}
+				else {
+					posPixelY = (abs(z) % this->texture->getH());
+				}
+
+				Color pixel = this->texture->getColor(posPixelX, posPixelY);
+
+				double r = (pixel.r / 255.0);
+				double g = (pixel.g / 255.0);
+				double b = (pixel.b / 255.0);
+
+				Vector* pixelColor = new Vector(r, g, b);
+
+				this->kd = pixelColor;
+				this->ke = pixelColor;
+				this->ka = pixelColor;
+
+				return this->RGBtoPaint(lights, objects, p0, dir, environmentLight, this->normal, this);
+
+			}
+		}
 	}
-
-	int x = (int)piMinusp_pi2.getCoordinate(0);
-	int z = (int)piMinusp_pi2.getCoordinate(2);
-
-	int posPixelX;
-	int posPixelY;
-
-	if (x < 0) {
-		posPixelX = this->texture->getW() - (abs(x) % this->texture->getW());
-	}
-	else {
-		posPixelX = (abs(x) % this->texture->getW());
-	}
-
-	if (z < 0) {
-		posPixelY = this->texture->getH() - (abs(z) % this->texture->getH());
-	}
-	else {
-		posPixelY = (abs(z) % this->texture->getH());
-	}
-
-	Color pixel = this->texture->getColor(posPixelX, posPixelY);
-
-	double r = (pixel.r / 255.0);
-	double g = (pixel.g / 255.0);
-	double b = (pixel.b / 255.0);
-
-	Vector* pixelColor = new Vector(r, g, b);
-
-	this->kd = pixelColor;
-	this->ke = pixelColor;
-	this->ka = pixelColor;
-
-	return this->RGBtoPaint(lights, objects, p0, dir, environmentLight, this->normal, this);
-	*/
 }
 
 
@@ -493,10 +505,8 @@ bool MeshTexturized::inside(Vector* p) {
 }
 
 
-MeshTexturized::MeshTexturized(Vector* kd, Vector* ke, Vector* ka, double shininess, Cluster* cluster) {
-	this->kd = kd;
-	this->ke = ke;
-	this->ka = ka;
+MeshTexturized::MeshTexturized(Image* texture, double shininess, Cluster* cluster) {
+	this->texture = texture;
 	this->shininess = shininess;
 	this->cluster = cluster;
 	this->setObjectType(ObjectType::MESH_TEXTURIZED);

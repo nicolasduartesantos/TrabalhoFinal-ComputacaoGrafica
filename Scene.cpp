@@ -343,7 +343,7 @@ void Scene::mainLoop() {
             int i;
 
             if (ImGui::Button("Pick Light")) {
-                std::cout << "--- LISTA DE LUZES ---\n";
+                std::cout << "\n--- LISTA DE LUZES ---\n\n";
                 for (i = 0; i < this->lights.size(); i++) {
 
                     if (lights[i]->lightType == LightType::POINT) {
@@ -381,7 +381,7 @@ void Scene::mainLoop() {
 
             if (ImGui::CollapsingHeader("Point")) {
                 Point* point = (Point*)this->lights[num];
-                float p_coord[3] = { point->initial_coordinate->getCoordinate(0), point->initial_coordinate->getCoordinate(1), point->initial_coordinate->getCoordinate(2) };
+                float p_coord[3] = {(float) point->initial_coordinate->getCoordinate(0),(float)point->initial_coordinate->getCoordinate(1),(float)point->initial_coordinate->getCoordinate(2) };
                 ImGui::InputFloat3("Coordinates", p_coord);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_point = new Vector(p_coord[0], p_coord[1], p_coord[2]);
@@ -390,7 +390,7 @@ void Scene::mainLoop() {
                     ((Point*)this->lights[num])->doWorldToCamera(this->cameraTo);
                 }
 
-                float intensity[3] = { point->getIntensity()->getCoordinate(0), point->getIntensity()->getCoordinate(1), point->getIntensity()->getCoordinate(2) };
+                float intensity[3] = { (float)point->getIntensity()->getCoordinate(0), (float)point->getIntensity()->getCoordinate(1), (float)point->getIntensity()->getCoordinate(2) };
                 ImGui::InputFloat3("Intensity", intensity);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
@@ -410,7 +410,7 @@ void Scene::mainLoop() {
 
             if (ImGui::CollapsingHeader("Directional")) {
                 Directional* direct = (Directional*)this->lights[num];
-                float d_coord[3] = { direct->initial_direction->getCoordinate(0), direct->initial_direction->getCoordinate(1), direct->initial_direction->getCoordinate(2) };
+                float d_coord[3] = { (float)direct->initial_direction->getCoordinate(0), (float)direct->initial_direction->getCoordinate(1), (float)direct->initial_direction->getCoordinate(2) };
                 ImGui::InputFloat3("Directions", d_coord);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_direct = new Vector(d_coord[0], d_coord[1], d_coord[2]);
@@ -419,7 +419,7 @@ void Scene::mainLoop() {
                     ((Directional*)this->lights[num])->doWorldToCamera(this->cameraTo);
                 }
 
-                float intensity[3] = { direct->getIntensity()->getCoordinate(0), direct->getIntensity()->getCoordinate(1), direct->getIntensity()->getCoordinate(2) };
+                float intensity[3] = { (float)direct->getIntensity()->getCoordinate(0),(float)direct->getIntensity()->getCoordinate(1),(float)direct->getIntensity()->getCoordinate(2) };
                 ImGui::InputFloat3("Intensity", intensity);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
@@ -438,7 +438,7 @@ void Scene::mainLoop() {
 
             if (ImGui::CollapsingHeader("Spot")) {
                 Spot* spot = (Spot*)this->lights[num];
-                float s_coord[3] = { spot->initial_coordinate->getCoordinate(0), spot->initial_coordinate->getCoordinate(1), spot->initial_coordinate->getCoordinate(2) };
+                float s_coord[3] = { (float)spot->initial_coordinate->getCoordinate(0), (float)spot->initial_coordinate->getCoordinate(1), (float)spot->initial_coordinate->getCoordinate(2) };
                 ImGui::InputFloat3("Coordinates", s_coord);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_spot = new Vector(s_coord[0], s_coord[1], s_coord[2]);
@@ -447,7 +447,7 @@ void Scene::mainLoop() {
                     ((Spot*)this->lights[num])->doWorldToCamera(this->cameraTo);
                 }
 
-                float sd_coord[3] = { spot->initial_direction->getCoordinate(0), spot->initial_direction->getCoordinate(1), spot->initial_direction->getCoordinate(2) };
+                float sd_coord[3] = { (float)spot->initial_direction->getCoordinate(0),(float)spot->initial_direction->getCoordinate(1), (float)spot->initial_direction->getCoordinate(2) };
                 ImGui::InputFloat3("Directions", sd_coord);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_spotdirect = new Vector(sd_coord[0], sd_coord[1], sd_coord[2]);
@@ -456,7 +456,7 @@ void Scene::mainLoop() {
                     ((Spot*)this->lights[num])->doWorldToCamera(this->cameraTo);
                 }
 
-                float intensity[3] = { spot->getIntensity()->getCoordinate(0), spot->getIntensity()->getCoordinate(1), spot->getIntensity()->getCoordinate(2) };
+                float intensity[3] = { (float)spot->getIntensity()->getCoordinate(0), (float)spot->getIntensity()->getCoordinate(1),(float)spot->getIntensity()->getCoordinate(2) };
                 ImGui::InputFloat3("Intensity", intensity);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
@@ -477,7 +477,7 @@ void Scene::mainLoop() {
 
                 Light* environment = this->environmentLight;
                 
-                float intensity[3] = { environment->getIntensity()->getCoordinate(0), environment->getIntensity()->getCoordinate(1), environment->getIntensity()->getCoordinate(2) };
+                float intensity[3] = { (float)environment->getIntensity()->getCoordinate(0), (float)environment->getIntensity()->getCoordinate(1),(float)environment->getIntensity()->getCoordinate(2) };
                 ImGui::InputFloat3("Intensity", intensity);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
@@ -499,13 +499,13 @@ void Scene::mainLoop() {
 
         if (ImGui::CollapsingHeader("Picking")) {
 
-            if (ImGui::Button("Butao")) {
+            if (ImGui::Button("Click")) {
                 Object* object = this->interaction->picking();
                 
 
                 if (object->getObjectType() == ObjectType::SPHERE) {
 
-                    std::cout << "--- SPHERE ---\n";
+                    std::cout << "\n--- SPHERE ---\n";
                     std::cout << "1- kd\n";
                     std::cout << "2- ke\n";
                     std::cout << "3- ka\n";
@@ -667,7 +667,7 @@ void Scene::mainLoop() {
                     Plan* objectPlan;
                     objectPlan = (Plan*)object;
 
-                    std::cout << "--- PLAN ---\n";
+                    std::cout << "\n--- PLAN ---\n";
 
                     std::cout << "1- kd\n";
                     std::cout << "2- ke\n";
@@ -820,7 +820,7 @@ void Scene::mainLoop() {
                     Texture* objectTexture;
                     objectTexture = (Texture*)object;
 
-                    std::cout << "--- TEXTURE ---\n";
+                    std::cout << "\n--- TEXTURE ---\n";
 
                     std::cout << "1- kd\n";
                     std::cout << "2- ke\n";
@@ -974,7 +974,7 @@ void Scene::mainLoop() {
                     Cylinder* objectCylinder;
                     objectCylinder = (Cylinder*)object;
 
-                    std::cout << "--- CYLINDER ---\n";
+                    std::cout << "\n--- CYLINDER ---\n";
 
                     std::cout << "1- kd\n";
                     std::cout << "2- ke\n";
@@ -1127,7 +1127,7 @@ void Scene::mainLoop() {
                     Cone* objectCone;
                     objectCone = (Cone*)object;
 
-                    std::cout << "--- CONE ---\n";
+                    std::cout << "\n--- CONE ---\n";
 
                     std::cout << "1- kd\n";
                     std::cout << "2- ke\n";
@@ -1280,7 +1280,7 @@ void Scene::mainLoop() {
                     Mesh* objectMesh;
                     objectMesh = (Mesh*)object;
 
-                    std::cout << "--- MESH ---\n";
+                    std::cout << "\n--- MESH ---\n";
 
                     std::cout << "1- kd\n";
                     std::cout << "2- ke\n";
@@ -1433,7 +1433,7 @@ void Scene::mainLoop() {
                     MeshTexturized* objectMeshTexturized;
                     objectMeshTexturized = (MeshTexturized*)object;
 
-                    std::cout << "--- MESH_TEXTURE ---\n";
+                    std::cout << "\n--- MESH_TEXTURE ---\n";
 
                     std::cout << "1- kd\n";
                     std::cout << "2- ke\n";
