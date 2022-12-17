@@ -1,2 +1,9 @@
-﻿  Main.cpp
+﻿  MeshTexturized.cpp
+C:\Users\Nicolas\source\repos\Tarefa3\Tarefa3\MeshTexturized.cpp(93,31): warning C4244: 'argumento': conversão de 'double' para 'const unsigned __int64', possível perda de dados
+C:\Users\Nicolas\source\repos\Tarefa3\Tarefa3\MeshTexturized.cpp(94,31): warning C4244: 'argumento': conversão de 'double' para 'const unsigned __int64', possível perda de dados
+C:\Users\Nicolas\source\repos\Tarefa3\Tarefa3\MeshTexturized.cpp(95,31): warning C4244: 'argumento': conversão de 'double' para 'const unsigned __int64', possível perda de dados
+C:\Users\Nicolas\source\repos\Tarefa3\Tarefa3\MeshTexturized.cpp(183,31): warning C4244: 'argumento': conversão de 'double' para 'const unsigned __int64', possível perda de dados
+C:\Users\Nicolas\source\repos\Tarefa3\Tarefa3\MeshTexturized.cpp(184,31): warning C4244: 'argumento': conversão de 'double' para 'const unsigned __int64', possível perda de dados
+C:\Users\Nicolas\source\repos\Tarefa3\Tarefa3\MeshTexturized.cpp(185,31): warning C4244: 'argumento': conversão de 'double' para 'const unsigned __int64', possível perda de dados
+C:\Users\Nicolas\source\repos\Tarefa3\Tarefa3\MeshTexturized.cpp(298): warning C4715: 'MeshTexturized::getRGB': nem todos os caminhos de controle retornam um valor
   Tarefa3.vcxproj -> C:\Users\Nicolas\source\repos\Tarefa3\x64\Debug\Tarefa3.exe

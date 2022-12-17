@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 
 	Image* img = new Image("C:/Users/Nicolas/source/repos/Tarefa3/chao.jpg");
 
-	Image* pipe = new Image("C:/Users/Nicolas/source/repos/Tarefa3/pipe.jpg");
+	Image* pipe = new Image("C:/Users/Nicolas/source/repos/Tarefa3/image.png");
 
 	/*Image* ceu = new Image("C:/Users/Nicolas/source/repos/Tarefa3/ceu.jpg");
 
@@ -167,9 +167,9 @@ int main(int argc, char* argv[]) {
 
 	//Light* light = new Spot(new Vector(0.7, 0.7, 0.7), new Vector(0., 45., 50.), new Vector(0., -1., 0.), M_PI/4);
 
-	Light* light = new Directional(new Vector(0.7, 0.7, 0.7), new Vector(1., -1., 0.));
+	//Light* light = new Directional(new Vector(0.7, 0.7, 0.7), new Vector(1., -1., 0.));
 
-	//Light* light = new Point(new Vector(0.7, 0.7, 0.7), new Vector(0., 45., 150.));
+	Light* light = new Point(new Vector(0.7, 0.7, 0.7), new Vector(0., 45., 200.));
 
 	Scene* scene = new Scene(100, 100, 500, 500, 20, new Color(100, 100, 100, 255));
 
@@ -195,9 +195,11 @@ int main(int argc, char* argv[]) {
 
 	Cylinder* stand = new Cylinder(15., new Vector(0., -150., 100.), new Vector(0., 1., 0.), 40., new Vector(0.50754, 0.50754, 0.50754), new Vector(0.508273, 0.508273, 0.508273), new Vector(0.19225, 0.19225, 0.19225), 10.);
 	
-	Cluster* cluster = new Cluster(0.5, new Vector(0.5, 0., 0.5), new Vector(0.0, 1.0, 0.0), 1.0);
+	Cluster* cluster = new Cluster(50., new Vector(0.5, 0., 0.5), new Vector(0.0, 1.0, 0.0), 120.0);
 
-	MeshTexturized* mesh = Cube::createWithTexture(new Vector(0.5, 0., 0.5), 100, pipe, 5.0, cluster);
+	Mesh* mesh1 = Cube::create(new Vector(0.5, 0., 0.5), 100., new Vector(1., 0.829, 0.829), new Vector(1., 0.829, 0.829), new Vector(1., 0.829, 0.829), 5.0, cluster);
+
+	MeshTexturized* mesh = Cube::createWithTexture(new Vector(0.5, 0., 0.5), 100., pipe, 5.0, cluster);
 	
 	mesh->getFaces()[0]->setActive(false);
 	mesh->getFaces()[1]->setActive(false);
@@ -212,7 +214,8 @@ int main(int argc, char* argv[]) {
 	mesh->getFaces()[10]->setActive(false);
 	mesh->getFaces()[11]->setActive(false);
 	
-	//mesh->scaling(20, 20, 0);
+	//mesh->scaling(20., 20., 0.);
+	mesh->translation(0., -80., 45.);
 	
 
 	/*
@@ -245,19 +248,19 @@ int main(int argc, char* argv[]) {
 
 	scene->addObject(plan_floor);
 
-	//scene->addObject(plan_leftwall);
+	scene->addObject(plan_leftwall);
 
-	//scene->addObject(plan_rightwall);
+	scene->addObject(plan_rightwall);
 
-	//scene->addObject(plan_frontwall);
+	scene->addObject(plan_frontwall);
 
-	//scene->addObject(plan_backwall);
+	scene->addObject(plan_backwall);
 
-	//scene->addObject(plan_ceiling);
+	scene->addObject(plan_ceiling);
 
-	scene->addObject(stand);
+	//scene->addObject(stand);
 
-	//scene->addObject(mesh);
+	scene->addObject(mesh);
 	
 	scene->camera(new Vector(0., 0., 250.), new Vector(0., 0., -1.), new Vector(0., 1., 0.));
 

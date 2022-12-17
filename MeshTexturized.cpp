@@ -51,6 +51,13 @@ Vector* MeshTexturized::getNormal() {
 
 
 bool MeshTexturized::intersect(Vector* p0, Vector* dir) {
+	//this->setP0distanceShadow(std::numeric_limits<double>::infinity());
+	if (this->cluster != nullptr) {
+		if (!this->cluster->intersect(p0, dir)) {
+			this->setHasIntersection(false);
+			return false;
+		}
+	}
 
 	this->setObjectSurface(ObjectSurface::ON_PLAN);
 	this->setHasIntersection(false);
@@ -134,6 +141,13 @@ bool MeshTexturized::intersect(Vector* p0, Vector* dir) {
 
 
 bool MeshTexturized::intersect_for_shadow(Vector* p0, Vector* dir) {
+	//this->setP0distanceShadow(std::numeric_limits<double>::infinity());
+	if (this->cluster != nullptr) {
+		if (!this->cluster->intersect(p0, dir)) {
+			this->setHasIntersection(false);
+			return false;
+		}
+	}
 
 	this->setHasIntersectionShadow(false);
 	Vector* meshNormal = new Vector();
@@ -231,7 +245,7 @@ Color* MeshTexturized::getRGB(std::vector<Light*> lights, std::vector<Object*> o
 
 				Vector* normal = this->getNormal();
 				Vector* pi = this->getIntersectionPoint();
-				Vector piMinusp0 = *pi - Vector(0, 0, 0);
+				Vector piMinusp0 = *pi - Vector(vertices[5]->getCoordinate(0), vertices[5]->getCoordinate(1), vertices[5]->getCoordinate(2));
 				Vector piMinusp02 = piMinusp0;
 
 				if (normal->getCoordinate(0) != 0 || normal->getCoordinate(2) != 0) {

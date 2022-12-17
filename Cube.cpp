@@ -80,12 +80,12 @@ MeshTexturized* Cube::createWithTexture(Vector* center_base, double edgeSize, Im
 
     //vertices
     Vector* vertex1 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) - (edgeSize / 2));
-    Vector* vertex2 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) + (edgeSize / 2));
-    Vector* vertex3 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) + (edgeSize / 2));
+    Vector* vertex2 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) - (edgeSize / 2) + 5.0);
+    Vector* vertex3 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) - (edgeSize / 2) + 5.0);
     Vector* vertex4 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) - (edgeSize / 2));
     Vector* vertex5 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1) + edgeSize, center_base->getCoordinate(2) - (edgeSize / 2));
-    Vector* vertex6 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1) + edgeSize, center_base->getCoordinate(2) + (edgeSize / 2));
-    Vector* vertex7 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1) + edgeSize, center_base->getCoordinate(2) + (edgeSize / 2));
+    Vector* vertex6 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1) + edgeSize, center_base->getCoordinate(2) - (edgeSize / 2) + 5.0);
+    Vector* vertex7 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1) + edgeSize, center_base->getCoordinate(2) - (edgeSize / 2) + 5.0);
     Vector* vertex8 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1) + edgeSize, center_base->getCoordinate(2) - (edgeSize / 2));
 
     mesh->addVertex(vertex1);
