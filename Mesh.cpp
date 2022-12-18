@@ -42,14 +42,15 @@ Vector* Mesh::getNormal() {
 
 
 bool Mesh::intersect(Vector* p0, Vector* dir) {
+
 	this->setP0distance(std::numeric_limits<double>::infinity());
 
-	/*if (this->cluster != nullptr) {
-		if (!this->cluster->intersect(p0, dir)) {
+	if (this->cluster != nullptr) {
+		if (!this->cluster->intersect(p0, dir) && !this->cluster->inside(p0)) {
 			this->setHasIntersection(false);
 			return false;
 		}
-	}*/
+	}
 
 	this->setObjectSurface(ObjectSurface::ON_PLAN);
 	this->setHasIntersection(false);
@@ -131,13 +132,16 @@ bool Mesh::intersect(Vector* p0, Vector* dir) {
 
 
 bool Mesh::intersect_for_shadow(Vector* p0, Vector* dir) {
+
 	this->setP0distanceShadow(std::numeric_limits<double>::infinity());
-	/*if (this->cluster != nullptr) {
-		if (!this->cluster->intersect_for_shadow(p0, dir)) {
-			this->setHasIntersectionShadow(false);
+
+	if (this->cluster != nullptr) {
+		if (!this->cluster->intersect(p0, dir) && !this->cluster->inside(p0)) {
+			this->setHasIntersection(false);
 			return false;
 		}
-	}*/
+	}
+
 	this->setHasIntersectionShadow(false);
 	Vector* meshNormal = new Vector();
 

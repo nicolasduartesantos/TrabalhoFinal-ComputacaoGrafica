@@ -23,7 +23,7 @@ Vector* Sphere::getCenter() {
 
 bool Sphere::intersect(Vector* p0, Vector* dir) {
 
-    Vector w = (*p0) - *(this->center); 
+    Vector w = (*p0) - *(this->center);
 
     double delta, t1, t2;
     double a = dir->scalarProd(*dir);
@@ -58,9 +58,9 @@ bool Sphere::intersect(Vector* p0, Vector* dir) {
                 else          t = t2;
             }
         }
-        
-        
-        Vector pitemp = (*p0) + ( (*dir) * t);
+
+
+        Vector pitemp = (*p0) + ((*dir) * t);
         Vector* pi = new Vector(pitemp.getCoordinate(0), pitemp.getCoordinate(1), pitemp.getCoordinate(2));
         this->setIntersectionPoint(pi);
 
@@ -144,12 +144,12 @@ Color* Sphere::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, 
     Vector* pi = this->getIntersectionPoint();
 
     Vector* n = new Vector();
-        
+
     Vector ntemp = (*pi - (*this->center)) / (this->rad);
 
     n = new Vector(ntemp.getCoordinate(0), ntemp.getCoordinate(1), ntemp.getCoordinate(2));
 
-    return this->RGBtoPaint(lights, objects, p0, dir, environmentLight , n, this);
+    return this->RGBtoPaint(lights, objects, p0, dir, environmentLight, n, this);
 }
 
 

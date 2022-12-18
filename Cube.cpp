@@ -65,7 +65,7 @@ Mesh* Cube::create(Vector* center_base, double edgeSize, Vector* kd, Vector* ke,
     mesh->addFace(new Face(4, 15, 9));
     mesh->addFace(new Face(8, 0, 15));
     mesh->addFace(new Face(1, 16, 2));
-    mesh->addFace(new Face(3, 16, 10));
+    mesh->addFace(new Face(3, 16, 0));
     mesh->addFace(new Face(11, 17, 7));
     mesh->addFace(new Face(3, 8, 17));
 
@@ -80,12 +80,12 @@ MeshTexturized* Cube::createWithTexture(Vector* center_base, double edgeSize, Im
 
     //vertices
     Vector* vertex1 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) - (edgeSize / 2));
-    Vector* vertex2 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) + (edgeSize / 2));
-    Vector* vertex3 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) + (edgeSize / 2));
+    Vector* vertex2 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) - (edgeSize / 2) + 5.0);
+    Vector* vertex3 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) - (edgeSize / 2) + 5.0);
     Vector* vertex4 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1), center_base->getCoordinate(2) - (edgeSize / 2));
     Vector* vertex5 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1) + edgeSize, center_base->getCoordinate(2) - (edgeSize / 2));
-    Vector* vertex6 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1) + edgeSize, center_base->getCoordinate(2) + (edgeSize / 2));
-    Vector* vertex7 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1) + edgeSize, center_base->getCoordinate(2) + (edgeSize / 2));
+    Vector* vertex6 = new Vector(center_base->getCoordinate(0) - (edgeSize / 2), center_base->getCoordinate(1) + edgeSize, center_base->getCoordinate(2) - (edgeSize / 2) + 5.0);
+    Vector* vertex7 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1) + edgeSize, center_base->getCoordinate(2) - (edgeSize / 2) + 5.0);
     Vector* vertex8 = new Vector(center_base->getCoordinate(0) + (edgeSize / 2), center_base->getCoordinate(1) + edgeSize, center_base->getCoordinate(2) - (edgeSize / 2));
 
     mesh->addVertex(vertex1);
@@ -137,7 +137,7 @@ MeshTexturized* Cube::createWithTexture(Vector* center_base, double edgeSize, Im
     mesh->addFace(new FaceTexturized(4, 15, 9));
     mesh->addFace(new FaceTexturized(8, 0, 15));
     mesh->addFace(new FaceTexturized(1, 16, 2));
-    mesh->addFace(new FaceTexturized(3, 16, 10));
+    mesh->addFace(new FaceTexturized(3, 16, 0));
     mesh->addFace(new FaceTexturized(11, 17, 7));
     mesh->addFace(new FaceTexturized(3, 8, 17));
 

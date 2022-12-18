@@ -36,7 +36,7 @@ public:
     void doWorldToCamera(Camera* camera);
 
     bool inside(Vector* p);
-    
+
     Sphere(double rad, Vector* kd, Vector* ke, Vector* ka, Vector* center, double shininess);
 
     ~Sphere();

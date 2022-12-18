@@ -27,8 +27,6 @@ Object* Interaction::picking() {
 
             if (event.type == SDL_MOUSEBUTTONDOWN) {
 
-                std::cout << "cliquei\n";
-
                 int l, c;
 
                 SDL_GetMouseState(&c, &l);
@@ -82,7 +80,7 @@ Object* Interaction::picking() {
                 //Object* closestObject = closest;
                 exit = true;
                 return closest;
-                
+
             }
         }
     }

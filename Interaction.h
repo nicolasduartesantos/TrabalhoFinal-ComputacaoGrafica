@@ -11,7 +11,6 @@ public:
 
 	Object* picking();
 
-	
+
 
 };
-

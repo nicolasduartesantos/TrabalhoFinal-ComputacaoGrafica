@@ -60,7 +60,7 @@ public:
 	//void reverseFacesVertexesOrder();
 
 	bool inside(Vector* p);
-	
+
 	Mesh(Vector* kd, Vector* ke, Vector* ka, double shininess, Cluster* cluster);
 
 	~Mesh();

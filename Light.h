@@ -7,7 +7,7 @@ enum class LightType { POINT, DIRECTIONAL, SPOT };
 
 class Light {
 private:
-	Vector* intensity = nullptr;
+    Vector* intensity = nullptr;
     bool active = true;
 
 public:

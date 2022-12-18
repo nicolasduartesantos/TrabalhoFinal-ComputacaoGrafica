@@ -5,21 +5,21 @@
 #include "Plan.h"
 #include <cmath>
 
-void Plan::setP_PI(Vector* p_pi){
-    this->p_pi = p_pi;
+void Plan::setP_PI(Vector* p_pi) {
+	this->p_pi = p_pi;
 }
 
 Vector* Plan::getP_PI() {
-    return this->p_pi;
+	return this->p_pi;
 }
 
 
 void Plan::setNormal(Vector* normal) {
-    this->normal = normal;
+	this->normal = normal;
 }
 
 Vector* Plan::getNormal() {
-    return this->normal;
+	return this->normal;
 }
 
 
@@ -31,7 +31,7 @@ bool Plan::intersect(Vector* p0, Vector* dir) {
 	this->setObjectSurface(ObjectSurface::ON_PLAN);
 
 	double drn = dir->scalarProd(*this->normal);
-	
+
 	if (drn == 0) {
 		this->setHasIntersection(false);
 		return false;
@@ -59,7 +59,7 @@ bool Plan::intersect(Vector* p0, Vector* dir) {
 
 		this->setT(t);
 
-        return true;
+		return true;
 	}
 }
 
@@ -159,14 +159,14 @@ void Plan::doWorldToCamera(Camera* camera) {
 }
 
 
-Plan::Plan(Vector* p_pi, Vector* normal, Vector* kd, Vector* ke, Vector* ka, double shininess){
-    this->p_pi = p_pi;
-    this->normal = normal;
-    this->kd = kd;
-    this->ke = ke;
+Plan::Plan(Vector* p_pi, Vector* normal, Vector* kd, Vector* ke, Vector* ka, double shininess) {
+	this->p_pi = p_pi;
+	this->normal = normal;
+	this->kd = kd;
+	this->ke = ke;
 	this->ka = ka;
-    this->shininess = shininess;
-    this->setObjectType(ObjectType::PLAN);
+	this->shininess = shininess;
+	this->setObjectType(ObjectType::PLAN);
 
 	this->initial_p_pi = new Vector(*this->p_pi);
 	this->initial_normal = new Vector(*this->normal);
@@ -176,7 +176,7 @@ Plan::Plan(Vector* p_pi, Vector* normal, Vector* kd, Vector* ke, Vector* ka, dou
 Plan::Plan() { }
 
 
-Plan::~Plan() { 
+Plan::~Plan() {
 	delete this->getP_PI();
 	delete this->getNormal();
 

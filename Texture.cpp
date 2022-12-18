@@ -3,18 +3,18 @@
 #include <iostream>
 
 void Texture::setTexture(Image* texture) {
-	this->texture = texture;
+    this->texture = texture;
 }
 Image* Texture::getTexture() {
-	return this->texture;
+    return this->texture;
 }
 
 
 Color* Texture::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Vector* p0, Vector* dir, Environment* environmentLight) {
 
-	Vector* normal = this->getNormal();
-	Vector* pi = this->getIntersectionPoint();
-	Vector piMinusp_pi = *pi - *this->getP_PI();
+    Vector* normal = this->getNormal();
+    Vector* pi = this->getIntersectionPoint();
+    Vector piMinusp_pi = *pi - *this->getP_PI();
     Vector piMinusp_pi2 = piMinusp_pi;
 
     if (normal->getCoordinate(0) != 0 || normal->getCoordinate(2) != 0) {
@@ -64,10 +64,10 @@ Color* Texture::getRGB(std::vector<Light*> lights, std::vector<Object*> objects,
 
 
 Texture::Texture(Image* texture, Vector* p_pi, Vector* normal, double shininess) {
-	this->texture = texture;
-	this->setP_PI(p_pi);
-	this->setNormal(normal);
-	this->setShininess(shininess);
+    this->texture = texture;
+    this->setP_PI(p_pi);
+    this->setNormal(normal);
+    this->setShininess(shininess);
 
     this->setObjectType(ObjectType::TEXTURE);
 

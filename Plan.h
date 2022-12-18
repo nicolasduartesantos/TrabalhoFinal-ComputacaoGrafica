@@ -31,9 +31,9 @@ public:
     void reflectionXY();
     void reflectionXZ();
     void reflectionYZ();
-    
+
     void doWorldToCamera(Camera* camera);
-    
+
     Plan(Vector* p_pi, Vector* normal, Vector* kd, Vector* ke, Vector* ka, double shininess);
 
     Plan();

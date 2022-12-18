@@ -1,6 +1,7 @@
 #include "Vector.h"
 #include "Light.h"
 #include "Camera.h"
+#include <iostream>
 
 
 void Light::setIntensity(Vector* intensity) {
@@ -63,16 +64,14 @@ double Spot::getAngle() {
 
 
 Vector Spot::calculateL(Vector pi) {
-    Vector l = (*this->getCoordinate() * (-1));
-    l = l / (l.getLength());
 
+    Vector l = (*this->getCoordinate() - pi) / ((*this->getCoordinate() - pi).getLength());
     return l;
 }
-// INTENSIDADE DO SPOT ?
 
 
 double Spot::distance(Vector p) {
-    Vector d = *this->coordinate - p;
+    Vector d = *this->getCoordinate() - p;
     return d.getLength();
 }
 
@@ -179,8 +178,8 @@ Vector* Directional::getDirection() {
 
 Vector Directional::calculateL(Vector pi) {
 
-    Vector l = (*this->getDirection() * (-1));
-    l = l / (l.getLength());
+    Vector ln = (*this->getDirection() * (-1));
+    Vector l = ln / (ln.getLength());
 
     return l;
 }

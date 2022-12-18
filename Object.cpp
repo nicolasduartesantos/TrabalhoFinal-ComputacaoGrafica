@@ -34,50 +34,50 @@ double Object::getShininess() {
 
 
 void Object::setObjectType(ObjectType type) {
-	this->type = type;
+    this->type = type;
 }
 ObjectType Object::getObjectType() {
-	return this->type;
+    return this->type;
 }
 
 
 void Object::setObjectSurface(ObjectSurface surface) {
-	this->surface = surface;
+    this->surface = surface;
 }
 ObjectSurface Object::getObjectSurface() {
-	return this->surface;
+    return this->surface;
 }
 
 
 void Object::setT(double t) {
-	this->t = t;
+    this->t = t;
 }
 double Object::getT() {
-	return this->t;
+    return this->t;
 }
 
 
 void Object::setHasIntersection(bool hasIntersection) {
-	this->hasIntersection = hasIntersection;
+    this->hasIntersection = hasIntersection;
 }
 bool Object::getHasIntersection() {
-	return this->hasIntersection;
+    return this->hasIntersection;
 }
 
 
 void Object::setIntersectionPoint(Vector* intersectionPoint) {
-	this->intersectionPoint = intersectionPoint;
+    this->intersectionPoint = intersectionPoint;
 }
 Vector* Object::getIntersectionPoint() {
-	return this->intersectionPoint;
+    return this->intersectionPoint;
 }
 
 
 void Object::setP0distance(double p0distance) {
-	this->p0distance = p0distance;
+    this->p0distance = p0distance;
 }
 double Object::getP0distance() {
-	return this->p0distance;
+    return this->p0distance;
 }
 
 
@@ -140,6 +140,21 @@ Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objec
 
             l = lights[i]->calculateL(*pi);
 
+            Vector intensity = *lights[i]->getIntensity();
+
+            if (lights[i]->lightType == LightType::SPOT) {
+
+                double calcspot = l.scalarProd(*((Spot*)lights[i])->getDirection() * -1);
+
+                if (calcspot < cos((((Spot*)lights[i])->getAngle()))) {
+                    intensity = Vector(0, 0, 0);
+                }
+                else {
+                    intensity = *((Spot*)lights[i])->getIntensity() * calcspot;
+                }
+
+            }
+
             bool hasShadow = obj->hasShadow(objects, pi, l, lights[i]);
 
             if (!hasShadow) {
@@ -149,8 +164,8 @@ Color* Object::RGBtoPaint(std::vector<Light*> lights, std::vector<Object*> objec
                 double f_diffuse = std::max(0.0, (l.scalarProd(*normal)));
                 double f_speculated = std::pow(std::max(0.0, (r.scalarProd(v))), shininess);
 
-                Vector i_diffuse = (*(lights[i]->getIntensity())) * (*obj->kd) * f_diffuse;
-                Vector i_speculated = (*lights[i]->getIntensity()) * (*obj->ke) * f_speculated;
+                Vector i_diffuse = (intensity) * (*obj->kd) * f_diffuse;
+                Vector i_speculated = (intensity) * (*obj->ke) * f_speculated;
 
                 rgb = rgb + i_diffuse + i_speculated;
 

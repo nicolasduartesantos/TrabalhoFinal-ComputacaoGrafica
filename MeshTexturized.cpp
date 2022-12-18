@@ -52,6 +52,15 @@ Vector* MeshTexturized::getNormal() {
 
 bool MeshTexturized::intersect(Vector* p0, Vector* dir) {
 
+	//this->setP0distanceShadow(std::numeric_limits<double>::infinity());
+
+	if (this->cluster != nullptr) {
+		if (!this->cluster->intersect(p0, dir) && !this->cluster->inside(p0)) {
+			this->setHasIntersection(false);
+			return false;
+		}
+	}
+
 	this->setObjectSurface(ObjectSurface::ON_PLAN);
 	this->setHasIntersection(false);
 	Vector* meshNormal = new Vector();
@@ -134,6 +143,15 @@ bool MeshTexturized::intersect(Vector* p0, Vector* dir) {
 
 
 bool MeshTexturized::intersect_for_shadow(Vector* p0, Vector* dir) {
+
+	//this->setP0distanceShadow(std::numeric_limits<double>::infinity());
+
+	if (this->cluster != nullptr) {
+		if (!this->cluster->intersect(p0, dir) && !this->cluster->inside(p0)) {
+			this->setHasIntersection(false);
+			return false;
+		}
+	}
 
 	this->setHasIntersectionShadow(false);
 	Vector* meshNormal = new Vector();
@@ -220,18 +238,18 @@ Color* MeshTexturized::getRGB(std::vector<Light*> lights, std::vector<Object*> o
 
 			if (!(this->facesPI[i])->getActive()) {
 
-				this->kd = new Vector(1.0, 0.078, 0.576);
-				this->ke = new Vector(1.0, 0.078, 0.576);
-				this->ka = new Vector(1.0, 0.078, 0.576);
+				this->kd = new Vector(0.5451, 0.27059, 0.07451);
+				this->ke = new Vector(0.5451, 0.27059, 0.07451);
+				this->ka = new Vector(0.5451, 0.27059, 0.07451);
 
 				return this->RGBtoPaint(lights, objects, p0, dir, environmentLight, this->normal, this);
 			}
-			
+
 			else {
 
 				Vector* normal = this->getNormal();
 				Vector* pi = this->getIntersectionPoint();
-				Vector piMinusp0 = *pi - Vector(0, 0, 0);
+				Vector piMinusp0 = *pi - Vector(vertices[5]->getCoordinate(0), vertices[5]->getCoordinate(1), vertices[5]->getCoordinate(2));
 				Vector piMinusp02 = piMinusp0;
 
 				if (normal->getCoordinate(0) != 0 || normal->getCoordinate(2) != 0) {
@@ -289,6 +307,8 @@ void MeshTexturized::scaling(double sx, double sy, double sz) {
 		*v = v->scaling(sx, sy, sz);
 	}
 
+
+
 	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
 	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
 	*center_top = center_top->scaling(sx, sy, sz);
@@ -303,6 +323,8 @@ void MeshTexturized::scaling(double sx, double sy, double sz) {
 
 	this->cluster->setRad(std::max(std::max(sx, sy), sz) * this->cluster->getRad());
 	this->cluster->setHeight((*center_top - *this->cluster->getCenter_base()).getLength());
+
+
 }
 
 

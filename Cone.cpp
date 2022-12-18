@@ -73,9 +73,9 @@ bool Cone::intersect(Vector* p0, Vector* dir) {
 
 	double delta, t1, t2;
 
-	double a = ((dir->scalarProd(*this->direction)) * (dir->scalarProd(*this->direction))) - ( (dir->scalarProd(*dir)) * cos2 );
+	double a = ((dir->scalarProd(*this->direction)) * (dir->scalarProd(*this->direction))) - ((dir->scalarProd(*dir)) * cos2);
 	double b = (v.scalarProd(*dir) * cos2) - ((v.scalarProd(*this->direction)) * (dir->scalarProd(*this->direction)));
-	double c = ((v.scalarProd(*this->direction)) * (v.scalarProd(*this->direction))) - ( v.scalarProd(v) * cos2 );
+	double c = ((v.scalarProd(*this->direction)) * (v.scalarProd(*this->direction))) - (v.scalarProd(v) * cos2);
 
 	delta = (b * b) - a * c;
 
@@ -692,7 +692,7 @@ void Cone::doWorldToCamera(Camera* camera) {
 	Vector* d = new Vector((*this->getVertex() - *this->getCenter_base()) / (*this->getVertex() - *this->getCenter_base()).getLength());
 	delete this->getDirection();
 	this->setDirection(d);
-	
+
 }
 
 
@@ -702,7 +702,7 @@ bool Cone::inside(Vector* p) {
 	Vector projection = *this->getDirection() * ver;
 
 	// VERIFICAR
-	if ( (projection - *p).getLength() < this->getRad() && ver >= 0 && ver <= this->getHeight()) {
+	if ((projection - *p).getLength() < this->getRad() && ver >= 0 && ver <= this->getHeight()) {
 		return true;
 	}
 	else {
