@@ -20,6 +20,7 @@
 #include "Edge.h"
 #include "Face.h"
 #include "Mesh.h"
+#include "Mesh.h"
 #include "Cube.h"
 #include "Texture.h"
 #include "MeshTexturized.h"

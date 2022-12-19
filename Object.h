@@ -6,7 +6,7 @@
 #include "Color.h"
 #include "Camera.h"
 
-enum class ObjectType { SPHERE, PLAN, CYLINDER, CONE, MESH, TEXTURE, MESH_TEXTURIZED };
+enum class ObjectType { SPHERE, PLAN, CYLINDER, CONE, MESH, TEXTURE, MESH_TEXTURIZED, MESH2 };
 enum class ObjectSurface { ON_SPHERE, ON_PLAN, CYLINDER_SURFACE, CYLINDER_BASE, CYLINDER_TOP, CONE_SURFACE, CONE_BASE, UNKNOWN };
 
 

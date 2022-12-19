@@ -53,7 +53,7 @@ Vector* MeshTexturized::getNormal() {
 bool MeshTexturized::intersect(Vector* p0, Vector* dir) {
 	//this->setP0distanceShadow(std::numeric_limits<double>::infinity());
 	if (this->cluster != nullptr) {
-		if (!this->cluster->intersect(p0, dir)) {
+		if (!this->cluster->intersect(p0, dir) and !this->cluster->inside(p0)) {
 			this->setHasIntersection(false);
 			return false;
 		}
@@ -108,7 +108,7 @@ bool MeshTexturized::intersect(Vector* p0, Vector* dir) {
 
 		t = (-(w.scalarProd(normalUnitary)) / drn);
 
-		if (drn != 0 && t > 0) {
+		if (drn != 0 && t > 0 && normal.scalarProd(*dir) < 0) {
 
 			Vector pitemp = (*p0) + ((*dir) * t);
 
@@ -143,8 +143,8 @@ bool MeshTexturized::intersect(Vector* p0, Vector* dir) {
 bool MeshTexturized::intersect_for_shadow(Vector* p0, Vector* dir) {
 	//this->setP0distanceShadow(std::numeric_limits<double>::infinity());
 	if (this->cluster != nullptr) {
-		if (!this->cluster->intersect(p0, dir)) {
-			this->setHasIntersection(false);
+		if (!this->cluster->intersect(p0, dir) and !this->cluster->inside(p0)) {
+			this->setHasIntersectionShadow(false);
 			return false;
 		}
 	}
@@ -198,7 +198,7 @@ bool MeshTexturized::intersect_for_shadow(Vector* p0, Vector* dir) {
 
 		t = (-(w.scalarProd(normalUnitary)) / drn);
 
-		if (drn != 0 && t > 0) {
+		if (drn != 0 && t > 0 && normal.scalarProd(*dir) < 0) {
 
 			Vector pitemp = (*p0) + ((*dir) * t);
 
@@ -211,7 +211,7 @@ bool MeshTexturized::intersect_for_shadow(Vector* p0, Vector* dir) {
 			double c2 = (r1.product(v)).scalarProd(normalUnitary) / (r1.product(r2)).scalarProd(normalUnitary);
 			double c3 = 1 - c1 - c2;
 
-			if (c1 >= 0 && c2 >= 0 && c3 >= 0 && (this->getHasIntersection() == false || this->getP0distance() > distancePiP0)) {
+			if (c1 >= 0 && c2 >= 0 && c3 >= 0 && (this->getHasIntersectionShadow() == false || this->getP0distanceShadow() > distancePiP0)) {
 				this->setHasIntersectionShadow(true);
 				this->setP0distanceShadow(distancePiP0);
 				this->setTShadow(t);
@@ -234,9 +234,9 @@ Color* MeshTexturized::getRGB(std::vector<Light*> lights, std::vector<Object*> o
 
 			if (!(this->facesPI[i])->getActive()) {
 
-				this->kd = new Vector(1.0, 0.078, 0.576);
-				this->ke = new Vector(1.0, 0.078, 0.576);
-				this->ka = new Vector(1.0, 0.078, 0.576);
+				this->kd = new Vector(0.5451, 0.27059, 0.07451);
+				this->ke = new Vector(0.5451, 0.27059, 0.07451);
+				this->ka = new Vector(0.5451, 0.27059, 0.07451);
 
 				return this->RGBtoPaint(lights, objects, p0, dir, environmentLight, this->normal, this);
 			}
@@ -245,7 +245,7 @@ Color* MeshTexturized::getRGB(std::vector<Light*> lights, std::vector<Object*> o
 
 				Vector* normal = this->getNormal();
 				Vector* pi = this->getIntersectionPoint();
-				Vector piMinusp0 = *pi - Vector(vertices[5]->getCoordinate(0), vertices[5]->getCoordinate(1), vertices[5]->getCoordinate(2));
+				Vector piMinusp0 = *pi - Vector(vertices[4]->getCoordinate(0), vertices[4]->getCoordinate(1), vertices[4]->getCoordinate(2));
 				Vector piMinusp02 = piMinusp0;
 
 				if (normal->getCoordinate(0) != 0 || normal->getCoordinate(2) != 0) {

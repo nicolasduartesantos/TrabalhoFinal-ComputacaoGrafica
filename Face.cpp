@@ -7,6 +7,14 @@ Face::Face(int e1, int e2, int e3) {
 }
 
 
+Face2::Face2(int v1, int v2, int v3) {
+	this->idVertices[0] = v1;
+	this->idVertices[1] = v2;
+	this->idVertices[2] = v3;
+}
+
+
+
 
 void FaceTexturized::setActive(bool active) {
 	this->active = active;

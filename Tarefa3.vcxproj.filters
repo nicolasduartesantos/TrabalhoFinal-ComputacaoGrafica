@@ -110,6 +110,9 @@
     <ClCompile Include="MeshTexturized.cpp">
       <Filter>Arquivos de Recurso</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh2.cpp">
+      <Filter>Arquivos de Recurso</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Color.h">
@@ -203,6 +206,9 @@
       <Filter>Arquivos de Cabeçalho\imgui</Filter>
     </ClInclude>
     <ClInclude Include="MeshTexturized.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh2.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>

@@ -42,10 +42,10 @@ Vector* Mesh::getNormal() {
 
 
 bool Mesh::intersect(Vector* p0, Vector* dir) {
-	this->setP0distance(std::numeric_limits<double>::infinity());
+	//this->setP0distance(std::numeric_limits<double>::infinity());
 
 	if (this->cluster != nullptr) {
-		if (!this->cluster->intersect(p0, dir)) {
+		if (!this->cluster->intersect(p0, dir) and !this->cluster->inside(p0)) {
 			this->setHasIntersection(false);
 			return false;
 		}
@@ -131,9 +131,9 @@ bool Mesh::intersect(Vector* p0, Vector* dir) {
 
 
 bool Mesh::intersect_for_shadow(Vector* p0, Vector* dir) {
-	this->setP0distanceShadow(std::numeric_limits<double>::infinity());
+	//this->setP0distanceShadow(std::numeric_limits<double>::infinity());
 	if (this->cluster != nullptr) {
-		if (!this->cluster->intersect_for_shadow(p0, dir)) {
+		if (!this->cluster->intersect_for_shadow(p0, dir) and !this->cluster->inside(p0)) {
 			this->setHasIntersectionShadow(false);
 			return false;
 		}
@@ -222,23 +222,11 @@ Color* Mesh::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Ve
 
 void Mesh::scaling(double sx, double sy, double sz) {
 	for (Vector* v : this->initial_vertices) {
+
 		*v = v->scaling(sx, sy, sz);
 	}
 
-	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
-	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
-	*center_top = center_top->scaling(sx, sy, sz);
-
-	Vector* center_base = this->cluster->initial_center_base;
-	*center_base = center_base->scaling(sx, sy, sz);
-
-	Vector directionNotNormalized = (*center_top - *this->cluster->initial_center_base);
-	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
-	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
-	this->cluster->setDirection(direction);
-
-	this->cluster->setRad(std::max(std::max(sx, sy), sz) * this->cluster->getRad());
-	this->cluster->setHeight((*center_top - *this->cluster->getCenter_base()).getLength());
+	this->cluster->scaling(sx, sy, sz);
 }
 
 
@@ -369,6 +357,12 @@ void Mesh::reflectionXY() {
 		*v = v->reflectionXY();
 	}
 
+	for (Face* face : this->getFaces()) {
+		face->edgeIds[0] ^= face->edgeIds[2];
+		face->edgeIds[2] ^= face->edgeIds[0];
+		face->edgeIds[0] ^= face->edgeIds[2];
+	}
+
 	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
 	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
 	*center_top = center_top->reflectionXY();
@@ -389,6 +383,12 @@ void Mesh::reflectionXZ() {
 		*v = v->reflectionXZ();
 	}
 
+	for (Face* face : this->getFaces()) {
+		face->edgeIds[0] ^= face->edgeIds[2];
+		face->edgeIds[2] ^= face->edgeIds[0];
+		face->edgeIds[0] ^= face->edgeIds[2];
+	}
+
 	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
 	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
 	*center_top = center_top->reflectionXZ();
@@ -407,6 +407,12 @@ void Mesh::reflectionYZ() {
 
 	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionYZ();
+	}
+
+	for (Face* face : this->getFaces()) {
+		face->edgeIds[0] ^= face->edgeIds[2];
+		face->edgeIds[2] ^= face->edgeIds[0];
+		face->edgeIds[0] ^= face->edgeIds[2];
 	}
 
 	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);

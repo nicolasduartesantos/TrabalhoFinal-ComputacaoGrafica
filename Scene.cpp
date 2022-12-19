@@ -11,10 +11,13 @@
 #include "Cylinder.h"
 #include "Cone.h"
 #include "Mesh.h"
+#include "Mesh2.h"
 #include "MeshTexturized.h"
 #include <vector>
 #include <SDL.h>
 #include <iostream>
+
+
 
 
 void Scene::setHWindow(double hWindow) {
@@ -194,7 +197,7 @@ void Scene::preparePaint() {
 }
 
 void Scene::mainLoop() {
-
+    
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0)
     {
         printf("Error: %s\n", SDL_GetError());
@@ -266,13 +269,12 @@ void Scene::mainLoop() {
 
 
         ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
-        ImGui::SetNextWindowSize(ImVec2(260, 150), ImGuiCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(220, 110), ImGuiCond_Once);
 
         static bool show_window = true;
         bool show_another_window = false;
 
         ImGui::Begin("Menu", NULL, window_flags);
-        ImGui::Text("Escolha o que deseja alterar:");
 
 
         if (ImGui::CollapsingHeader("Camera")) {
@@ -297,7 +299,6 @@ void Scene::mainLoop() {
                 }
                 else {
                     this->camera(newEye, newAt, newUp);
-                    change = true;
                 }
                 
             }
@@ -308,7 +309,6 @@ void Scene::mainLoop() {
                 Vector* newAt = new Vector(at[0], at[1], at[2]);
                 Vector* newUp = new Vector(up[0], up[1], up[2]);
                 this->camera(newEye, newAt, newUp);
-                change = true;
             }
 
             ImGui::InputFloat3("up", up);
@@ -317,7 +317,6 @@ void Scene::mainLoop() {
                 Vector* newAt = new Vector(at[0], at[1], at[2]);
                 Vector* newUp = new Vector(up[0], up[1], up[2]);
                 this->camera(newEye, newAt, newUp);
-                change = true;
             }
 
             float windowsize[2] = { (float)this->getHWindow(), (float)this->getWWindow() };
@@ -325,8 +324,8 @@ void Scene::mainLoop() {
             if (ImGui::IsItemDeactivatedAfterEdit()) {
                 this->setHWindow(windowsize[0]);
                 this->setWWindow(windowsize[1]);
-                this->setNLin((this->getHWindow() / 100) * 500);
-                this->setNCol((this->getWWindow() / 100) * 500);
+                this->setNLin((this->getHWindow() / 100) * 350);
+                this->setNCol((this->getWWindow() / 100) * 350);
 
                 ImGui_ImplSDLRenderer_Shutdown();
                 ImGui_ImplSDL2_Shutdown();
@@ -340,6 +339,9 @@ void Scene::mainLoop() {
             ImGui::InputDouble("distancia focal", &d);
             if (ImGui::IsItemDeactivatedAfterEdit()) {
                 this->setDWindow(d);
+            }
+
+            if (ImGui::Button("Update")) {
                 change = true;
             }
 
@@ -389,7 +391,7 @@ void Scene::mainLoop() {
             if (ImGui::CollapsingHeader("Point")) {
                 Point* point = (Point*)this->lights[num];
                 float p_coord[3] = { (float)point->initial_coordinate->getCoordinate(0),(float)point->initial_coordinate->getCoordinate(1),(float)point->initial_coordinate->getCoordinate(2) };
-                ImGui::InputFloat3("Coordinates", p_coord);
+                ImGui::InputFloat3("Coordinates - POINT", p_coord);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_point = new Vector(p_coord[0], p_coord[1], p_coord[2]);
                     ((Point*)this->lights[num])->initial_coordinate = new_point;
@@ -398,14 +400,14 @@ void Scene::mainLoop() {
                 }
 
                 float intensity[3] = { (float)point->getIntensity()->getCoordinate(0), (float)point->getIntensity()->getCoordinate(1), (float)point->getIntensity()->getCoordinate(2) };
-                ImGui::InputFloat3("Intensity", intensity);
+                ImGui::InputFloat3("Intensity - POINT", intensity);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
                     ((Point*)this->lights[num])->setIntensity(new_intensity);
                     change = true;
                 }
 
-                if (ImGui::Button("Turn ON/OFF")) {
+                if (ImGui::Button("Turn ON/OFF - POINT")) {
                     if (((Point*)this->lights[num])->getActive()) {
                         ((Point*)this->lights[num])->setActive(false);
                     }
@@ -418,7 +420,7 @@ void Scene::mainLoop() {
             if (ImGui::CollapsingHeader("Directional")) {
                 Directional* direct = (Directional*)this->lights[num];
                 float d_coord[3] = { (float)direct->initial_direction->getCoordinate(0), (float)direct->initial_direction->getCoordinate(1), (float)direct->initial_direction->getCoordinate(2) };
-                ImGui::InputFloat3("Directions", d_coord);
+                ImGui::InputFloat3("Directions - DIRECTIONAL", d_coord);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_direct = new Vector(d_coord[0], d_coord[1], d_coord[2]);
                     ((Directional*)this->lights[num])->initial_direction = new_direct;
@@ -427,14 +429,14 @@ void Scene::mainLoop() {
                 }
 
                 float intensity[3] = { (float)direct->getIntensity()->getCoordinate(0),(float)direct->getIntensity()->getCoordinate(1),(float)direct->getIntensity()->getCoordinate(2) };
-                ImGui::InputFloat3("Intensity", intensity);
+                ImGui::InputFloat3("Intensity - DIRECTIONAL", intensity);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
                     ((Directional*)this->lights[num])->setIntensity(new_intensity);
                     change = true;
                 }
 
-                if (ImGui::Button("Turn ON/OFF")) {
+                if (ImGui::Button("Turn ON/OFF - DIRECTIONAL")) {
                     if (((Directional*)this->lights[num])->getActive()) {
                         ((Directional*)this->lights[num])->setActive(false);
                     }
@@ -446,7 +448,7 @@ void Scene::mainLoop() {
             if (ImGui::CollapsingHeader("Spot")) {
                 Spot* spot = (Spot*)this->lights[num];
                 float s_coord[3] = { (float)spot->initial_coordinate->getCoordinate(0), (float)spot->initial_coordinate->getCoordinate(1), (float)spot->initial_coordinate->getCoordinate(2) };
-                ImGui::InputFloat3("Coordinates", s_coord);
+                ImGui::InputFloat3("Coordinates - SPOT", s_coord);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_spot = new Vector(s_coord[0], s_coord[1], s_coord[2]);
                     ((Spot*)this->lights[num])->initial_coordinate = new_spot;
@@ -455,7 +457,7 @@ void Scene::mainLoop() {
                 }
 
                 float sd_coord[3] = { (float)spot->initial_direction->getCoordinate(0),(float)spot->initial_direction->getCoordinate(1), (float)spot->initial_direction->getCoordinate(2) };
-                ImGui::InputFloat3("Directions", sd_coord);
+                ImGui::InputFloat3("Directions - SPOT", sd_coord);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_spotdirect = new Vector(sd_coord[0], sd_coord[1], sd_coord[2]);
                     ((Spot*)this->lights[num])->initial_direction = new_spotdirect;
@@ -464,7 +466,7 @@ void Scene::mainLoop() {
                 }
 
                 float intensity[3] = { (float)spot->getIntensity()->getCoordinate(0), (float)spot->getIntensity()->getCoordinate(1),(float)spot->getIntensity()->getCoordinate(2) };
-                ImGui::InputFloat3("Intensity", intensity);
+                ImGui::InputFloat3("Intensity - SPOT", intensity);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
                     ((Spot*)this->lights[num])->setIntensity(new_intensity);
@@ -478,7 +480,7 @@ void Scene::mainLoop() {
                     change = true;
                 }
 
-                if (ImGui::Button("Turn ON/OFF")) {
+                if (ImGui::Button("Turn ON/OFF - SPOT")) {
                     if (((Spot*)this->lights[num])->getActive()) {
                         ((Spot*)this->lights[num])->setActive(false);
                     }
@@ -492,14 +494,14 @@ void Scene::mainLoop() {
                 Light* environment = this->environmentLight;
 
                 float intensity[3] = { (float)environment->getIntensity()->getCoordinate(0), (float)environment->getIntensity()->getCoordinate(1),(float)environment->getIntensity()->getCoordinate(2) };
-                ImGui::InputFloat3("Intensity", intensity);
+                ImGui::InputFloat3("Intensity - ENVIRONMNENT", intensity);
                 if (ImGui::IsItemDeactivatedAfterEdit()) {
                     Vector* new_intensity = new Vector(intensity[0], intensity[1], intensity[2]);
                     environment->setIntensity(new_intensity);
                     change = true;
                 }
 
-                if (ImGui::Button("Turn ON/OFF")) {
+                if (ImGui::Button("Turn ON/OFF - ENVIRONMNENT")) {
                     if (environment->getActive()) {
                         environment->setActive(false);
                     }
@@ -1592,6 +1594,159 @@ void Scene::mainLoop() {
                     }
 
                     objectMeshTexturized->doWorldToCamera(this->cameraTo);
+
+                }
+
+                else if (object->getObjectType() == ObjectType::MESH2)
+                {
+                    Mesh2* objectMesh;
+                    objectMesh = (Mesh2*)object;
+
+                    std::cout << "\n--- MESH2 ---\n";
+
+                    std::cout << "1- kd\n";
+                    std::cout << "2- ke\n";
+                    std::cout << "3- ka\n";
+                    std::cout << "4- shininess\n";
+                    std::cout << "5- translation\n";
+                    std::cout << "6- rotate X\n";
+                    std::cout << "7- rotate Y\n";
+                    std::cout << "8- rotate Z\n";
+                    std::cout << "9- reflect XY\n";
+                    std::cout << "10- reflect XZ\n";
+                    std::cout << "11- reflect YZ\n\n";
+
+                    std::cout << "Digite a opcao escolhida: ";
+                    std::string opc;
+                    std::cin >> opc;
+
+
+                    if (opc == "1") {
+
+                        double kd1, kd2, kd3;
+
+                        std::cout << "Digite o primeiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd1;
+                        std::cout << "Digite o segundo valor de kd (de 0 a 1): ";
+                        std::cin >> kd2;
+                        std::cout << "Digite o terceiro valor de kd (de 0 a 1): ";
+                        std::cin >> kd3;
+
+                        Vector* newKD = new Vector(kd1, kd2, kd3);
+                        objectMesh->setKD(newKD);
+                        change = true;
+                    }
+
+                    else if (opc == "2") {
+
+                        double ke1, ke2, ke3;
+
+                        std::cout << "Digite o primeiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke1;
+                        std::cout << "Digite o segundo valor de ke (de 0 a 1): ";
+                        std::cin >> ke2;
+                        std::cout << "Digite o terceiro valor de ke (de 0 a 1): ";
+                        std::cin >> ke3;
+
+                        Vector* newKE = new Vector(ke1, ke2, ke3);
+                        objectMesh->setKE(newKE);
+                        change = true;
+                    }
+
+                    else if (opc == "3") {
+
+                        double ka1, ka2, ka3;
+
+                        std::cout << "Digite o primeiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka1;
+                        std::cout << "Digite o segundo valor de ka (de 0 a 1): ";
+                        std::cin >> ka2;
+                        std::cout << "Digite o terceiro valor de ka (de 0 a 1): ";
+                        std::cin >> ka3;
+
+                        Vector* newKA = new Vector(ka1, ka2, ka3);
+                        objectMesh->setKA(newKA);
+                        change = true;
+                    }
+
+                    else if (opc == "4") {
+
+                        double shininess;
+
+                        std::cout << "Digite o valor de shininess: ";
+                        std::cin >> shininess;
+
+                        objectMesh->setShininess(shininess);
+                        change = true;
+                    }
+
+                    else if (opc == "5") {
+
+                        double tx, ty, tz;
+
+                        std::cout << "Digite o x da translacao: ";
+                        std::cin >> tx;
+                        std::cout << "Digite o y da translacao: ";
+                        std::cin >> ty;
+                        std::cout << "Digite o z da translacao: ";
+                        std::cin >> tz;
+
+                        objectMesh->translation(tx, ty, tz);
+                        change = true;
+                    }
+
+                    else if (opc == "6") {
+
+                        double ax;
+
+                        std::cout << "Digite o angulo da rotacao no eixo X: ";
+                        std::cin >> ax;
+
+                        objectMesh->rotX(ax);
+                        change = true;
+                    }
+
+                    else if (opc == "7") {
+
+                        double ay;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Y: ";
+                        std::cin >> ay;
+
+                        objectMesh->rotY(ay);
+                        change = true;
+                    }
+
+                    else if (opc == "8") {
+
+                        double az;
+
+                        std::cout << "Digite o angulo da rotacao no eixo Z: ";
+                        std::cin >> az;
+
+                        objectMesh->rotZ(az);
+                        change = true;
+                    }
+
+                    else if (opc == "9") {
+
+                        objectMesh->reflectionXY();
+                        change = true;
+                    }
+
+                    else if (opc == "10") {
+
+                        objectMesh->reflectionXZ();
+                        change = true;
+                    }
+
+                    else if (opc == "11") {
+
+                        objectMesh->reflectionYZ();
+                        change = true;
+                    }
+
+                    objectMesh->doWorldToCamera(this->cameraTo);
 
                 }
             }

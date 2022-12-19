@@ -12,6 +12,13 @@ public:
 };
 
 
+class Face2 {
+public:
+	std::vector<int> idVertices = std::vector<int>(3);
+	Face2(int v1, int v2, int v3);
+};
+
+
 
 class FaceTexturized {
 public:

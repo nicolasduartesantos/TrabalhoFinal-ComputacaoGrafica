@@ -11,7 +11,7 @@ private:
 
 	ObjectType type = ObjectType::MESH;
 
-	std::vector<Face*> faces;
+	//std::vector<Face*> faces;
 	std::vector<Edge*> edges;
 	std::vector<Vector*> vertices;
 
@@ -19,7 +19,7 @@ private:
 	Cluster* cluster = nullptr;
 
 public:
-
+	std::vector<Face*> faces;
 	std::vector<Vector*> initial_vertices;
 
 	void addFace(Face* face);

@@ -903,7 +903,7 @@ bool Cylinder::inside(Vector* p) {
         return true;
     }
     else {
-        false;
+        return false;
     }
 }
 
