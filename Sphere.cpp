@@ -154,15 +154,39 @@ Color* Sphere::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, 
 
 
 void Sphere::rotX(double a) {
+    double x = this->initial_center->getCoordinate(0);
+    double y = this->initial_center->getCoordinate(1);
+    double z = this->initial_center->getCoordinate(2);
+
+    this->translation(-(this->initial_center->getCoordinate(0)), -(this->initial_center->getCoordinate(1)), -(this->initial_center->getCoordinate(2)));
+
     *this->initial_center = (*this->initial_center).rotX(a);
+
+    this->translation(x, y, z);
 }
 
 void Sphere::rotY(double a) {
+    double x = this->initial_center->getCoordinate(0);
+    double y = this->initial_center->getCoordinate(1);
+    double z = this->initial_center->getCoordinate(2);
+
+    this->translation(-(this->initial_center->getCoordinate(0)), -(this->initial_center->getCoordinate(1)), -(this->initial_center->getCoordinate(2)));
+
     *this->initial_center = (*this->initial_center).rotY(a);
+
+    this->translation(x, y, z);
 }
 
 void Sphere::rotZ(double a) {
+    double x = this->initial_center->getCoordinate(0);
+    double y = this->initial_center->getCoordinate(1);
+    double z = this->initial_center->getCoordinate(2);
+
+    this->translation(-(this->initial_center->getCoordinate(0)), -(this->initial_center->getCoordinate(1)), -(this->initial_center->getCoordinate(2)));
+
     *this->initial_center = (*this->initial_center).rotZ(a);
+
+    this->translation(x, y, z);
 }
 
 void Sphere::translation(double tx, double ty, double tz) {
@@ -170,20 +194,52 @@ void Sphere::translation(double tx, double ty, double tz) {
 }
 
 void Sphere::scaling(double sx, double sy, double sz) {
+    double x = this->initial_center->getCoordinate(0);
+    double y = this->initial_center->getCoordinate(1);
+    double z = this->initial_center->getCoordinate(2);
+
+    this->translation(-(this->initial_center->getCoordinate(0)), -(this->initial_center->getCoordinate(1)), -(this->initial_center->getCoordinate(2)));
+
     *this->initial_center = (*this->initial_center).scaling(sx, sy, sz);
     this->setRad(std::max(std::max(sx, sy), sz) * this->getRad());
+
+    this->translation(x, y, z);
 }
 
 void Sphere::reflectionXY() {
+    double x = this->initial_center->getCoordinate(0);
+    double y = this->initial_center->getCoordinate(1);
+    double z = this->initial_center->getCoordinate(2);
+
+    this->translation(-(this->initial_center->getCoordinate(0)), -(this->initial_center->getCoordinate(1)), -(this->initial_center->getCoordinate(2)));
+
     *this->initial_center = (*this->initial_center).reflectionXY();
+
+    this->translation(x, y, z);
 }
 
 void Sphere::reflectionXZ() {
+    double x = this->initial_center->getCoordinate(0);
+    double y = this->initial_center->getCoordinate(1);
+    double z = this->initial_center->getCoordinate(2);
+
+    this->translation(-(this->initial_center->getCoordinate(0)), -(this->initial_center->getCoordinate(1)), -(this->initial_center->getCoordinate(2)));
+
     *this->initial_center = (*this->initial_center).reflectionXZ();
+
+    this->translation(x, y, z);
 }
 
 void Sphere::reflectionYZ() {
+    double x = this->initial_center->getCoordinate(0);
+    double y = this->initial_center->getCoordinate(1);
+    double z = this->initial_center->getCoordinate(2);
+
+    this->translation(-(this->initial_center->getCoordinate(0)), -(this->initial_center->getCoordinate(1)), -(this->initial_center->getCoordinate(2)));
+
     *this->initial_center = (*this->initial_center).reflectionYZ();
+
+    this->translation(x, y, z);
 }
 
 

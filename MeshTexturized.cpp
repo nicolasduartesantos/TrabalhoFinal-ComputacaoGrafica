@@ -303,8 +303,6 @@ void MeshTexturized::scaling(double sx, double sy, double sz) {
 		*v = v->scaling(sx, sy, sz);
 	}
 
-	
-
 	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
 	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
 	*center_top = center_top->scaling(sx, sy, sz);
@@ -320,7 +318,7 @@ void MeshTexturized::scaling(double sx, double sy, double sz) {
 	this->cluster->setRad(std::max(std::max(sx, sy), sz) * this->cluster->getRad());
 	this->cluster->setHeight((*center_top - *this->cluster->getCenter_base()).getLength());
 
-	
+
 }
 
 
@@ -335,6 +333,7 @@ void MeshTexturized::translation(double tx, double ty, double tz) {
 
 
 void MeshTexturized::rotX(double a) {
+
 	for (Vector* v : this->initial_vertices) {
 		*v = v->rotX(a);
 	}
@@ -350,10 +349,12 @@ void MeshTexturized::rotX(double a) {
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
+
 }
 
 
 void MeshTexturized::rotY(double a) {
+
 	for (Vector* v : this->initial_vertices) {
 		*v = v->rotY(a);
 	}
@@ -373,6 +374,7 @@ void MeshTexturized::rotY(double a) {
 
 
 void MeshTexturized::rotZ(double a) {
+
 	for (Vector* v : this->initial_vertices) {
 		*v = v->rotZ(a);
 	}
@@ -388,6 +390,7 @@ void MeshTexturized::rotZ(double a) {
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
+
 }
 
 
@@ -451,6 +454,12 @@ void MeshTexturized::reflectionXY() {
 		*v = v->reflectionXY();
 	}
 
+	for (FaceTexturized* face : this->getFaces()) {
+		face->edgeIdsT[0] ^= face->edgeIdsT[2];
+		face->edgeIdsT[2] ^= face->edgeIdsT[0];
+		face->edgeIdsT[0] ^= face->edgeIdsT[2];
+	}
+
 	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
 	Vector* center_top = new Vector(ct.getCoordinate(0), ct.getCoordinate(1), ct.getCoordinate(2));
 	*center_top = center_top->reflectionXY();
@@ -462,6 +471,7 @@ void MeshTexturized::reflectionXY() {
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
+
 }
 
 
@@ -469,6 +479,12 @@ void MeshTexturized::reflectionXZ() {
 
 	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionXZ();
+	}
+
+	for (FaceTexturized* face : this->getFaces()) {
+		face->edgeIdsT[0] ^= face->edgeIdsT[2];
+		face->edgeIdsT[2] ^= face->edgeIdsT[0];
+		face->edgeIdsT[0] ^= face->edgeIdsT[2];
 	}
 
 	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
@@ -482,6 +498,7 @@ void MeshTexturized::reflectionXZ() {
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
+
 }
 
 
@@ -489,6 +506,12 @@ void MeshTexturized::reflectionYZ() {
 
 	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionYZ();
+	}
+
+	for (FaceTexturized* face : this->getFaces()) {
+		face->edgeIdsT[0] ^= face->edgeIdsT[2];
+		face->edgeIdsT[2] ^= face->edgeIdsT[0];
+		face->edgeIdsT[0] ^= face->edgeIdsT[2];
 	}
 
 	Vector ct = *this->cluster->initial_center_base + (*this->cluster->initial_direction * this->cluster->initial_height);
@@ -502,6 +525,7 @@ void MeshTexturized::reflectionYZ() {
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
+
 }
 
 

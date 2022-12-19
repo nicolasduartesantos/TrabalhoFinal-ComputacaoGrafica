@@ -317,7 +317,7 @@ void Mesh2::shearingZX(double a) {
 
 
 void Mesh2::reflectionXY() {
-
+	this->translation(0, 100, -160);
 	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionXY();
 	}
@@ -339,11 +339,12 @@ void Mesh2::reflectionXY() {
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
+	this->translation(0, -100, 160);
 }
 
 
 void Mesh2::reflectionXZ() {
-
+	this->translation(0, 100, -160);
 	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionXZ();
 	}
@@ -365,11 +366,12 @@ void Mesh2::reflectionXZ() {
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
+	this->translation(0, -100, 160);
 }
 
 
 void Mesh2::reflectionYZ() {
-
+	this->translation(0, 100, -160);
 	for (Vector* v : this->initial_vertices) {
 		*v = v->reflectionYZ();
 	}
@@ -391,6 +393,7 @@ void Mesh2::reflectionYZ() {
 	Vector directionNormalized = directionNotNormalized / (directionNotNormalized.getLength());
 	Vector* direction = new Vector(directionNormalized.getCoordinate(0), directionNormalized.getCoordinate(1), directionNormalized.getCoordinate(2));
 	this->cluster->setDirection(direction);
+	this->translation(0, -100, 160);
 }
 
 

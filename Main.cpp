@@ -170,7 +170,6 @@ int main(int argc, char* argv[]) {
 
 
 
-
 	Scene* scene = new Scene(100, 100, 350, 350, 20, new Color(100, 100, 100, 255));
 
 
@@ -181,7 +180,7 @@ int main(int argc, char* argv[]) {
 	scene->addLight(spot_dir);
 	scene->addLight(spot_meio);
 	scene->addLight(directional);
-
+	
 	scene->addObject(plan_floor);
 	scene->addObject(plan_leftwall);
 	scene->addObject(plan_rightwall);
@@ -195,7 +194,7 @@ int main(int argc, char* argv[]) {
 
 	scene->addObject(ampulheta_debaixo);
 	scene->addObject(ampulheta_decima);
-
+	
 	scene->addObject(bola_maior);
 	scene->addObject(bola_media);
 	scene->addObject(bola_menor);
@@ -209,7 +208,7 @@ int main(int argc, char* argv[]) {
 	scene->addObject(barreira);
 
 	scene->addObject(cube);
-
+	
 	scene->addObject(quadro_meio);
 	scene->addObject(quadro_esq1);
 	scene->addObject(quadro_esq2);
@@ -218,12 +217,12 @@ int main(int argc, char* argv[]) {
 
 
 
-	scene->camera(new Vector(0., 0., 250.), new Vector(0., 0., -1.), new Vector(0., 1., 0.)); // visao frontal
+	//scene->camera(new Vector(0., 0., 299.), new Vector(0., 0., -1.), new Vector(0., 1., 0.)); // visao frontal
 	//scene->camera(new Vector(100., 0., 250.), new Vector(-0.8, 0., -2.), new Vector(0., 1., 0.)); // visao para a diagonal esquerda
 	//scene->camera(new Vector(150., 0., 270.), new Vector(-1.1, 0., -2.), new Vector(0., 1., 0.)); //visao grande da sala
 
 	//scene->camera(new Vector(150., 0., 150.), new Vector(-2., 0.3, -2.), new Vector(0., 1., 0.)); // tentando olhar pra parede esquerda
-	//scene->camera(new Vector(100., 40., 100.), new Vector(-100., 0., 150.), new Vector(0., 30000., 0.)); // parede esquerda
+	scene->camera(new Vector(100., 40., 100.), new Vector(-100., 0., 150.), new Vector(0., 30000., 0.)); // parede esquerda
 	//scene->camera(new Vector(-150., 0., 150.), new Vector(100., 0., 150.), new Vector(0., 30000., 0.)); // parede direita
 	//scene->camera(new Vector(-150., 0., 100.), new Vector(100., 0., 150.), new Vector(0., 30000., 0.)); // womans view
 	//scene->camera(new Vector(-150., 0., 100.), new Vector(100., 0., 150.), new Vector(0., 30000., 0.))

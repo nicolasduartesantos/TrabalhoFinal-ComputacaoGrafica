@@ -109,18 +109,43 @@ Color* Plan::getRGB(std::vector<Light*> lights, std::vector<Object*> objects, Ve
 
 
 void Plan::rotX(double a) {
+
+	double x = this->initial_p_pi->getCoordinate(0);
+	double y = this->initial_p_pi->getCoordinate(1);
+	double z = this->initial_p_pi->getCoordinate(2);
+
+	this->translation(-(this->initial_p_pi->getCoordinate(0)), -(this->initial_p_pi->getCoordinate(1)), -(this->initial_p_pi->getCoordinate(2)));
+
 	*this->initial_p_pi = (*this->initial_p_pi).rotX(a);
 	*this->initial_normal = (*this->initial_normal).rotX(a);
+
+	this->translation(x, y, z);
 }
 
 void Plan::rotY(double a) {
+	double x = this->initial_p_pi->getCoordinate(0);
+	double y = this->initial_p_pi->getCoordinate(1);
+	double z = this->initial_p_pi->getCoordinate(2);
+
+	this->translation(-(this->initial_p_pi->getCoordinate(0)), -(this->initial_p_pi->getCoordinate(1)), -(this->initial_p_pi->getCoordinate(2)));
+
 	*this->initial_p_pi = (*this->initial_p_pi).rotY(a);
 	*this->initial_normal = (*this->initial_normal).rotY(a);
+
+	this->translation(x, y, z);
 }
 
 void Plan::rotZ(double a) {
+	double x = this->initial_p_pi->getCoordinate(0);
+	double y = this->initial_p_pi->getCoordinate(1);
+	double z = this->initial_p_pi->getCoordinate(2);
+
+	this->translation(-(this->initial_p_pi->getCoordinate(0)), -(this->initial_p_pi->getCoordinate(1)), -(this->initial_p_pi->getCoordinate(2)));
+
 	*this->initial_p_pi = (*this->initial_p_pi).rotZ(a);
 	*this->initial_normal = (*this->initial_normal).rotZ(a);
+
+	this->translation(x, y, z);
 }
 
 void Plan::translation(double tx, double ty, double tz) {
@@ -130,18 +155,42 @@ void Plan::translation(double tx, double ty, double tz) {
 void Plan::scaling(double sx, double sy, double sz) { }
 
 void Plan::reflectionXY() {
+	double x = this->initial_p_pi->getCoordinate(0);
+	double y = this->initial_p_pi->getCoordinate(1);
+	double z = this->initial_p_pi->getCoordinate(2);
+
+	this->translation(-(this->initial_p_pi->getCoordinate(0)), -(this->initial_p_pi->getCoordinate(1)), -(this->initial_p_pi->getCoordinate(2)));
+
 	*this->initial_p_pi = (*this->initial_p_pi).reflectionXY();
 	*this->initial_normal = (*this->initial_normal).reflectionXY();
+
+	this->translation(x, y, z);
 }
 
 void Plan::reflectionXZ() {
+	double x = this->initial_p_pi->getCoordinate(0);
+	double y = this->initial_p_pi->getCoordinate(1);
+	double z = this->initial_p_pi->getCoordinate(2);
+
+	this->translation(-(this->initial_p_pi->getCoordinate(0)), -(this->initial_p_pi->getCoordinate(1)), -(this->initial_p_pi->getCoordinate(2)));
+
 	*this->initial_p_pi = (*this->initial_p_pi).reflectionXZ();
 	*this->initial_normal = (*this->initial_normal).reflectionXZ();
+
+	this->translation(x, y, z);
 }
 
 void Plan::reflectionYZ() {
+	double x = this->initial_p_pi->getCoordinate(0);
+	double y = this->initial_p_pi->getCoordinate(1);
+	double z = this->initial_p_pi->getCoordinate(2);
+
+	this->translation(-(this->initial_p_pi->getCoordinate(0)), -(this->initial_p_pi->getCoordinate(1)), -(this->initial_p_pi->getCoordinate(2)));
+
 	*this->initial_p_pi = (*this->initial_p_pi).reflectionYZ();
 	*this->initial_normal = (*this->initial_normal).reflectionYZ();
+
+	this->translation(x, y, z);
 }
 
 
